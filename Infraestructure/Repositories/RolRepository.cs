@@ -1,0 +1,70 @@
+using Microsoft.EntityFrameworkCore;
+
+
+namespace reymani_web_api.Infraestructure.Repositories
+{
+  public class RolRepository : IRolRepository
+  {
+    private readonly DBContext _context;
+
+    public RolRepository(DBContext context)
+    {
+      _context = context;
+    }
+
+    public async Task<IEnumerable<Rol>> GetAllAsync()
+    {
+      return await _context.Roles.ToListAsync();
+    }
+
+    public async Task<Rol?> GetByIdAsync(Guid id)
+    {
+      return await _context.Roles.FindAsync(id);
+    }
+
+    public async Task AddAsync(Rol rol)
+    {
+      await _context.Roles.AddAsync(rol);
+      await _context.SaveChangesAsync();
+    }
+
+    public async Task UpdateAsync(Rol rol)
+    {
+      _context.Roles.Update(rol);
+      await _context.SaveChangesAsync();
+    }
+
+    public async Task DeleteAsync(Rol rol)
+    {
+      _context.Roles.Remove(rol);
+      await _context.SaveChangesAsync();
+    }
+
+    public async Task AssignPermissionsAsync(Guid rolId, IEnumerable<Guid> permisoIds)
+    {
+      var rol = await _context.Roles.Include(r => r.Permisos).FirstOrDefaultAsync(r => r.IdRol == rolId);
+      if (rol == null) throw new Exception("Rol no encontrado.");
+
+      rol.Permisos.Clear();
+      foreach (var permisoId in permisoIds)
+      {
+        var permiso = await _context.Permisos.FindAsync(permisoId);
+        if (permiso != null)
+        {
+          rol.Permisos.Add(new RolPermiso { IdRol = rolId, IdPermiso = permisoId });
+        }
+      }
+      await _context.SaveChangesAsync();
+    }
+
+    public async Task<string[]> GetCodigosPermisosRolAsync(Guid id)
+    {
+      var permisos = await _context.Roles
+          .Where(r => r.IdRol == id)
+          .SelectMany(r => r.Permisos.Select(rp => rp.Permiso!.Codigo)) // Navega de Rol -> RolPermiso -> Permiso -> Codigo
+          .ToArrayAsync();
+
+      return permisos;
+    }
+  }
+}

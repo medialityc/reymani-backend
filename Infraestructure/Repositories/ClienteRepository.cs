@@ -1,4 +1,4 @@
-using System;
+
 using Microsoft.EntityFrameworkCore;
 using reymani_web_api.Domain.Enums;
 
@@ -51,5 +51,25 @@ public class ClienteRepository : IClienteRepository
                 t.TipoEntidad == EntitiesTypes.Cliente.ToString()));
 
     return cliente ?? null;
+  }
+
+  public async Task<string[]> GetCodigosRolesClienteAsync(Guid id)
+  {
+    var roles = await _context.Clientes
+        .Where(c => c.IdCliente == id)
+        .SelectMany(c => c.Roles.Select(cr => cr.Rol!.Codigo)) // Navega de Cliente -> ClienteRol -> Rol -> Codigo
+        .ToArrayAsync();
+
+    return roles;
+  }
+
+  public async Task<string[]> GetCodigosPermisosClienteAsync(Guid id)
+  {
+    var permisos = await _context.Clientes
+        .Where(c => c.IdCliente == id)
+        .SelectMany(c => c.Roles.SelectMany(cr => cr.Rol!.Permisos.Select(rp => rp.Permiso!.Codigo))) // Navega de Cliente -> ClienteRol -> Rol -> RolPermiso -> Permiso -> Codigo
+        .ToArrayAsync();
+
+    return permisos;
   }
 }

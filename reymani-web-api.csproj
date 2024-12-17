@@ -23,10 +23,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Api\Endpoints\Permiso\" />
     <Folder Include="Application\DTOs\" />
     <Folder Include="Domain\Entities\" />
     <Folder Include="Infraestructure\Migrations\" />
-    <Folder Include="Infraestructure\Repositories\" />
   </ItemGroup>
 
 </Project>

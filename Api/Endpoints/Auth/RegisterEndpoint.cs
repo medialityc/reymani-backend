@@ -16,6 +16,19 @@ public class RegisterEndpoint : Endpoint<RegisterRequest>
     Verbs(Http.POST);
     Routes("/auth/register");
     AllowAnonymous();
+    Summary(s =>
+    {
+      s.Summary = "Registrar Cliente";
+      s.Description = "Registra un nuevo cliente en la aplicación";
+      s.ExampleRequest = new RegisterRequest
+      {
+        NumeroCarnet = "04112086258",
+        Nombre = "John",
+        Apellidos = "Doe Martin",
+        Username = "johndoe",
+        Password = "Jhondoe123"
+      };
+    });
   }
 
   public override async Task HandleAsync(RegisterRequest req, CancellationToken ct)

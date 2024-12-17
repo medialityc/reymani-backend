@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using FastEndpoints.Security;
+using reymani_web_api;
 
 var bld = WebApplication.CreateBuilder();
 bld.Services
@@ -11,12 +12,8 @@ bld.Services
 bld.Services.AddDbContextFactory<DBContext>(options =>
     options.UseNpgsql(bld.Configuration.GetConnectionString("DefaultConnection")));
 
-//Cliente
-bld.Services.AddScoped<IClienteRepository, ClienteRepository>();
-bld.Services.AddScoped<IClienteService, ClienteService>();
-
-//Auth
-bld.Services.AddScoped<IAuthService, AuthService>();
+bld.Services.AddDomainServices();
+bld.Services.AddRepositories();
 
 var app = bld.Build();
 
@@ -34,4 +31,5 @@ app.UseDefaultExceptionHandler()
    .UseAuthorization()
    .UseFastEndpoints()
    .UseSwaggerGen(); //add this
+
 app.Run();

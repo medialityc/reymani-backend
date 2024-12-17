@@ -10,5 +10,6 @@ public interface IClienteRepository
   Task UpdateAsync(Cliente cliente);
   Task DeleteAsync(Cliente cliente);
   Task<Cliente?> GetClienteByUsernameOrPhoneAsync(string usernameOrPhone);
-
+  Task<string[]> GetCodigosRolesClienteAsync(Guid id);
+  Task<string[]> GetCodigosPermisosClienteAsync(Guid id);
 }

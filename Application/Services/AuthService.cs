@@ -1,8 +1,8 @@
 using System;
 using FastEndpoints.Security;
+using Microsoft.EntityFrameworkCore;
 using reymani_web_api.Api.Endpoints.Auth;
 using reymani_web_api.Application.Utils;
-using Microsoft.Extensions.Configuration;
 
 namespace reymani_web_api.Application.Services;
 
@@ -68,13 +68,14 @@ public class AuthService : IAuthService
       throw new UnauthorizedAccessException("Credenciales inválidas");
     }
 
+    var roles = await _clienteRepository.GetCodigosRolesClienteAsync(cliente.IdCliente);
     var jwtSecret = _configuration["JwtSecret"];
     var jwtToken = JwtBearer.CreateToken(
       o =>
       {
         o.SigningKey = jwtSecret;
         o.ExpireAt = DateTime.UtcNow.AddDays(1);
-        o.User.Roles.Add("Cliente");
+        o.User.Roles.AddRange(roles.Where(r => r != null)!);
         o.User.Claims.Add(("UserName", cliente.Username));
       });
 

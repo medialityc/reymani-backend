@@ -10,4 +10,5 @@ public interface IClienteService
   Task CreateClienteAsync(CreateClienteRequest request);
   Task UpdateClienteAsync(UpdateClienteRequest request);
   Task DeleteClienteAsync(Guid id);
+  Task AssignRoleToClienteAsync(Guid clienteId, Guid roleId);
 }
