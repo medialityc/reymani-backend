@@ -13,5 +13,6 @@ namespace reymani_web_api.Application.Interfaces
     Task DeleteAsync(Rol rol);
     Task AssignPermissionsAsync(Guid rolId, IEnumerable<Guid> permisoIds);
     Task<string[]> GetCodigosPermisosRolAsync(Guid id);
+    Task<bool> RolNameExistsAsync(string nombre);
   }
 }

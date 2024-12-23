@@ -1,4 +1,5 @@
 using System;
+using reymani_web_api.Application.DTOs;
 
 namespace reymani_web_api.Api.Endpoints.Rol;
 
@@ -15,6 +16,21 @@ public sealed class UpdateRolEndpoint : Endpoint<UpdateRolRequest>
   {
     Verbs(Http.PUT);
     Routes("/rol/{RolId:guid}");
+    Summary(s =>
+    {
+      s.Summary = "Actualizar Rol";
+      s.Description = "Actualiza un rol";
+      s.ExampleRequest = new UpdateRolRequest
+      {
+        RolId = Guid.NewGuid(),
+        Rol = new RolDto
+        {
+          IdRol = Guid.NewGuid(),
+          Nombre = "Rol de Prueba",
+          Descripcion = "Rol de Prueba"
+        }
+      };
+    });
   }
 
   public override async Task HandleAsync(UpdateRolRequest req, CancellationToken ct)

@@ -1,3 +1,5 @@
+using reymani_web_api.Application.DTOs;
+
 namespace reymani_web_api.Application.Services
 {
   public class RolService : IRolService
@@ -42,6 +44,11 @@ namespace reymani_web_api.Application.Services
     public async Task AssignPermissionsAsync(Guid rolId, IEnumerable<Guid> permisoIds)
     {
       await _rolRepository.AssignPermissionsAsync(rolId, permisoIds);
+    }
+
+    public async Task<bool> RolNameExistsAsync(string nombre)
+    {
+      return await _rolRepository.RolNameExistsAsync(nombre);
     }
   }
 }

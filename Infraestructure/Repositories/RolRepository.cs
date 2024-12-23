@@ -66,5 +66,10 @@ namespace reymani_web_api.Infraestructure.Repositories
 
       return permisos;
     }
+
+    public async Task<bool> RolNameExistsAsync(string nombre)
+    {
+      return await _context.Roles.AnyAsync(r => r.Nombre.ToLower() == nombre.ToLower());
+    }
   }
 }
