@@ -17,6 +17,17 @@ public sealed class ChangeClientePasswordEndpoint : Endpoint<ChangeClientePasswo
   {
     Verbs(Http.PUT);
     Routes("/cliente/change-password");
+    Summary(s =>
+      {
+        s.Summary = "Cambiar contraseña del Cliente";
+        s.Description = "Cambiar contraseña del Cliente en la base de datos";
+        s.ExampleRequest = new ChangeClientePasswordRequest
+        {
+          ClienteId = new Guid(),
+          NewPassword = "dasdsadsa",
+          Password = "sdadsadsadsadsa"
+        };
+      });
   }
 
   public override async Task HandleAsync(ChangeClientePasswordRequest req, CancellationToken ct)

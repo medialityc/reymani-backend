@@ -24,6 +24,7 @@ using (var scope = app.Services.CreateScope())
    dbContext.Database.Migrate();
    SeedData.SeedRoles(dbContext);
    SeedData.SeedPermisos(dbContext);
+   SeedData.SeedRolPermisos(dbContext);
 }
 
 app.UseDefaultExceptionHandler()
