@@ -25,21 +25,8 @@ public class ClienteService : IClienteService
     return await _clienteRepository.GetByIdAsync(id);
   }
 
-  public async Task UpdateClienteAsync(UpdateClienteRequest request)
+  public async Task UpdateClienteAsync(Cliente cliente)
   {
-    var cliente = await _clienteRepository.GetByIdAsync(request.IdCliente);
-
-    if (cliente == null)
-    {
-      throw new Exception("Cliente no encontrado.");
-    }
-
-    cliente.NumeroCarnet = request.NumeroCarnet;
-    cliente.Nombre = request.Nombre;
-    cliente.Apellidos = request.Apellidos;
-    cliente.Username = request.Username;
-    cliente.PasswordHash = request.Password;
-
     await _clienteRepository.UpdateAsync(cliente);
   }
 

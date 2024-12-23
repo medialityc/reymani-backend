@@ -7,7 +7,7 @@ public interface IClienteService
 {
   Task<IEnumerable<Cliente>> GetAllClientesAsync();
   Task<Cliente?> GetClienteByIdAsync(Guid id);
-  Task UpdateClienteAsync(UpdateClienteRequest request);
+  Task UpdateClienteAsync(Cliente cliente);
   Task DeleteClienteAsync(Guid id);
   Task AssignRoleToClienteAsync(Guid clienteId, Guid roleId);
 }

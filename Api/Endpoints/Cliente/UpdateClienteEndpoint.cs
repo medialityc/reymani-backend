@@ -1,4 +1,5 @@
 using System;
+using reymani_web_api.Application.DTOs;
 
 namespace reymani_web_api.Api.Endpoints.Cliente;
 
@@ -14,7 +15,7 @@ public class UpdateClienteEndpoint : Endpoint<UpdateClienteRequest>
   public override void Configure()
   {
     Verbs(Http.PUT);
-    Routes("/cliente/update");
+    Routes("/cliente/{IdCliente:guid}");
     Summary(s =>
     {
       s.Summary = "Actualizar Cliente";
@@ -22,26 +23,42 @@ public class UpdateClienteEndpoint : Endpoint<UpdateClienteRequest>
       s.ExampleRequest = new UpdateClienteRequest
       {
         IdCliente = Guid.NewGuid(),
-        NumeroCarnet = "12345678",
-        Nombre = "John",
-        Apellidos = "Doe",
-        Username = "johndoe",
-        Password = "Jhondoe123"
+        Cliente = new ClienteDto
+        {
+          NumeroCarnet = "04022067256",
+          Nombre = "John",
+          Apellidos = "Doe",
+          Username = "johndoe"
+        }
       };
     });
+
   }
 
   public override async Task HandleAsync(UpdateClienteRequest req, CancellationToken ct)
   {
-    try
+    var cliente = await _clienteService.GetClienteByIdAsync(req.IdCliente);
+    if (cliente == null)
     {
-      await _clienteService.UpdateClienteAsync(req);
-      await SendOkAsync();
+      await SendNotFoundAsync(ct);
+      return;
     }
-    catch (Exception e)
+
+    if (req.Cliente.Id != req.IdCliente)
     {
-      AddError(e.Message);
-      ThrowIfAnyErrors();
+      AddError(r => r.IdCliente, "El ID del cliente no coincide con el ID de la URL");
+    }
+
+    ThrowIfAnyErrors();
+
+    if (cliente != null)
+    {
+      cliente.NumeroCarnet = req.Cliente.NumeroCarnet;
+      cliente.Nombre = req.Cliente.Nombre;
+      cliente.Apellidos = req.Cliente.Apellidos;
+      cliente.Username = req.Cliente.Username;
+      await _clienteService.UpdateClienteAsync(cliente);
+      await SendOkAsync(ct);
     }
   }
 }
