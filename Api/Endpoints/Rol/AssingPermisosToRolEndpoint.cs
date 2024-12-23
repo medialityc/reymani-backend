@@ -30,6 +30,13 @@ public class AssingPermisosToRolEndpoint : Endpoint<AssingPermisosToRolRequest>
 
   public override async Task HandleAsync(AssingPermisosToRolRequest req, CancellationToken ct)
   {
+    var rol = await _rolService.GetByIdAsync(req.RolId);
+    if (rol == null)
+    {
+      AddError(r => r.RolId, "Rol no encontrado");
+    }
+
+    ThrowIfAnyErrors();
     await _rolService.AssignPermissionsAsync(req.RolId, req.PermisoIds);
     await SendOkAsync(ct);
   }

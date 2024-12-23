@@ -18,8 +18,8 @@ public class RegisterEndpoint : Endpoint<RegisterRequest>
     AllowAnonymous();
     Summary(s =>
     {
-      s.Summary = "Registrar Usuario";
-      s.Description = "Registra un nuevo usuario en la aplicación";
+      s.Summary = "Registrar Cliente";
+      s.Description = "Registra un nuevo cliente en la aplicación";
       s.ExampleRequest = new RegisterRequest
       {
         NumeroCarnet = "04112086258",
