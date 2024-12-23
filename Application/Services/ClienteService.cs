@@ -15,25 +15,6 @@ public class ClienteService : IClienteService
     _rolRepository = rolRepository;
   }
 
-  public async Task CreateClienteAsync(CreateClienteRequest request)
-  {
-    var hashedPassword = HashPassword.ComputeHash(request.Password);
-
-    var cliente = new Cliente
-    {
-      IdCliente = Guid.NewGuid(),
-      NumeroCarnet = request.NumeroCarnet,
-      Nombre = request.Nombre,
-      Apellidos = request.Apellidos,
-      Username = request.Username,
-      PasswordHash = hashedPassword,
-      FechaRegistro = DateTime.UtcNow,
-      Activo = true
-    };
-
-    await _clienteRepository.AddAsync(cliente);
-  }
-
   public async Task<IEnumerable<Cliente>> GetAllClientesAsync()
   {
     return await _clienteRepository.GetAllAsync();

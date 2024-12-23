@@ -29,7 +29,7 @@ public static class SeedData
     if (!context.Permisos.Any())
     {
       context.Permisos.AddRange(
-        new Permiso { Codigo = "Eliminar_Cliente", Descripcion = "Permiso para eliminar clientes" }
+        new Permiso { Codigo = "Acceso_Backoffice", Descripcion = "Acceso al backoffice" }
       );
       context.SaveChanges();
     }
