@@ -46,15 +46,13 @@ public class AuthService : IAuthService
     };
 
     await _clienteRepository.AddAsync(cliente);
-
     var jwtSecret = _configuration["JwtSecret"];
     var jwtToken = JwtBearer.CreateToken(
       o =>
       {
         o.SigningKey = jwtSecret;
         o.ExpireAt = DateTime.UtcNow.AddDays(1);
-        o.User.Roles.Add("Cliente");
-        o.User.Claims.Add(("UserName", request.Username));
+        o.User.Claims.Add(("IdCliente", cliente.IdCliente.ToString()));
       });
 
     return jwtToken;
@@ -68,15 +66,15 @@ public class AuthService : IAuthService
       throw new UnauthorizedAccessException("Credenciales inválidas");
     }
 
-    var roles = await _clienteRepository.GetCodigosRolesClienteAsync(cliente.IdCliente);
+    var rolesId = await _clienteRepository.GetIdRolesClienteAsync(cliente.IdCliente);
     var jwtSecret = _configuration["JwtSecret"];
     var jwtToken = JwtBearer.CreateToken(
       o =>
       {
         o.SigningKey = jwtSecret;
         o.ExpireAt = DateTime.UtcNow.AddDays(1);
-        o.User.Roles.AddRange(roles.Where(r => r != null)!);
-        o.User.Claims.Add(("UserName", cliente.Username));
+        o.User.Roles.AddRange(rolesId.Where(r => r != null)!);
+        o.User.Claims.Add(("IdCliente", cliente.IdCliente.ToString()));
       });
 
     return jwtToken;

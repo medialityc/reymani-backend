@@ -53,23 +53,13 @@ public class ClienteRepository : IClienteRepository
     return cliente ?? null;
   }
 
-  public async Task<string[]> GetCodigosRolesClienteAsync(Guid id)
+  public async Task<string[]> GetIdRolesClienteAsync(Guid id)
   {
     var roles = await _context.Clientes
         .Where(c => c.IdCliente == id)
-        .SelectMany(c => c.Roles.Select(cr => cr.Rol!.Nombre)) // Navega de Cliente -> ClienteRol -> Rol -> Nombre
+        .SelectMany(c => c.Roles.Select(cr => cr.Rol!.IdRol.ToString())) // Navega de Cliente -> ClienteRol -> Rol -> Nombre
         .ToArrayAsync();
 
     return roles;
-  }
-
-  public async Task<string[]> GetCodigosPermisosClienteAsync(Guid id)
-  {
-    var permisos = await _context.Clientes
-        .Where(c => c.IdCliente == id)
-        .SelectMany(c => c.Roles.SelectMany(cr => cr.Rol!.Permisos.Select(rp => rp.Permiso!.Codigo))) // Navega de Cliente -> ClienteRol -> Rol -> RolPermiso -> Permiso -> Codigo
-        .ToArrayAsync();
-
-    return permisos;
   }
 }
