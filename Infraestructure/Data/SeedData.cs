@@ -18,7 +18,7 @@ public static class SeedData
         new Rol { Nombre = "Administrador del Sistema", Descripcion = "Administrador del sistema saddsadsa" },
         new Rol { Nombre = "Administrador del Negocio", Descripcion = "Administrador del negocio dasdsa" },
         new Rol { Nombre = "Cliente", Descripcion = "Cliente dsa dsad sa" },
-        new Rol { Nombre = "Mensajero", Descripcion = "Mensajero dasdsadsa " }
+        new Rol { Nombre = "Mensajero", Descripcion = "Mensajero dasdsadsa" }
       );
       context.SaveChanges();
     }

@@ -16,8 +16,8 @@ public class AssignRolToClienteEndpoint : Endpoint<AssingRoleToClienteRequest>
     Routes("/roles/assign_role_to_client");
     Summary(s =>
     {
-      s.Summary = "Asignar Rol a Cliente";
-      s.Description = "Asigna un rol a un cliente";
+      s.Summary = "Asignar Rol a Usuario";
+      s.Description = "Asigna un rol a un usuario";
       s.ExampleRequest = new AssingRoleToClienteRequest
       {
         ClienteId = Guid.NewGuid(),
