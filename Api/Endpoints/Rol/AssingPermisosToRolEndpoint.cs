@@ -15,7 +15,7 @@ public class AssingPermisosToRolEndpoint : Endpoint<AssingPermisosToRolRequest>
   public override void Configure()
   {
     Verbs(Http.POST);
-    Routes("/roles/assign_permissions_to_role");
+    Routes("/rol/assign_permissions_to_role");
     Summary(s =>
     {
       s.Summary = "Asignar Permisos a Rol";

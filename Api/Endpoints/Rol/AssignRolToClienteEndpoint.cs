@@ -13,7 +13,7 @@ public class AssignRolToClienteEndpoint : Endpoint<AssingRoleToClienteRequest>
   public override void Configure()
   {
     Verbs(Http.POST);
-    Routes("/roles/assign_role_to_client");
+    Routes("/rol/assign_role_to_client");
     Summary(s =>
     {
       s.Summary = "Asignar Rol a Usuario";

@@ -14,7 +14,7 @@ public sealed class GetAllRolEndpoint : EndpointWithoutRequest<GetAllRolResponse
 
   public override void Configure()
   {
-    Get("/roles");
+    Get("/rol");
     Summary(s =>
     {
       s.Summary = "Obtener todos los roles";
