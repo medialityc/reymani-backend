@@ -9,7 +9,7 @@ public class Rol
 
   [Required]
   [StringLength(50)]
-  public required string Codigo { get; set; } // Nombre del rol (ej. 'Administrador', 'Cliente', 'Mensajero', etc.)
+  public required string Nombre { get; set; } // Nombre del rol (ej. 'Administrador', 'Cliente', 'Mensajero', etc.)
 
   [StringLength(100)]
   public string? Descripcion { get; set; } // Descripción opcional del rol

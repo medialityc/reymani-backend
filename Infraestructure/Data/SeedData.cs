@@ -15,10 +15,10 @@ public static class SeedData
     if (!context.Roles.Any())
     {
       context.Roles.AddRange(
-        new Rol { Codigo = "Administrador_Sistema", Descripcion = "Administrador del sistema" },
-        new Rol { Codigo = "Administrador_Negocio", Descripcion = "Administrador del negocio" },
-        new Rol { Codigo = "Cliente", Descripcion = "Cliente" },
-        new Rol { Codigo = "Mensajero", Descripcion = "Mensajero" }
+        new Rol { Nombre = "Administrador del Sistema", Descripcion = "Administrador del sistema saddsadsa" },
+        new Rol { Nombre = "Administrador del Negocio", Descripcion = "Administrador del negocio dasdsa" },
+        new Rol { Nombre = "Cliente", Descripcion = "Cliente dsa dsad sa" },
+        new Rol { Nombre = "Mensajero", Descripcion = "Mensajero dasdsadsa " }
       );
       context.SaveChanges();
     }

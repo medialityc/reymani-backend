@@ -57,7 +57,7 @@ public class ClienteRepository : IClienteRepository
   {
     var roles = await _context.Clientes
         .Where(c => c.IdCliente == id)
-        .SelectMany(c => c.Roles.Select(cr => cr.Rol!.Codigo)) // Navega de Cliente -> ClienteRol -> Rol -> Codigo
+        .SelectMany(c => c.Roles.Select(cr => cr.Rol!.Nombre)) // Navega de Cliente -> ClienteRol -> Rol -> Nombre
         .ToArrayAsync();
 
     return roles;
