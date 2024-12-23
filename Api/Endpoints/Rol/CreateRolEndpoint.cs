@@ -6,10 +6,12 @@ namespace reymani_web_api.Api.Endpoints.Rol;
 public sealed class CreateRolEndpoint : Endpoint<CreateRolRequest>
 {
   private readonly IRolService _rolService;
+  private readonly IAuthorizationService _authorizationService;
 
-  public CreateRolEndpoint(IRolService rolService)
+  public CreateRolEndpoint(IRolService rolService, IAuthorizationService authorizationService)
   {
     _rolService = rolService;
+    _authorizationService = authorizationService;
   }
 
   public override void Configure()
@@ -30,6 +32,13 @@ public sealed class CreateRolEndpoint : Endpoint<CreateRolRequest>
 
   public override async Task HandleAsync(CreateRolRequest req, CancellationToken ct)
   {
+    var roleGuids = User.Claims.Where(c => c.Type == "role").Select(c => Guid.Parse(c.Value)).ToArray();
+
+    if (!await _authorizationService.IsRoleAuthorizedToEndpointAsync(roleGuids, "Crear_Rol"))
+    {
+      await SendUnauthorizedAsync(ct);
+    }
+
     if (await _rolService.RolNameExistsAsync(req.Nombre))
     {
       AddError(r => r.Nombre, "El nombre del rol ya existe");

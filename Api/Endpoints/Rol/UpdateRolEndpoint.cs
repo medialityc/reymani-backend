@@ -6,10 +6,11 @@ namespace reymani_web_api.Api.Endpoints.Rol;
 public sealed class UpdateRolEndpoint : Endpoint<UpdateRolRequest>
 {
   private readonly IRolService _rolService;
-
-  public UpdateRolEndpoint(IRolService rolService)
+  private readonly IAuthorizationService _authorizationService;
+  public UpdateRolEndpoint(IRolService rolService, IAuthorizationService authorizationService)
   {
     _rolService = rolService;
+    _authorizationService = authorizationService;
   }
 
   public override void Configure()
@@ -35,6 +36,13 @@ public sealed class UpdateRolEndpoint : Endpoint<UpdateRolRequest>
 
   public override async Task HandleAsync(UpdateRolRequest req, CancellationToken ct)
   {
+    var roleGuids = User.Claims.Where(c => c.Type == "role").Select(c => Guid.Parse(c.Value)).ToArray();
+
+    if (!await _authorizationService.IsRoleAuthorizedToEndpointAsync(roleGuids, "Actualizar_Rol"))
+    {
+      await SendUnauthorizedAsync(ct);
+    }
+
     var rol = await _rolService.GetByIdAsync(req.RolId);
     if (rol == null)
     {

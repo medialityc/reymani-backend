@@ -5,10 +5,12 @@ namespace reymani_web_api.Api.Endpoints.Rol;
 public sealed class DeleteRolEndpoint : Endpoint<DeleteRolRequest>
 {
   private readonly IRolService _rolService;
+  private readonly IAuthorizationService _authorizationService;
 
-  public DeleteRolEndpoint(IRolService rolService)
+  public DeleteRolEndpoint(IRolService rolService, IAuthorizationService authorizationService)
   {
     _rolService = rolService;
+    _authorizationService = authorizationService;
   }
 
   public override void Configure()
@@ -28,6 +30,13 @@ public sealed class DeleteRolEndpoint : Endpoint<DeleteRolRequest>
 
   public override async Task HandleAsync(DeleteRolRequest req, CancellationToken ct)
   {
+    var roleGuids = User.Claims.Where(c => c.Type == "role").Select(c => Guid.Parse(c.Value)).ToArray();
+
+    if (!await _authorizationService.IsRoleAuthorizedToEndpointAsync(roleGuids, "Eliminar_Rol"))
+    {
+      await SendUnauthorizedAsync(ct);
+    }
+
     var rol = await _rolService.GetByIdAsync(req.RolId);
     if (rol == null)
     {

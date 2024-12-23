@@ -29,7 +29,22 @@ public static class SeedData
     if (!context.Permisos.Any())
     {
       context.Permisos.AddRange(
-        new Permiso { Codigo = "Acceso_Backoffice", Descripcion = "Acceso al backoffice" }
+        new Permiso { Codigo = "Ver_Clientes", Descripcion = "Ver todos los clientes del sistema" },
+        new Permiso { Codigo = "Cambiar_Contraseña", Descripcion = "Cambiar contraseña del cliente" },
+        new Permiso { Codigo = "Eliminar_Cliente", Descripcion = "Eliminar cliente del sistema" },
+        new Permiso { Codigo = "Ver_Cliente", Descripcion = "Ver informacion de cliente" },
+        new Permiso { Codigo = "Actualizar_Cliente", Descripcion = "Actualizar informacion del cliente" },
+
+        new Permiso { Codigo = "Ver_Permisos", Descripcion = "Ver todos los permisos del sistema" },
+        new Permiso { Codigo = "Ver_Permiso", Descripcion = "Ver informacion del permiso" },
+
+        new Permiso { Codigo = "Asignar_Rol_A_Cliente", Descripcion = "Asignar rol a los clientes del sistema" },
+        new Permiso { Codigo = "Asignar_Permisos_A_Rol", Descripcion = "Asignar permisos a rol" },
+        new Permiso { Codigo = "Crear_Rol", Descripcion = "Crear nuevo rol" },
+        new Permiso { Codigo = "Eliminar_Rol", Descripcion = "Eliminar rol" },
+        new Permiso { Codigo = "Ver_Roles", Descripcion = "Ver roles del sistema" },
+        new Permiso { Codigo = "Ver_Rol", Descripcion = "Ver informacion del rol" },
+        new Permiso { Codigo = "Actualizar_Rol", Descripcion = "Actualizar rol" }
       );
       context.SaveChanges();
     }

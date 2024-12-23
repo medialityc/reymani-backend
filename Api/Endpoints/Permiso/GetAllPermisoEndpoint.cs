@@ -6,10 +6,12 @@ namespace reymani_web_api.Api.Endpoints.Permiso;
 public sealed class GetAllPermisoEndpoint : EndpointWithoutRequest<GetAllPermisoResponse>
 {
   private readonly IPermisoService _permisoService;
+  private readonly IAuthorizationService _authorizationService;
 
-  public GetAllPermisoEndpoint(IPermisoService permisoService)
+  public GetAllPermisoEndpoint(IPermisoService permisoService, IAuthorizationService authorizationService)
   {
     _permisoService = permisoService;
+    _authorizationService = authorizationService;
   }
 
   public override void Configure()
@@ -36,6 +38,13 @@ public sealed class GetAllPermisoEndpoint : EndpointWithoutRequest<GetAllPermiso
 
   public override async Task<GetAllPermisoResponse> ExecuteAsync(CancellationToken ct)
   {
+    var roleGuids = User.Claims.Where(c => c.Type == "role").Select(c => Guid.Parse(c.Value)).ToArray();
+
+    if (!await _authorizationService.IsRoleAuthorizedToEndpointAsync(roleGuids, "Ver_Permisos"))
+    {
+      await SendUnauthorizedAsync(ct);
+    }
+
     var permisos = await _permisoService.GetAllAsync();
     return new GetAllPermisoResponse
     {

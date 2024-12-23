@@ -6,10 +6,12 @@ namespace reymani_web_api.Api.Endpoints.Cliente;
 public class GetAllClienteEndpoint : EndpointWithoutRequest<GetAllClienteResponse>
 {
   private readonly IClienteService _clienteService;
+  private readonly IAuthorizationService _authorizationService;
 
-  public GetAllClienteEndpoint(IClienteService clienteService)
+  public GetAllClienteEndpoint(IClienteService clienteService, IAuthorizationService authorizationService)
   {
     _clienteService = clienteService;
+    _authorizationService = authorizationService;
   }
 
   public override void Configure()
@@ -38,6 +40,13 @@ public class GetAllClienteEndpoint : EndpointWithoutRequest<GetAllClienteRespons
 
   public override async Task<GetAllClienteResponse> ExecuteAsync(CancellationToken ct)
   {
+    var roleGuids = User.Claims.Where(c => c.Type == "role").Select(c => Guid.Parse(c.Value)).ToArray();
+
+    if (!await _authorizationService.IsRoleAuthorizedToEndpointAsync(roleGuids, "Ver_Clientes"))
+    {
+      await SendUnauthorizedAsync(ct);
+    }
+
     var clientes = await _clienteService.GetAllClientesAsync();
     return new GetAllClienteResponse
     {

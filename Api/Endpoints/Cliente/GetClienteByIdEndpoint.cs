@@ -7,10 +7,12 @@ namespace reymani_web_api.Api.Endpoints.Cliente
   public class GetClienteByIdEndpoint : Endpoint<GetClienteByIdRequest, ClienteDto>
   {
     private readonly IClienteService _clienteService;
+    private readonly IAuthorizationService _authorizationService;
 
-    public GetClienteByIdEndpoint(IClienteService clienteService)
+    public GetClienteByIdEndpoint(IClienteService clienteService, IAuthorizationService authorizationService)
     {
       _clienteService = clienteService;
+      _authorizationService = authorizationService;
     }
 
     public override void Configure()
@@ -40,6 +42,13 @@ namespace reymani_web_api.Api.Endpoints.Cliente
 
     public override async Task HandleAsync(GetClienteByIdRequest req, CancellationToken ct)
     {
+      var roleGuids = User.Claims.Where(c => c.Type == "role").Select(c => Guid.Parse(c.Value)).ToArray();
+
+      if (!await _authorizationService.IsRoleAuthorizedToEndpointAsync(roleGuids, "Ver_Cliente"))
+      {
+        await SendUnauthorizedAsync(ct);
+      }
+
       var cliente = await _clienteService.GetClienteByIdAsync(req.ClienteId);
       if (cliente == null)
       {

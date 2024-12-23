@@ -10,6 +10,7 @@ public static class DependencyInjectionExtensions
     services.AddScoped<IPermisoService, PermisoService>();
     services.AddScoped<IClienteService, ClienteService>();
     services.AddScoped<IAuthService, AuthService>();
+    services.AddScoped<IAuthorizationService, AuthorizationService>();
 
     return services;
   }

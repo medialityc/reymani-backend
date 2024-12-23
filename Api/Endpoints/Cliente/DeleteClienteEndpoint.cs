@@ -6,9 +6,11 @@ public sealed class DeleteClienteEndpoint : Endpoint<DeleteClienteRequest>
 {
   private readonly IClienteService _clienteService;
 
-  public DeleteClienteEndpoint(IClienteService clienteService)
+  private readonly IAuthorizationService _authorizationService;
+  public DeleteClienteEndpoint(IClienteService clienteService, IAuthorizationService authorizationService)
   {
     _clienteService = clienteService;
+    _authorizationService = authorizationService;
   }
 
   public override void Configure()
@@ -28,6 +30,14 @@ public sealed class DeleteClienteEndpoint : Endpoint<DeleteClienteRequest>
 
   public override async Task HandleAsync(DeleteClienteRequest req, CancellationToken ct)
   {
+    var roleGuids = User.Claims.Where(c => c.Type == "role").Select(c => Guid.Parse(c.Value)).ToArray();
+
+    if (!await _authorizationService.IsRoleAuthorizedToEndpointAsync(roleGuids, "Eliminar_Cliente"))
+    {
+      await SendUnauthorizedAsync(ct);
+    }
+
+
     var cliente = await _clienteService.GetClienteByIdAsync(req.IdCliente);
     if (cliente == null)
     {

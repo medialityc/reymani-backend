@@ -7,9 +7,12 @@ public class GetPermisoByIdEndpoint : Endpoint<GetPermisoByIdRequest, PermisoDto
 {
   private readonly IPermisoService _permisoService;
 
-  public GetPermisoByIdEndpoint(IPermisoService permisoService)
+  private readonly IAuthorizationService _authorizationService;
+
+  public GetPermisoByIdEndpoint(IPermisoService permisoService, IAuthorizationService authorizationService)
   {
     _permisoService = permisoService;
+    _authorizationService = authorizationService;
   }
 
   public override void Configure()
@@ -37,6 +40,13 @@ public class GetPermisoByIdEndpoint : Endpoint<GetPermisoByIdRequest, PermisoDto
 
   public override async Task HandleAsync(GetPermisoByIdRequest request, CancellationToken ct)
   {
+    var roleGuids = User.Claims.Where(c => c.Type == "role").Select(c => Guid.Parse(c.Value)).ToArray();
+
+    if (!await _authorizationService.IsRoleAuthorizedToEndpointAsync(roleGuids, "Ver_Permiso"))
+    {
+      await SendUnauthorizedAsync(ct);
+    }
+
     var permiso = await _permisoService.GetByIdAsync(request.PermisoId);
 
     if (permiso is null)

@@ -6,10 +6,12 @@ namespace reymani_web_api.Api.Endpoints.Rol;
 public sealed class GetAllRolEndpoint : EndpointWithoutRequest<GetAllRolResponse>
 {
   private readonly IRolService _rolService;
+  private readonly IAuthorizationService _authorizationService;
 
-  public GetAllRolEndpoint(IRolService rolService)
+  public GetAllRolEndpoint(IRolService rolService, IAuthorizationService authorizationService)
   {
     _rolService = rolService;
+    _authorizationService = authorizationService;
   }
 
   public override void Configure()
@@ -37,6 +39,13 @@ public sealed class GetAllRolEndpoint : EndpointWithoutRequest<GetAllRolResponse
 
   public override async Task<GetAllRolResponse> ExecuteAsync(CancellationToken ct)
   {
+    var roleGuids = User.Claims.Where(c => c.Type == "role").Select(c => Guid.Parse(c.Value)).ToArray();
+
+    if (!await _authorizationService.IsRoleAuthorizedToEndpointAsync(roleGuids, "Ver_Roles"))
+    {
+      await SendUnauthorizedAsync(ct);
+    }
+
     var roles = await _rolService.GetAllAsync();
     return new GetAllRolResponse
     {

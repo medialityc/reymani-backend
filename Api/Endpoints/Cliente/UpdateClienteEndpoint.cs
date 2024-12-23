@@ -7,9 +7,12 @@ public class UpdateClienteEndpoint : Endpoint<UpdateClienteRequest>
 {
   private readonly IClienteService _clienteService;
 
-  public UpdateClienteEndpoint(IClienteService clienteService)
+  private readonly IAuthorizationService _authorizationService;
+
+  public UpdateClienteEndpoint(IClienteService clienteService, IAuthorizationService authorizationService)
   {
     _clienteService = clienteService;
+    _authorizationService = authorizationService;
   }
 
   public override void Configure()
@@ -37,6 +40,13 @@ public class UpdateClienteEndpoint : Endpoint<UpdateClienteRequest>
 
   public override async Task HandleAsync(UpdateClienteRequest req, CancellationToken ct)
   {
+    var roleGuids = User.Claims.Where(c => c.Type == "role").Select(c => Guid.Parse(c.Value)).ToArray();
+
+    if (!await _authorizationService.IsRoleAuthorizedToEndpointAsync(roleGuids, "Actualizar_Cliente"))
+    {
+      await SendUnauthorizedAsync(ct);
+    }
+
     var cliente = await _clienteService.GetClienteByIdAsync(req.IdCliente);
     if (cliente == null)
     {

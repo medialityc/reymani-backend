@@ -5,11 +5,13 @@ public class AssignRolToClienteEndpoint : Endpoint<AssingRoleToClienteRequest>
 {
   private readonly IClienteService _clienteService;
   private readonly IRolService _rolService;
+  private readonly IAuthorizationService _authorizationService;
 
-  public AssignRolToClienteEndpoint(IClienteService clienteService, IRolService rolService)
+  public AssignRolToClienteEndpoint(IClienteService clienteService, IRolService rolService, IAuthorizationService authorizationService)
   {
     _clienteService = clienteService;
     _rolService = rolService;
+    _authorizationService = authorizationService;
   }
 
   public override void Configure()
@@ -30,6 +32,13 @@ public class AssignRolToClienteEndpoint : Endpoint<AssingRoleToClienteRequest>
 
   public override async Task HandleAsync(AssingRoleToClienteRequest req, CancellationToken ct)
   {
+    var roleGuids = User.Claims.Where(c => c.Type == "role").Select(c => Guid.Parse(c.Value)).ToArray();
+
+    if (!await _authorizationService.IsRoleAuthorizedToEndpointAsync(roleGuids, "Asignar_Rol_A_Cliente"))
+    {
+      await SendUnauthorizedAsync(ct);
+    }
+
     var cliente = await _clienteService.GetClienteByIdAsync(req.ClienteId);
     if (cliente == null)
     {
@@ -41,7 +50,6 @@ public class AssignRolToClienteEndpoint : Endpoint<AssingRoleToClienteRequest>
     {
       AddError(r => r.RoleId, "Rol no encontrado");
     }
-
 
     ThrowIfAnyErrors();
     await _clienteService.AssignRoleToClienteAsync(req.ClienteId, req.RoleId);

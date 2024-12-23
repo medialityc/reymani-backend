@@ -6,10 +6,12 @@ namespace reymani_web_api.Api.Endpoints.Rol;
 public class AssingPermisosToRolEndpoint : Endpoint<AssingPermisosToRolRequest>
 {
   private readonly IRolService _rolService;
+  private readonly IAuthorizationService _authorizationService;
 
-  public AssingPermisosToRolEndpoint(IRolService rolService)
+  public AssingPermisosToRolEndpoint(IRolService rolService, IAuthorizationService authorizationService)
   {
     _rolService = rolService;
+    _authorizationService = authorizationService;
   }
 
   public override void Configure()
@@ -30,6 +32,13 @@ public class AssingPermisosToRolEndpoint : Endpoint<AssingPermisosToRolRequest>
 
   public override async Task HandleAsync(AssingPermisosToRolRequest req, CancellationToken ct)
   {
+    var roleGuids = User.Claims.Where(c => c.Type == "role").Select(c => Guid.Parse(c.Value)).ToArray();
+
+    if (!await _authorizationService.IsRoleAuthorizedToEndpointAsync(roleGuids, "Asignar_Permisos_A_Rol"))
+    {
+      await SendUnauthorizedAsync(ct);
+    }
+
     var rol = await _rolService.GetByIdAsync(req.RolId);
     if (rol == null)
     {
