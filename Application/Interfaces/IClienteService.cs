@@ -10,4 +10,6 @@ public interface IClienteService
   Task UpdateClienteAsync(Cliente cliente);
   Task DeleteClienteAsync(Guid id);
   Task AssignRoleToClienteAsync(Guid clienteId, Guid roleId);
+  Task<bool> CheckPasswordAsync(Cliente cliente, string password);
+  Task ChangePasswordAsync(Cliente cliente, string newPassword);
 }

@@ -60,4 +60,15 @@ public class ClienteService : IClienteService
     cliente.Roles.Add(new ClienteRol { IdCliente = clienteId, IdRol = roleId });
     await _clienteRepository.UpdateAsync(cliente);
   }
+
+  public Task<bool> CheckPasswordAsync(Cliente cliente, string password)
+  {
+    return Task.FromResult(HashPassword.VerifyHash(password, cliente.PasswordHash));
+  }
+
+  public Task ChangePasswordAsync(Cliente cliente, string newPassword)
+  {
+    cliente.PasswordHash = HashPassword.ComputeHash(newPassword);
+    return _clienteRepository.UpdateAsync(cliente);
+  }
 }

@@ -7,7 +7,7 @@ public class UpdateClienteRequest
 {
   public Guid IdCliente { get; set; }
 
-  public ClienteDto Cliente { get; set; }
+  public required ClienteDto Cliente { get; set; }
 }
 
 public class UpdateClienteRequestValidator : Validator<UpdateClienteRequest>
