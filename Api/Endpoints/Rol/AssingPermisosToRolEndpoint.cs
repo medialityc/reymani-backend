@@ -7,11 +7,13 @@ public class AssingPermisosToRolEndpoint : Endpoint<AssingPermisosToRolRequest>
 {
   private readonly IRolService _rolService;
   private readonly IAuthorizationService _authorizationService;
+  private readonly IPermisoService _permisoService;
 
-  public AssingPermisosToRolEndpoint(IRolService rolService, IAuthorizationService authorizationService)
+  public AssingPermisosToRolEndpoint(IRolService rolService, IAuthorizationService authorizationService, IPermisoService permisoService)
   {
     _rolService = rolService;
     _authorizationService = authorizationService;
+    _permisoService = permisoService;
   }
 
   public override void Configure()
@@ -43,6 +45,15 @@ public class AssingPermisosToRolEndpoint : Endpoint<AssingPermisosToRolRequest>
     if (rol == null)
     {
       AddError(r => r.RolId, "Rol no encontrado");
+    }
+
+    foreach (var permisoId in req.PermisoIds)
+    {
+      var permiso = await _permisoService.GetByIdAsync(permisoId);
+      if (permiso == null)
+      {
+        AddError(r => r.PermisoIds, $"Permiso con ID {permisoId} no encontrado");
+      }
     }
 
     ThrowIfAnyErrors();

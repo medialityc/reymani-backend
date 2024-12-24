@@ -9,7 +9,7 @@ public interface IClienteService
   Task<Cliente?> GetClienteByIdAsync(Guid id);
   Task UpdateClienteAsync(Cliente cliente);
   Task DeleteClienteAsync(Guid id);
-  Task AssignRoleToClienteAsync(Guid clienteId, Guid roleId);
+  Task AssignRolesToClienteAsync(Guid clienteId, IEnumerable<Guid> roleIds);
   Task<bool> CheckPasswordAsync(Cliente cliente, string password);
   Task ChangePasswordAsync(Cliente cliente, string newPassword);
 }

@@ -43,24 +43,6 @@ public class ClienteService : IClienteService
 
   }
 
-  public async Task AssignRoleToClienteAsync(Guid clienteId, Guid roleId)
-  {
-    var cliente = await _clienteRepository.GetByIdAsync(clienteId);
-    if (cliente == null)
-    {
-      throw new Exception("Cliente no encontrado.");
-    }
-
-    var rol = await _rolRepository.GetByIdAsync(roleId);
-    if (rol == null)
-    {
-      throw new Exception("Rol no encontrado.");
-    }
-
-    cliente.Roles.Add(new ClienteRol { IdCliente = clienteId, IdRol = roleId });
-    await _clienteRepository.UpdateAsync(cliente);
-  }
-
   public Task<bool> CheckPasswordAsync(Cliente cliente, string password)
   {
     return Task.FromResult(HashPassword.VerifyHash(password, cliente.PasswordHash));
@@ -70,5 +52,27 @@ public class ClienteService : IClienteService
   {
     cliente.PasswordHash = HashPassword.ComputeHash(newPassword);
     return _clienteRepository.UpdateAsync(cliente);
+  }
+
+  public async Task AssignRolesToClienteAsync(Guid clienteId, IEnumerable<Guid> roleIds)
+  {
+    var cliente = await _clienteRepository.GetByIdAsync(clienteId);
+    if (cliente == null)
+    {
+      throw new Exception("Cliente no encontrado.");
+    }
+
+    cliente.Roles.Clear();
+    foreach (var roleId in roleIds)
+    {
+      var rol = await _rolRepository.GetByIdAsync(roleId);
+      if (rol == null)
+      {
+        throw new Exception($"Rol con ID {roleId} no encontrado.");
+      }
+      cliente.Roles.Add(new ClienteRol { IdCliente = clienteId, IdRol = roleId });
+    }
+
+    await _clienteRepository.UpdateAsync(cliente);
   }
 }
