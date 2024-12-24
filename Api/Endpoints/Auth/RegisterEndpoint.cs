@@ -2,7 +2,7 @@ using System;
 
 namespace reymani_web_api.Api.Endpoints.Auth;
 
-public class RegisterEndpoint : Endpoint<RegisterRequest>
+public class RegisterEndpoint : Endpoint<RegisterRequest, RegisterResponse>
 {
   private readonly IAuthService _authService;
 
@@ -28,26 +28,24 @@ public class RegisterEndpoint : Endpoint<RegisterRequest>
         Username = "johndoe",
         Password = "Jhondoe123"
       };
+      s.ResponseExamples[200] = new RegisterResponse
+      {
+        Token = "fhusdyr723ryui23rh7891y43u1b4u12gbrfef13"
+      };
     });
   }
 
   public override async Task HandleAsync(RegisterRequest req, CancellationToken ct)
   {
-    if (await _authService.IsUsernameInUseAsync(req.Username))
+    try
     {
-      AddError(r => r.Username, "Ya ese Nombre de Usuario está en uso por otro cliente");
+      var token = await _authService.RegisterAsync(req);
+      await SendOkAsync(new RegisterResponse { Token = token }, ct);
     }
-
-    if (await _authService.IsNumeroCarnetInUseAsync(req.NumeroCarnet))
+    catch (Exception ex)
     {
-      AddError(r => r.NumeroCarnet, "Ya ese Número de Carnet está en uso por otro cliente");
+      AddError(ex.Message);
+      ThrowIfAnyErrors();
     }
-
-
-    ThrowIfAnyErrors();
-    var token = await _authService.RegisterAsync(req);
-
-    await SendOkAsync(new { token }, ct);
-
   }
 }

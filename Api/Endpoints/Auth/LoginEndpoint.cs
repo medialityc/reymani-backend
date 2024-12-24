@@ -3,7 +3,7 @@ using YamlDotNet.Core.Tokens;
 
 namespace reymani_web_api.Api.Endpoints.Auth;
 
-public class LoginEndpoint : Endpoint<LoginRequest>
+public class LoginEndpoint : Endpoint<LoginRequest, LoginResponse>
 {
   private readonly IAuthService _authService;
 
@@ -26,6 +26,10 @@ public class LoginEndpoint : Endpoint<LoginRequest>
         UsernameOrPhone = "johndoe",
         Password = "Jhondoe123"
       };
+      s.ResponseExamples[200] = new LoginResponse
+      {
+        Token = "fhusdyr723ryui23rh7891y43u1b4u12gbrfef13"
+      };
     });
   }
 
@@ -34,7 +38,7 @@ public class LoginEndpoint : Endpoint<LoginRequest>
     try
     {
       var token = await _authService.LoginAsync(req);
-      await SendOkAsync(new { token }, ct);
+      await SendOkAsync(new LoginResponse { Token = token }, ct);
     }
     catch (UnauthorizedAccessException)
     {
