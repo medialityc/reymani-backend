@@ -4,6 +4,15 @@ using reymani_web_api;
 
 var bld = WebApplication.CreateBuilder();
 bld.Services
+   .AddCors(options =>
+   {
+      options.AddPolicy("AllowAll", builder =>
+      {
+         builder.AllowAnyOrigin()
+                 .AllowAnyMethod()
+                 .AllowAnyHeader();
+      });
+   })
    .AddAuthenticationJwtBearer(s => s.SigningKey = bld.Configuration["jwtsecret"])
    .AddAuthorization()
    .AddFastEndpoints()
@@ -27,7 +36,8 @@ using (var scope = app.Services.CreateScope())
    SeedData.SeedRolPermisos(dbContext);
 }
 
-app.UseDefaultExceptionHandler()
+app.UseCors("AllowAll")
+   .UseDefaultExceptionHandler()
    .UseAuthentication()
    .UseAuthorization()
    .UseFastEndpoints()
