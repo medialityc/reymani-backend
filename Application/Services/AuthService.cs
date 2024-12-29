@@ -3,6 +3,7 @@ using FastEndpoints.Security;
 using Microsoft.EntityFrameworkCore;
 using reymani_web_api.Api.Endpoints.Auth;
 using reymani_web_api.Application.Utils;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace reymani_web_api.Application.Services;
 
@@ -78,5 +79,26 @@ public class AuthService : IAuthService
       });
 
     return jwtToken;
+  }
+
+  public async Task<Guid> GetIdClienteFromTokenAsync(string token)
+  {
+    var jwtSecret = _configuration["JwtSecret"];
+    var handler = new JwtSecurityTokenHandler();
+    var jsonToken = handler.ReadToken(token) as JwtSecurityToken;
+
+    if (jsonToken == null)
+    {
+      throw new UnauthorizedAccessException("Token inválido");
+    }
+
+    var idClienteClaim = jsonToken.Claims.FirstOrDefault(c => c.Type == "IdCliente");
+
+    if (idClienteClaim == null)
+    {
+      throw new UnauthorizedAccessException("Token inválido");
+    }
+
+    return Guid.Parse(idClienteClaim.Value);
   }
 }

@@ -11,4 +11,5 @@ public interface IClienteRepository
   Task DeleteAsync(Cliente cliente);
   Task<Cliente?> GetClienteByUsernameOrPhoneAsync(string usernameOrPhone);
   Task<string[]> GetIdRolesClienteAsync(Guid id);
+  Task<List<string>> GetPermissionsAsync(Guid clienteId);
 }

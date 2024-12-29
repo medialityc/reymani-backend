@@ -62,4 +62,17 @@ public class ClienteRepository : IClienteRepository
 
     return roles;
   }
+
+  public async Task<List<string>> GetPermissionsAsync(Guid clienteId)
+  {
+    var permisos = await _context.ClientesRoles
+             .Where(cr => cr.IdCliente == clienteId && cr.Rol != null)
+             .SelectMany(cr => cr.Rol!.Permisos)
+             .Where(rp => rp.Permiso != null)
+             .Select(rp => rp.Permiso!.Codigo)
+             .Distinct() // Evita duplicados
+             .ToListAsync();
+
+    return permisos;
+  }
 }

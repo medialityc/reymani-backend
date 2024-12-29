@@ -75,4 +75,11 @@ public class ClienteService : IClienteService
 
     await _clienteRepository.UpdateAsync(cliente);
   }
+
+  public async Task<List<string>> GetPermissionsAsync(Guid clienteId)
+  {
+    var permisos = await _clienteRepository.GetPermissionsAsync(clienteId);
+
+    return permisos;
+  }
 }
