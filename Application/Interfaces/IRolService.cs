@@ -12,4 +12,5 @@ public interface IRolService
   Task DeleteAsync(Guid id);
   Task AssignPermissionsAsync(Guid rolId, IEnumerable<Guid> permisoIds);
   Task<bool> RolNameExistsAsync(string nombre);
+  Task<Guid[]> GetIdPermisosRolAsync(Guid id);
 }
