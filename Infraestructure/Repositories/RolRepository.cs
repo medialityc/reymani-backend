@@ -80,12 +80,14 @@ namespace reymani_web_api.Infraestructure.Repositories
       return await _context.Roles.AnyAsync(r => r.Nombre.ToLower() == nombre.ToLower());
     }
 
-    public async Task<Guid[]> GetIdPermisosRolAsync(Guid id)
+    public async Task<Permiso[]> GetPermisosRolAsync(Guid id)
     {
-      var rol = await _context.Roles.Include(r => r.Permisos).FirstOrDefaultAsync(r => r.IdRol == id);
-      if (rol == null) throw new Exception("Rol no encontrado.");
+      var permisos = await _context.Roles
+          .Where(r => r.IdRol == id)
+          .SelectMany(r => r.Permisos.Select(rp => rp.Permiso!)) // Navega de Rol -> RolPermiso -> Permiso
+          .ToArrayAsync();
 
-      return rol.Permisos.Select(p => p.IdPermiso).ToArray();
+      return permisos;
     }
   }
 }

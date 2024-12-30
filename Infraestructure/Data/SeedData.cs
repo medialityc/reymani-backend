@@ -43,7 +43,8 @@ public static class SeedData
         new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Eliminar_Rol", Descripcion = "Eliminar rol" },
         new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Ver_Roles", Descripcion = "Ver roles del sistema" },
         new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Ver_Rol", Descripcion = "Ver informacion del rol" },
-        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Actualizar_Rol", Descripcion = "Actualizar rol" }
+        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Actualizar_Rol", Descripcion = "Actualizar rol" },
+        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Ver_Permisos_Rol", Descripcion = "Ver permisos de un rol" }
       );
       context.SaveChanges();
     }

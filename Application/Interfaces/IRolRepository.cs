@@ -15,6 +15,6 @@ namespace reymani_web_api.Application.Interfaces
     Task<string[]> GetCodigosPermisosRolAsync(Guid id);
     Task<bool> RolNameExistsAsync(string nombre);
 
-    Task<Guid[]> GetIdPermisosRolAsync(Guid id);
+    Task<Permiso[]> GetPermisosRolAsync(Guid id);
   }
 }

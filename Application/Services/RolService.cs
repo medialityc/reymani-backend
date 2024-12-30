@@ -51,10 +51,9 @@ namespace reymani_web_api.Application.Services
       return await _rolRepository.RolNameExistsAsync(nombre);
     }
 
-    public async Task<Guid[]> GetIdPermisosRolAsync(Guid id)
+    public Task<Permiso[]> GetPermisosRolAsync(Guid id)
     {
-      return await _rolRepository.GetIdPermisosRolAsync(id);
-
+      return _rolRepository.GetPermisosRolAsync(id);
     }
   }
 }
