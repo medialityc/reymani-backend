@@ -15,7 +15,7 @@ public class UpdateRolRequestValidator : Validator<UpdateRolRequest>
 {
   public UpdateRolRequestValidator()
   {
-    RuleFor(x => x.Rol.IdRol).NotEmpty().WithMessage("El ID del rol es requerido")
+    RuleFor(x => x.Rol.Id).NotEmpty().WithMessage("El ID del rol es requerido")
       .Must((request, idRol) => idRol == request.RolId).WithMessage("El ID del rol no coincide con el ID del rol a actualizar");
 
     RuleFor(x => x.Rol).SetValidator(new RolDtoValidator());

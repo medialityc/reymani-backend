@@ -6,6 +6,7 @@ public class CreateRolRequest
 {
   public required string Nombre { get; set; }
   public string? Descripcion { get; set; }
+  public required List<Guid> Permisos { get; set; }
 }
 
 public class CreateRolRequestValidator : Validator<CreateRolRequest>

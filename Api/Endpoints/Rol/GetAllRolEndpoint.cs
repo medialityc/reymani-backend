@@ -27,7 +27,7 @@ public sealed class GetAllRolEndpoint : EndpointWithoutRequest<GetAllRolResponse
         {
           new RolDto
           {
-            IdRol = Guid.NewGuid(),
+            Id = Guid.NewGuid(),
             Nombre = "Administrador",
             Descripcion = "Rol con todos los permisos"
           }
@@ -51,7 +51,7 @@ public sealed class GetAllRolEndpoint : EndpointWithoutRequest<GetAllRolResponse
     {
       Roles = roles.Select(r => new RolDto
       {
-        IdRol = r.IdRol,
+        Id = r.IdRol,
         Nombre = r.Nombre,
         Descripcion = r.Descripcion
       }).ToList()

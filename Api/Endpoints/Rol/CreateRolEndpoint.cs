@@ -25,7 +25,8 @@ public sealed class CreateRolEndpoint : Endpoint<CreateRolRequest>
       s.ExampleRequest = new CreateRolRequest
       {
         Nombre = "Rol de Prueba",
-        Descripcion = "Rol de Prueba"
+        Descripcion = "Rol de Prueba",
+        Permisos = new List<Guid> { Guid.NewGuid() }
       };
     });
   }
@@ -52,7 +53,7 @@ public sealed class CreateRolEndpoint : Endpoint<CreateRolRequest>
       Descripcion = req.Descripcion
     };
 
-    await _rolService.AddAsync(rol);
+    await _rolService.AddAsync(rol, req.Permisos);
 
     await SendOkAsync(rol, ct);
   }

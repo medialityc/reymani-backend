@@ -26,7 +26,7 @@ public sealed class UpdateRolEndpoint : Endpoint<UpdateRolRequest>
         RolId = Guid.NewGuid(),
         Rol = new RolDto
         {
-          IdRol = Guid.NewGuid(),
+          Id = Guid.NewGuid(),
           Nombre = "Rol de Prueba",
           Descripcion = "Rol de Prueba"
         }
@@ -50,7 +50,7 @@ public sealed class UpdateRolEndpoint : Endpoint<UpdateRolRequest>
       return;
     }
 
-    if (req.Rol.IdRol != req.RolId)
+    if (req.Rol.Id != req.RolId)
     {
       AddError(r => r.RolId, "El ID del rol no coincide con el ID de la URL");
     }

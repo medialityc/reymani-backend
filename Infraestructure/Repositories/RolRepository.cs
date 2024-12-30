@@ -22,9 +22,17 @@ namespace reymani_web_api.Infraestructure.Repositories
       return await _context.Roles.FindAsync(id);
     }
 
-    public async Task AddAsync(Rol rol)
+    public async Task AddAsync(Rol rol, IEnumerable<Guid> permisoIds)
     {
       await _context.Roles.AddAsync(rol);
+      foreach (var permisoId in permisoIds)
+      {
+        var permiso = await _context.Permisos.FindAsync(permisoId);
+        if (permiso != null)
+        {
+          rol.Permisos.Add(new RolPermiso { IdRol = rol.IdRol, IdPermiso = permisoId });
+        }
+      }
       await _context.SaveChangesAsync();
     }
 

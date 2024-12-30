@@ -29,7 +29,7 @@ namespace reymani_web_api.Api.Endpoints.Rol
         };
         s.ResponseExamples[200] = new RolDto
         {
-          IdRol = Guid.NewGuid(),
+          Id = Guid.NewGuid(),
           Nombre = "Administrador",
           Descripcion = "Rol con todos los permisos"
         };
@@ -56,7 +56,7 @@ namespace reymani_web_api.Api.Endpoints.Rol
 
       var rolDto = new RolDto
       {
-        IdRol = rol.IdRol,
+        Id = rol.IdRol,
         Nombre = rol.Nombre,
         Descripcion = rol.Descripcion
       };

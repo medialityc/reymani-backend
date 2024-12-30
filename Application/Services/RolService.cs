@@ -21,9 +21,9 @@ namespace reymani_web_api.Application.Services
       return await _rolRepository.GetByIdAsync(id);
     }
 
-    public async Task AddAsync(Rol rol)
+    public async Task AddAsync(Rol rol, IEnumerable<Guid> permisoIds)
     {
-      await _rolRepository.AddAsync(rol);
+      await _rolRepository.AddAsync(rol, permisoIds);
     }
 
     public async Task UpdateAsync(Rol rol)
