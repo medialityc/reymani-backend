@@ -9,6 +9,8 @@ public class UpdateRolRequest
   public Guid RolId { get; set; }
 
   public required RolDto Rol { get; set; }
+
+  public required List<Guid> Permisos { get; set; }
 }
 
 public class UpdateRolRequestValidator : Validator<UpdateRolRequest>
@@ -19,6 +21,8 @@ public class UpdateRolRequestValidator : Validator<UpdateRolRequest>
       .Must((request, idRol) => idRol == request.RolId).WithMessage("El ID del rol no coincide con el ID del rol a actualizar");
 
     RuleFor(x => x.Rol).SetValidator(new RolDtoValidator());
+
+    RuleFor(x => x.Permisos).NotEmpty().WithMessage("La lista de permisos es requerida");
   }
 }
 

@@ -36,10 +36,24 @@ namespace reymani_web_api.Infraestructure.Repositories
       await _context.SaveChangesAsync();
     }
 
-    public async Task UpdateAsync(Rol rol)
+    public async Task UpdateAsync(Rol rol, IEnumerable<Guid> permisoIds)
     {
-      _context.Roles.Update(rol);
-      await _context.SaveChangesAsync();
+      var existingRol = await _context.Roles.Include(r => r.Permisos).FirstOrDefaultAsync(r => r.IdRol == rol.IdRol);
+      if (existingRol != null)
+      {
+        existingRol.Nombre = rol.Nombre;
+        existingRol.Descripcion = rol.Descripcion;
+
+        // Update permissions
+        existingRol.Permisos.Clear();
+        foreach (var permisoId in permisoIds)
+        {
+          existingRol.Permisos.Add(new RolPermiso { IdRol = rol.IdRol, IdPermiso = permisoId });
+        }
+
+        _context.Roles.Update(existingRol);
+        await _context.SaveChangesAsync();
+      }
     }
 
     public async Task DeleteAsync(Rol rol)

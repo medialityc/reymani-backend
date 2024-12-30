@@ -26,10 +26,10 @@ public sealed class UpdateRolEndpoint : Endpoint<UpdateRolRequest>
         RolId = Guid.NewGuid(),
         Rol = new RolDto
         {
-          Id = Guid.NewGuid(),
           Nombre = "Rol de Prueba",
           Descripcion = "Rol de Prueba"
-        }
+        },
+        Permisos = new List<Guid> { Guid.NewGuid() }
       };
     });
   }
@@ -57,12 +57,15 @@ public sealed class UpdateRolEndpoint : Endpoint<UpdateRolRequest>
 
     ThrowIfAnyErrors();
 
-    if (rol != null)
+    var updatedRol = new Domain.Entities.Rol
     {
-      rol.Nombre = req.Rol.Nombre;
-      rol.Descripcion = req.Rol.Descripcion;
-      await _rolService.UpdateAsync(rol);
-      await SendOkAsync(ct);
-    }
+      IdRol = req.RolId,
+      Nombre = req.Rol.Nombre,
+      Descripcion = req.Rol.Descripcion
+    };
+
+    await _rolService.UpdateAsync(updatedRol, req.Permisos);
+
+    await SendOkAsync(updatedRol, ct);
   }
 }

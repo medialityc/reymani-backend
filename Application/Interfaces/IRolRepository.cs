@@ -9,7 +9,7 @@ namespace reymani_web_api.Application.Interfaces
     Task<IEnumerable<Rol>> GetAllAsync();
     Task<Rol?> GetByIdAsync(Guid id);
     Task AddAsync(Rol rol, IEnumerable<Guid> permisoIds);
-    Task UpdateAsync(Rol rol);
+    Task UpdateAsync(Rol rol, IEnumerable<Guid> permisoIds);
     Task DeleteAsync(Rol rol);
     Task AssignPermissionsAsync(Guid rolId, IEnumerable<Guid> permisoIds);
     Task<string[]> GetCodigosPermisosRolAsync(Guid id);
