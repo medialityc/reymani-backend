@@ -31,7 +31,8 @@ public class UpdateClienteEndpoint : Endpoint<UpdateClienteRequest>
           NumeroCarnet = "04022067256",
           Nombre = "John",
           Apellidos = "Doe",
-          Username = "johndoe"
+          Username = "johndoe",
+          Activo = true
         }
       };
     });

@@ -33,7 +33,8 @@ namespace reymani_web_api.Api.Endpoints.Cliente
           NumeroCarnet = "12345678",
           Nombre = "John",
           Apellidos = "Doe",
-          Username = "johndoe"
+          Username = "johndoe",
+          Activo = true
         };
         s.Responses[404] = "Cliente no encontrado";
         s.Responses[200] = "Cliente encontrado";
@@ -62,7 +63,8 @@ namespace reymani_web_api.Api.Endpoints.Cliente
         NumeroCarnet = cliente.NumeroCarnet,
         Nombre = cliente.Nombre,
         Apellidos = cliente.Apellidos,
-        Username = cliente.Username
+        Username = cliente.Username,
+        Activo = cliente.Activo
       };
 
       await SendOkAsync(clienteDto, ct);

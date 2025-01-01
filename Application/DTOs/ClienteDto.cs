@@ -11,6 +11,7 @@ public class ClienteDto
   public required string Nombre { get; set; }
   public required string Apellidos { get; set; }
   public required string Username { get; set; }
+  public bool Activo { get; set; }
 }
 
 public class ClienteDtoValidator : Validator<ClienteDto>
@@ -37,5 +38,9 @@ public class ClienteDtoValidator : Validator<ClienteDto>
       .NotEmpty().WithMessage("El Nombre de Usuario es obligatorio.")
       .Length(5, 25).WithMessage("El Nombre de Usuario debe tener entre 5 y 25 caracteres.")
       .Matches("^[a-zA-Z0-9]*$").WithMessage("El Nombre de Usuario solo puede contener letras y números.");
+
+    RuleFor(x => x.Activo)
+      .NotNull().WithMessage("El estado del cliente es obligatorio.");
+
   }
 }

@@ -31,7 +31,8 @@ public class GetAllClienteEndpoint : EndpointWithoutRequest<GetAllClienteRespons
             NumeroCarnet = "12345678",
             Nombre = "John",
             Apellidos = "Doe",
-            Username = "johndoe"
+            Username = "johndoe",
+            Activo = true
           }
         }
       };
@@ -56,7 +57,8 @@ public class GetAllClienteEndpoint : EndpointWithoutRequest<GetAllClienteRespons
         NumeroCarnet = c.NumeroCarnet,
         Nombre = c.Nombre,
         Apellidos = c.Apellidos,
-        Username = c.Username
+        Username = c.Username,
+        Activo = c.Activo
       }).ToList()
     };
   }
