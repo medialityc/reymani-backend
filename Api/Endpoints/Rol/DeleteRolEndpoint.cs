@@ -16,7 +16,7 @@ public sealed class DeleteRolEndpoint : Endpoint<DeleteRolRequest>
   public override void Configure()
   {
     Verbs(Http.DELETE);
-    Routes("/Rol/{RolId}");
+    Routes("/rol/{RolId}");
     Summary(s =>
     {
       s.Summary = "Eliminar Rol";

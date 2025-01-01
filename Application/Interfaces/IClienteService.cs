@@ -13,4 +13,5 @@ public interface IClienteService
   Task<bool> CheckPasswordAsync(Cliente cliente, string password);
   Task ChangePasswordAsync(Cliente cliente, string newPassword);
   Task<List<string>> GetPermissionsAsync(Guid clienteId);
+  Task ChangeClienteStatusAsync(Guid id, bool activo);
 }

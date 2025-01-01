@@ -82,4 +82,16 @@ public class ClienteService : IClienteService
 
     return permisos;
   }
+
+  public async Task ChangeClienteStatusAsync(Guid id, bool activo)
+  {
+    var cliente = await _clienteRepository.GetByIdAsync(id);
+    if (cliente == null)
+    {
+      throw new Exception("Cliente no encontrado.");
+    }
+
+    cliente.Activo = activo;
+    await _clienteRepository.UpdateAsync(cliente);
+  }
 }
