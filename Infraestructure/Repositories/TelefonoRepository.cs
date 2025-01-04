@@ -44,4 +44,10 @@ public class TelefonoRepository : ITelefonoRepository
       await _context.SaveChangesAsync();
     }
   }
+
+  public async Task<Telefono?> GetByNumeroAndEntidadAsync(string numero, Guid idEntidad)
+  {
+    return await _context.Set<Telefono>()
+      .FirstOrDefaultAsync(t => t.NumeroTelefono == numero && t.IdEntidad == idEntidad);
+  }
 }

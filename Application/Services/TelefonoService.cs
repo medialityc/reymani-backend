@@ -35,4 +35,9 @@ public class TelefonoService : ITelefonoService
   {
     await _telefonoRepository.DeleteAsync(id);
   }
+
+  public async Task<Telefono?> GetByNumeroAndEntidadAsync(string numero, Guid idEntidad)
+  {
+    return await _telefonoRepository.GetByNumeroAndEntidadAsync(numero, idEntidad);
+  }
 }
