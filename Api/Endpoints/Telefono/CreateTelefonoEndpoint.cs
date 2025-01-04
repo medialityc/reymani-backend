@@ -7,11 +7,15 @@ public sealed class CreateTelefonoEndpoint : Endpoint<CreateTelefonoRequest>
 {
   private readonly ITelefonoService _telefonoService;
   private readonly IAuthorizationService _authorizationService;
+  private readonly IClienteService _clienteService;
+  private readonly INegocioService _negocioService;
 
-  public CreateTelefonoEndpoint(ITelefonoService telefonoService, IAuthorizationService authorizationService)
+  public CreateTelefonoEndpoint(ITelefonoService telefonoService, IAuthorizationService authorizationService, IClienteService clienteService, INegocioService negocioService)
   {
     _telefonoService = telefonoService;
     _authorizationService = authorizationService;
+    _clienteService = clienteService;
+    _negocioService = negocioService;
   }
 
   public override void Configure()
@@ -41,10 +45,29 @@ public sealed class CreateTelefonoEndpoint : Endpoint<CreateTelefonoRequest>
       await SendUnauthorizedAsync(ct);
     }
 
-    if (!Enum.TryParse(typeof(EntitiesTypes), req.TipoEntidad, out var tipoEntidad))
+    if (!Enum.TryParse(typeof(EntitiesTypes), req.TipoEntidad, true, out var tipoEntidad))
     {
-      AddError(r => r.IdEntidad, "Tipo de entidad inválido");
+      AddError(r => r.TipoEntidad, "Tipo de entidad inválido");
     }
+
+    if (tipoEntidad != null && (EntitiesTypes)tipoEntidad == EntitiesTypes.Cliente)
+    {
+      var cliente = await _clienteService.GetClienteByIdAsync(req.IdEntidad);
+      if (cliente == null)
+      {
+        AddError(r => r.IdEntidad, "Cliente no encontrado");
+      }
+    }
+    else if (tipoEntidad != null && (EntitiesTypes)tipoEntidad == EntitiesTypes.Negocio)
+    {
+      var negocio = await _negocioService.GetByIdAsync(req.IdEntidad);
+      if (negocio == null)
+      {
+        AddError(r => r.IdEntidad, "Negocio no encontrado");
+      }
+    }
+
+    ThrowIfAnyErrors();
 
     var existingTelefono = await _telefonoService.GetByNumeroAndEntidadAsync(req.Numero, req.IdEntidad);
     if (existingTelefono != null)
