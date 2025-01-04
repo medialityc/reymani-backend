@@ -52,7 +52,8 @@ public static class SeedData
         new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Eliminar_Negocio", Descripcion = "Eliminar negocio" },
         new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Actualizar_Negocio", Descripcion = "Actualizar informacion del negocio" },
         new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Crear_Telefono", Descripcion = "Añadir nuevo telefono" },
-        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Ver_Telefonos", Descripcion = "Ver todos los telefonos del sistema" }
+        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Ver_Telefonos", Descripcion = "Ver todos los telefonos del sistema" },
+        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Ver_Telefono", Descripcion = "Ver informacion del telefono" }
       );
       context.SaveChanges();
     }
