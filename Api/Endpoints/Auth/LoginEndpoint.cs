@@ -1,6 +1,3 @@
-using System;
-using YamlDotNet.Core.Tokens;
-
 namespace reymani_web_api.Api.Endpoints.Auth;
 
 public class LoginEndpoint : Endpoint<LoginRequest, LoginResponse>
@@ -25,8 +22,8 @@ public class LoginEndpoint : Endpoint<LoginRequest, LoginResponse>
       s.Description = "Inicia sesión en la aplicación";
       s.ExampleRequest = new LoginRequest
       {
-        UsernameOrPhone = "johndoe",
-        Password = "Jhondoe123"
+        UsernameOrPhone = "rafael",
+        Password = "Rafael123"
       };
       s.ResponseExamples[200] = new LoginResponse
       {
@@ -47,7 +44,7 @@ public class LoginEndpoint : Endpoint<LoginRequest, LoginResponse>
     try
     {
       var token = await _authService.LoginAsync(req);
-      var clienteId = await _authService.GetIdClienteFromTokenAsync(token);
+      var clienteId = _authService.GetIdClienteFromToken(token);
       var permissions = await _clienteService.GetPermissionsAsync(clienteId);
       await SendOkAsync(new LoginResponse { Token = token, Permissions = permissions }, ct);
     }

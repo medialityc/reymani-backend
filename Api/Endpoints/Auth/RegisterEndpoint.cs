@@ -58,7 +58,7 @@ public class RegisterEndpoint : Endpoint<RegisterRequest, RegisterResponse>
 
     ThrowIfAnyErrors();
     var token = await _authService.RegisterAsync(req);
-    var clienteId = await _authService.GetIdClienteFromTokenAsync(token);
+    var clienteId = _authService.GetIdClienteFromToken(token);
     var permissions = await _clienteService.GetPermissionsAsync(clienteId);
     await SendOkAsync(new RegisterResponse { Token = token, Permissions = permissions }, ct);
   }

@@ -62,7 +62,7 @@ public class AuthService : IAuthService
   public async Task<string> LoginAsync(LoginRequest request)
   {
     var cliente = await _clienteRepository.GetClienteByUsernameOrPhoneAsync(request.UsernameOrPhone);
-    if (cliente == null || !HashPassword.VerifyHash(request.Password, cliente.PasswordHash))
+    if (cliente == null || !HashPassword.VerifyHash(request.Password, cliente.PasswordHash) || !cliente.Activo)
     {
       throw new UnauthorizedAccessException("Credenciales inválidas");
     }
@@ -81,7 +81,7 @@ public class AuthService : IAuthService
     return jwtToken;
   }
 
-  public async Task<Guid> GetIdClienteFromTokenAsync(string token)
+  public Guid GetIdClienteFromToken(string token)
   {
     var jwtSecret = _configuration["JwtSecret"];
     var handler = new JwtSecurityTokenHandler();

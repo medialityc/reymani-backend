@@ -1,13 +1,19 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace reymani_web_api.Domain.Entities;
 
 public class Negocio
 {
     public Guid IdNegocio { get; set; }  // PK
+
+    [Required]
+    [StringLength(100)]
     public required string Nombre { get; set; }  // Nombre del negocio
+
+    [StringLength(500)]
     public required string Descripcion { get; set; } // Descripción del negocio
-    public required string Telefono { get; set; } // Teléfono de contacto
+
     public bool EntregaDomicilio { get; set; } // Indica si el negocio ofrece entrega a domicilio
 
     public string? URLImagenPrincipal { get; set; } // URL de la imagen principal del negocio
