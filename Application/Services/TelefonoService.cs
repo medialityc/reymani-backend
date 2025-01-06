@@ -40,4 +40,9 @@ public class TelefonoService : ITelefonoService
   {
     return await _telefonoRepository.GetByNumeroAndEntidadAsync(numero, idEntidad);
   }
+
+  public async Task<IEnumerable<Telefono>> GetAllByIdEntidadAsync(Guid idEntidad)
+  {
+    return await _telefonoRepository.GetAllByIdEntidadAsync(idEntidad);
+  }
 }

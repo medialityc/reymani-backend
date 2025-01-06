@@ -10,4 +10,5 @@ public interface ITelefonoService
   Task UpdateAsync(Telefono telefono);
   Task DeleteAsync(Guid id);
   Task<Telefono?> GetByNumeroAndEntidadAsync(string numero, Guid idEntidad);
+  Task<IEnumerable<Telefono>> GetAllByIdEntidadAsync(Guid idEntidad);
 }

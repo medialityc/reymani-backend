@@ -50,4 +50,9 @@ public class TelefonoRepository : ITelefonoRepository
     return await _context.Set<Telefono>()
       .FirstOrDefaultAsync(t => t.NumeroTelefono == numero && t.IdEntidad == idEntidad);
   }
+
+  public async Task<IEnumerable<Telefono>> GetAllByIdEntidadAsync(Guid idEntidad)
+  {
+    return await _context.Set<Telefono>().Where(t => t.IdEntidad == idEntidad).ToListAsync();
+  }
 }
