@@ -57,7 +57,12 @@ public static class SeedData
         new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Eliminar_Telefono", Descripcion = "Eliminar telefono" },
         new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Actualizar_Telefono", Descripcion = "Actualizar informacion del telefono" },
         new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Ver_Telefonos_Entidad", Descripcion = "Ver telefonos de una entidad" },
-        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Crear_Direccion", Descripcion = "Añadir nueva direccion" }
+        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Crear_Direccion", Descripcion = "Añadir nueva direccion" },
+        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Ver_Direcciones", Descripcion = "Ver todas las direcciones del sistema" },
+        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Ver_Direccion", Descripcion = "Ver informacion de la direccion" },
+        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Eliminar_Direccion", Descripcion = "Eliminar direccion" },
+        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Actualizar_Direccion", Descripcion = "Actualizar informacion de la direccion" },
+        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Ver_Direcciones_Entidad", Descripcion = "Ver direcciones de una entidad" }
       );
       context.SaveChanges();
     }

@@ -40,6 +40,7 @@ public class CreateDireccionRequestValidator : Validator<CreateDireccionRequest>
       .Matches("^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$").WithMessage("La provincia solo puede contener letras y espacios.");
 
     RuleFor(x => x.Descripcion)
-      .MaximumLength(255).WithMessage("La descripción no puede tener más de 255 caracteres.");
+      .MaximumLength(255).WithMessage("La descripción no puede tener más de 255 caracteres.")
+      ;
   }
 }
