@@ -13,6 +13,7 @@ public static class DependencyInjectionExtensions
     services.AddScoped<IAuthorizationService, AuthorizationService>();
     services.AddScoped<INegocioService, NegocioService>();
     services.AddScoped<ITelefonoService, TelefonoService>();
+    services.AddScoped<IDireccionService, DireccionService>();
 
     return services;
   }
@@ -24,6 +25,7 @@ public static class DependencyInjectionExtensions
     services.AddScoped<IClienteRepository, ClienteRepository>();
     services.AddScoped<INegocioRepository, NegocioRepository>();
     services.AddScoped<ITelefonoRepository, TelefonoRepository>();
+    services.AddScoped<IDireccionRepository, DireccionRepository>();
 
     return services;
   }
