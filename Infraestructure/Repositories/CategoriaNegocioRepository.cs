@@ -37,6 +37,11 @@ namespace reymani_web_api.Infraestructure.Repositories
 
     public async Task UpdateAsync(CategoriaNegocio categoriaNegocio)
     {
+      var existingEntity = await _context.CategoriasNegocios.FindAsync(categoriaNegocio.IdCategoria);
+      if (existingEntity != null)
+      {
+        _context.Entry(existingEntity).State = EntityState.Detached;
+      }
       _context.CategoriasNegocios.Update(categoriaNegocio);
       await _context.SaveChangesAsync();
     }
