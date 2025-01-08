@@ -24,6 +24,11 @@ namespace reymani_web_api.Infraestructure.Repositories
       return await _context.CategoriasNegocios.FindAsync(id);
     }
 
+    public async Task<CategoriaNegocio?> GetByNameAsync(string nombre)
+    {
+      return await _context.CategoriasNegocios.FirstOrDefaultAsync(c => c.Nombre == nombre);
+    }
+
     public async Task AddAsync(CategoriaNegocio categoriaNegocio)
     {
       await _context.CategoriasNegocios.AddAsync(categoriaNegocio);

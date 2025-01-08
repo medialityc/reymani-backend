@@ -15,10 +15,10 @@ public class CreateRolRequestValidator : Validator<CreateRolRequest>
   {
     RuleFor(x => x.Nombre).NotEmpty().WithMessage("El nombre es requerido")
       .MaximumLength(50).WithMessage("El nombre no debe exceder los 50 caracteres")
-      .Matches("^[a-zA-Z0-9 ]*$").WithMessage("El nombre solo puede contener letras y números");
+      .Matches("^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ]*$").WithMessage("El nombre solo puede contener letras, números y espacios en blanco");
 
     RuleFor(x => x.Descripcion).MaximumLength(100).WithMessage("La descripción no debe exceder los 100 caracteres")
-      .Matches("^[a-zA-Z0-9 ]*$").WithMessage("La descripción solo puede contener letras y números")
+      .Matches("^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ]*$").WithMessage("La descripción solo puede contener letras, números y espacios en blanco")
       .When(x => x.Descripcion != null);
   }
 }
