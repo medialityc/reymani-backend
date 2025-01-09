@@ -7,4 +7,5 @@ public interface INegocioService
   Task<IEnumerable<Negocio>> GetAllAsync();
   Task UpdateAsync(Negocio negocio);
   Task DeleteAsync(Guid id);
+  Task AssignCategoriasNegocioToNegocioAsync(Guid negocioId, List<Guid> categoriaNegocioIds);
 }

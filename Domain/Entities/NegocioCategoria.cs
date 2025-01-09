@@ -1,5 +1,3 @@
-using System;
-
 namespace reymani_web_api.Domain.Entities;
 
 public class NegocioCategoria
@@ -9,9 +7,9 @@ public class NegocioCategoria
   public Guid IdCategoria { get; set; } // FK, tipo Guid
 
   // Relación de muchos a uno con Negocio
-  public Negocio Negocio { get; set; }
+  public required Negocio Negocio { get; set; }
 
   // Relación de muchos a uno con CategoriaNegocio
-  public CategoriaNegocio Categoria { get; set; }
+  public required CategoriaNegocio Categoria { get; set; }
 }
 
