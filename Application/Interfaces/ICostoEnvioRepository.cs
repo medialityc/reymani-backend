@@ -10,5 +10,6 @@ namespace reymani_web_api.Application.Interfaces
     Task AddAsync(CostoEnvio costoEnvio);
     Task UpdateAsync(CostoEnvio costoEnvio);
     Task DeleteAsync(CostoEnvio costoEnvio);
+    Task<CostoEnvio?> GetByNegocioAndDistanciaMaxKmAsync(Guid idNegocio, int distanciaMaxKm);
   }
 }

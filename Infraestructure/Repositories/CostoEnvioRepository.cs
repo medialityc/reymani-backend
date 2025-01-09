@@ -41,5 +41,11 @@ namespace reymani_web_api.Infraestructure.Repositories
       _context.CostosEnvios.Remove(costoEnvio);
       await _context.SaveChangesAsync();
     }
+
+    public async Task<CostoEnvio?> GetByNegocioAndDistanciaMaxKmAsync(Guid idNegocio, int distanciaMaxKm)
+    {
+      return await _context.CostosEnvios
+        .FirstOrDefaultAsync(ce => ce.IdNegocio == idNegocio && ce.DistanciaMaxKm == distanciaMaxKm);
+    }
   }
 }

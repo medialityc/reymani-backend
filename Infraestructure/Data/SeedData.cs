@@ -67,7 +67,13 @@ public static class SeedData
         new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Ver_Categorias_Negocio", Descripcion = "Ver todas las categorias de negocio del sistema" },
         new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Ver_Categoria_Negocio", Descripcion = "Ver informacion de la categoria de negocio" },
         new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Eliminar_Categoria_Negocio", Descripcion = "Eliminar categoria de negocio" },
-        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Actualizar_Categoria_Negocio", Descripcion = "Actualizar informacion de la categoria de negocio" }
+        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Actualizar_Categoria_Negocio", Descripcion = "Actualizar informacion de la categoria de negocio" },
+        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Crear_Costo_Envio", Descripcion = "Crear nuevo costo de envio" },
+        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Ver_Costos_Envio", Descripcion = "Ver todos los costos de envio del sistema" },
+        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Ver_Costo_Envio", Descripcion = "Ver informacion del costo de envio" },
+        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Eliminar_Costo_Envio", Descripcion = "Eliminar costo de envio" },
+        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Actualizar_Costo_Envio", Descripcion = "Actualizar informacion del costo de envio" },
+        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Ver_Costos_Envio_Negocio", Descripcion = "Ver costos de envio de un negocio" }
       );
       context.SaveChanges();
     }

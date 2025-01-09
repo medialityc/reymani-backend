@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using FastEndpoints.Security;
 using reymani_web_api;
+using System.Text.Json.Serialization;
 
 var bld = WebApplication.CreateBuilder();
 bld.Services
@@ -23,6 +24,11 @@ bld.Services.AddDbContextFactory<DBContext>(options =>
 
 bld.Services.AddDomainServices();
 bld.Services.AddRepositories();
+
+bld.Services.AddControllers().AddJsonOptions(options =>
+{
+   options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+});
 
 var app = bld.Build();
 

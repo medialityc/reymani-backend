@@ -1,4 +1,5 @@
 using System;
+using System.Text.Json.Serialization;
 
 namespace reymani_web_api.Domain.Entities;
 
@@ -10,6 +11,7 @@ public class CostoEnvio
   public decimal Costo { get; set; }      // Costo de envío para la distancia especificada
 
   // Relación de muchos a uno con Negocio
+  [JsonIgnore]
   public Negocio? Negocio { get; set; }
 }
 
