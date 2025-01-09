@@ -32,7 +32,16 @@ namespace reymani_web_api.Infraestructure.Repositories
 
     public async Task UpdateAsync(CostoEnvio costoEnvio)
     {
-      _context.CostosEnvios.Update(costoEnvio);
+      var existingEntity = await _context.CostosEnvios.FindAsync(costoEnvio.IdCostoEnvio);
+      if (existingEntity != null)
+      {
+        _context.Entry(existingEntity).CurrentValues.SetValues(costoEnvio);
+      }
+      else
+      {
+        _context.CostosEnvios.Attach(costoEnvio);
+        _context.Entry(costoEnvio).State = EntityState.Modified;
+      }
       await _context.SaveChangesAsync();
     }
 
