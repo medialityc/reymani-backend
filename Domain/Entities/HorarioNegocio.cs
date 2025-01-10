@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace reymani_web_api.Domain.Entities;
 
 public class HorarioNegocio
@@ -9,6 +11,7 @@ public class HorarioNegocio
   public TimeSpan HoraCierre { get; set; }  // Hora de cierre (Ej: 08:00 PM)
 
   // Relación de muchos a uno con Negocio
-  public required Negocio Negocio { get; set; }
+  [JsonIgnore]
+  public Negocio? Negocio { get; set; }
 }
 

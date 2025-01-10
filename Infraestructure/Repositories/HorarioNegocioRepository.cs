@@ -43,5 +43,10 @@ namespace reymani_web_api.Infraestructure.Repositories
       _context.HorariosNegocios.Remove(horarioNegocio);
       await _context.SaveChangesAsync();
     }
+
+    public async Task<bool> HorarioExistsForDiaAsync(Guid idNegocio, int dia)
+    {
+      return await _context.HorariosNegocios.AnyAsync(h => h.IdNegocio == idNegocio && h.Dia == dia);
+    }
   }
 }

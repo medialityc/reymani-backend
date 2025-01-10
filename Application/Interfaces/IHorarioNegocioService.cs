@@ -7,5 +7,6 @@ namespace reymani_web_api.Application.Interfaces
     Task AddAsync(HorarioNegocio horarioNegocio);
     Task UpdateAsync(HorarioNegocio horarioNegocio);
     Task DeleteAsync(Guid id);
+    Task<bool> HorarioExistsForDiaAsync(Guid idNegocio, int dia);
   }
 }

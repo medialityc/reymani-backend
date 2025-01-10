@@ -74,7 +74,14 @@ public static class SeedData
         new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Eliminar_Costo_Envio", Descripcion = "Eliminar costo de envio" },
         new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Actualizar_Costo_Envio", Descripcion = "Actualizar informacion del costo de envio" },
         new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Ver_Costos_Envio_Negocio", Descripcion = "Ver costos de envio de un negocio" },
-        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Asignar_Categorias_Negocio_A_Negocio", Descripcion = "Asignar categorias de negocio a un negocio" }
+        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Asignar_Categorias_Negocio_A_Negocio", Descripcion = "Asignar categorias de negocio a un negocio" },
+        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Ver_Categorias_Negocio_Negocio", Descripcion = "Ver categorias de negocio de un negocio" },
+        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Crear_Horario_Negocio", Descripcion = "Crear nuevo horario de negocio" },
+        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Ver_Horarios_Negocio", Descripcion = "Ver todos los horarios de negocio del sistema" },
+        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Ver_Horario_Negocio", Descripcion = "Ver informacion del horario de negocio" },
+        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Eliminar_Horario_Negocio", Descripcion = "Eliminar horario de negocio" },
+        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Actualizar_Horario_Negocio", Descripcion = "Actualizar informacion del horario de negocio" },
+        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Ver_Horarios_Negocio_Negocio", Descripcion = "Ver horarios de negocio de un negocio" }
       );
       context.SaveChanges();
     }
