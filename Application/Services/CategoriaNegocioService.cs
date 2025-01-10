@@ -43,5 +43,10 @@ namespace reymani_web_api.Application.Services
       }
       await _categoriaNegocioRepository.DeleteAsync(categoriaNegocio);
     }
+
+    public async Task<IEnumerable<CategoriaNegocio>> GetAllByIdNegocioAsync(Guid idNegocio)
+    {
+      return await _categoriaNegocioRepository.GetAllByIdNegocioAsync(idNegocio);
+    }
   }
 }

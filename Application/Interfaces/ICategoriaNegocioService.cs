@@ -11,5 +11,6 @@ namespace reymani_web_api.Application.Interfaces
     Task AddAsync(CategoriaNegocio categoriaNegocio);
     Task UpdateAsync(CategoriaNegocio categoriaNegocio);
     Task DeleteAsync(Guid id);
+    Task<IEnumerable<CategoriaNegocio>> GetAllByIdNegocioAsync(Guid idNegocio);
   }
 }

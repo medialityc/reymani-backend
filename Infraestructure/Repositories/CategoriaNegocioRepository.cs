@@ -51,5 +51,13 @@ namespace reymani_web_api.Infraestructure.Repositories
       _context.CategoriasNegocios.Remove(categoriaNegocio);
       await _context.SaveChangesAsync();
     }
+
+    public async Task<IEnumerable<CategoriaNegocio>> GetAllByIdNegocioAsync(Guid idNegocio)
+    {
+      return await _context.CategoriasNegocios
+        .Include(cn => cn.NegociosCategorias)
+        .Where(cn => cn.NegociosCategorias.Any(nc => nc.IdNegocio == idNegocio))
+        .ToListAsync();
+    }
   }
 }
