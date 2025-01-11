@@ -18,6 +18,7 @@ public static class DependencyInjectionExtensions
     services.AddScoped<ICostoEnvioService, CostoEnvioService>();
     services.AddScoped<IHorarioNegocioService, HorarioNegocioService>();
     services.AddScoped<INegocioClienteService, NegocioClienteService>();
+    services.AddScoped<IMetodoPagoService, MetodoPagoService>();
 
     return services;
   }
@@ -34,6 +35,7 @@ public static class DependencyInjectionExtensions
     services.AddScoped<ICostoEnvioRepository, CostoEnvioRepository>();
     services.AddScoped<IHorarioNegocioRepository, HorarioNegocioRepository>();
     services.AddScoped<INegocioClienteRepository, NegocioClienteRepository>();
+    services.AddScoped<IMetodoPagoRepository, MetodoPagoRepository>();
 
     return services;
   }

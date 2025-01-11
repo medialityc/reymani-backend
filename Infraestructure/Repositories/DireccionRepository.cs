@@ -1,10 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 using Microsoft.EntityFrameworkCore;
-using reymani_web_api.Application.Interfaces;
-using reymani_web_api.Domain.Entities;
+
 
 namespace reymani_web_api.Infraestructure.Repositories
 {
