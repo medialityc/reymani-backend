@@ -1,4 +1,3 @@
-
 namespace reymani_web_api.Application.Services;
 
 public class MetodoPagoService : IMetodoPagoService
@@ -38,5 +37,10 @@ public class MetodoPagoService : IMetodoPagoService
   public async Task<IEnumerable<MetodoPago>> GetAllByIdEntidadAsync(Guid idEntidad)
   {
     return await _metodoPagoRepository.GetAllByIdEntidadAsync(idEntidad);
+  }
+
+  public async Task<bool> ExistsByEntidadAndProveedorAsync(Guid idEntidad, string proveedor)
+  {
+    return await _metodoPagoRepository.ExistsByEntidadAndProveedorAsync(idEntidad, proveedor);
   }
 }

@@ -1,4 +1,3 @@
-
 namespace reymani_web_api.Application.Interfaces;
 
 public interface IMetodoPagoRepository
@@ -9,4 +8,5 @@ public interface IMetodoPagoRepository
   Task UpdateAsync(MetodoPago metodoPago);
   Task DeleteAsync(Guid id);
   Task<IEnumerable<MetodoPago>> GetAllByIdEntidadAsync(Guid idEntidad);
+  Task<bool> ExistsByEntidadAndProveedorAsync(Guid idEntidad, string proveedor);
 }

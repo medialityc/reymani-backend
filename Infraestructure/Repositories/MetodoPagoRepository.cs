@@ -1,4 +1,3 @@
-
 using Microsoft.EntityFrameworkCore;
 
 
@@ -49,5 +48,10 @@ public class MetodoPagoRepository : IMetodoPagoRepository
   public async Task<IEnumerable<MetodoPago>> GetAllByIdEntidadAsync(Guid idEntidad)
   {
     return await _context.Set<MetodoPago>().Where(mp => mp.IdEntidad == idEntidad).ToListAsync();
+  }
+
+  public async Task<bool> ExistsByEntidadAndProveedorAsync(Guid idEntidad, string proveedor)
+  {
+    return await _context.Set<MetodoPago>().AnyAsync(mp => mp.IdEntidad == idEntidad && mp.Proveedor == proveedor);
   }
 }

@@ -85,7 +85,13 @@ public static class SeedData
         new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Crear_Negocio_Cliente", Descripcion = "Subscribirse a un negocio" },
         new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Eliminar_Negocio_Cliente", Descripcion = "Desubscribirse de un negocio" },
         new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Ver_Clientes_Del_Negocio", Descripcion = "Ver todos los clientes de un negocio" },
-        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Ver_Negocios_Del_Cliente", Descripcion = "Ver todos los negocios de un cliente" }
+        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Ver_Negocios_Del_Cliente", Descripcion = "Ver todos los negocios de un cliente" },
+        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Crear_Metodo_Pago", Descripcion = "Crear nuevo metodo de pago" },
+        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Ver_Metodos_Pago", Descripcion = "Ver todos los metodos de pago del sistema" },
+        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Ver_Metodo_Pago", Descripcion = "Ver informacion del metodo de pago" },
+        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Eliminar_Metodo_Pago", Descripcion = "Eliminar metodo de pago" },
+        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Actualizar_Metodo_Pago", Descripcion = "Actualizar informacion del metodo de pago" },
+        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Ver_Metodos_Pago_Entidad", Descripcion = "Ver metodos de pago de una entidad" }
 
       );
       context.SaveChanges();
