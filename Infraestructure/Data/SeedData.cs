@@ -83,7 +83,9 @@ public static class SeedData
         new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Actualizar_Horario_Negocio", Descripcion = "Actualizar informacion del horario de negocio" },
         new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Ver_Horarios_Negocio_Negocio", Descripcion = "Ver horarios de negocio de un negocio" },
         new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Crear_Negocio_Cliente", Descripcion = "Subscribirse a un negocio" },
-        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Eliminar_Negocio_Cliente", Descripcion = "Desubscribirse de un negocio" }
+        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Eliminar_Negocio_Cliente", Descripcion = "Desubscribirse de un negocio" },
+        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Ver_Clientes_Del_Negocio", Descripcion = "Ver todos los clientes de un negocio" },
+        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Ver_Negocios_Del_Cliente", Descripcion = "Ver todos los negocios de un cliente" }
 
       );
       context.SaveChanges();

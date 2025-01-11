@@ -1,9 +1,3 @@
-using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using reymani_web_api.Application.Interfaces;
-using reymani_web_api.Domain.Entities;
 
 namespace reymani_web_api.Api.Endpoints.Direccion
 {
