@@ -7,6 +7,7 @@ namespace reymani_web_api.Application.Interfaces
   {
     Task AddAsync(NegocioCliente negocioCliente);
     Task DeleteAsync(Guid id);
+    Task<NegocioCliente?> GetByIdAsync(Guid id);
     Task<IEnumerable<Negocio>> GetNegociosByClienteIdAsync(Guid clienteId);
     Task<IEnumerable<Cliente>> GetClientesByNegocioIdAsync(Guid negocioId);
   }
