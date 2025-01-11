@@ -4,11 +4,15 @@ public sealed class CreateNegocioClienteEndpoint : Endpoint<CreateNegocioCliente
 {
   private readonly INegocioClienteService _negocioClienteService;
   private readonly IAuthorizationService _authorizationService;
+  private readonly INegocioService _negocioService;
+  private readonly IClienteService _clienteService;
 
-  public CreateNegocioClienteEndpoint(INegocioClienteService negocioClienteService, IAuthorizationService authorizationService)
+  public CreateNegocioClienteEndpoint(INegocioClienteService negocioClienteService, IAuthorizationService authorizationService, INegocioService negocioService, IClienteService clienteService)
   {
     _negocioClienteService = negocioClienteService;
     _authorizationService = authorizationService;
+    _negocioService = negocioService;
+    _clienteService = clienteService;
   }
 
   public override void Configure()
@@ -18,7 +22,7 @@ public sealed class CreateNegocioClienteEndpoint : Endpoint<CreateNegocioCliente
     Summary(s =>
     {
       s.Summary = "Crear Negocio-Cliente";
-      s.Description = "Crea una nueva relación entre negocio y cliente.";
+      s.Description = "Crea una nueva relación entre negocio y cliente. Es decir, subscribir cliente a un negocio dado.";
       s.ExampleRequest = new CreateNegocioClienteRequest
       {
         IdCliente = Guid.NewGuid(),
@@ -34,6 +38,18 @@ public sealed class CreateNegocioClienteEndpoint : Endpoint<CreateNegocioCliente
     if (!await _authorizationService.IsRoleAuthorizedToEndpointAsync(roleGuids, "Crear_Negocio_Cliente"))
     {
       await SendUnauthorizedAsync(ct);
+    }
+
+    var negocio = await _negocioService.GetByIdAsync(req.IdNegocio);
+    if (negocio == null)
+    {
+      AddError(req => req.IdNegocio, "Negocio no encontrado");
+    }
+
+    var cliente = await _clienteService.GetClienteByIdAsync(req.IdCliente);
+    if (cliente == null)
+    {
+      AddError(req => req.IdCliente, "Cliente no encontrado");
     }
 
     var negocioCliente = new Domain.Entities.NegocioCliente

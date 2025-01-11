@@ -18,14 +18,9 @@ namespace reymani_web_api.Application.Services
       await _negocioClienteRepository.AddAsync(negocioCliente);
     }
 
-    public async Task DeleteAsync(Guid id)
+    public async Task DeleteAsync(Guid clienteId, Guid negocioId)
     {
-      var negocioCliente = await _negocioClienteRepository.GetByIdAsync(id);
-      if (negocioCliente == null)
-      {
-        throw new Exception("NegocioCliente no encontrado.");
-      }
-      await _negocioClienteRepository.DeleteAsync(negocioCliente);
+      await _negocioClienteRepository.DeleteAsync(clienteId, negocioId);
     }
 
     public async Task<NegocioCliente?> GetByIdAsync(Guid id)
@@ -41,6 +36,11 @@ namespace reymani_web_api.Application.Services
     public async Task<IEnumerable<Cliente>> GetClientesByNegocioIdAsync(Guid negocioId)
     {
       return await _negocioClienteRepository.GetClientesByNegocioIdAsync(negocioId);
+    }
+
+    public async Task<NegocioCliente?> GetByIdClienteAndIdNegocio(Guid idCliente, Guid idNegocio)
+    {
+      return await _negocioClienteRepository.GetByIdClienteAndIdNegocio(idCliente, idNegocio);
     }
   }
 }

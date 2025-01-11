@@ -17,10 +17,15 @@ namespace reymani_web_api.Infraestructure.Repositories
       await _context.SaveChangesAsync();
     }
 
-    public async Task DeleteAsync(NegocioCliente negocioCliente)
+    public async Task DeleteAsync(Guid clienteId, Guid negocioId)
     {
-      _context.NegociosClientes.Remove(negocioCliente);
-      await _context.SaveChangesAsync();
+      var negocioCliente = await _context.NegociosClientes
+        .FirstOrDefaultAsync(nc => nc.IdCliente == clienteId && nc.IdNegocio == negocioId);
+      if (negocioCliente != null)
+      {
+        _context.NegociosClientes.Remove(negocioCliente);
+        await _context.SaveChangesAsync();
+      }
     }
 
     public async Task<NegocioCliente?> GetByIdAsync(Guid id)
@@ -47,6 +52,12 @@ namespace reymani_web_api.Infraestructure.Repositories
           .Where(nc => nc.IdNegocio == negocioId)
           .Select(nc => nc.Cliente!)
           .ToListAsync();
+    }
+
+    public async Task<NegocioCliente?> GetByIdClienteAndIdNegocio(Guid idCliente, Guid idNegocio)
+    {
+      return await _context.NegociosClientes
+        .FirstOrDefaultAsync(nc => nc.IdCliente == idCliente && nc.IdNegocio == idNegocio);
     }
   }
 }
