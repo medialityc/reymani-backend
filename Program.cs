@@ -40,6 +40,7 @@ using (var scope = app.Services.CreateScope())
    SeedData.SeedRoles(dbContext);
    SeedData.SeedPermisos(dbContext);
    SeedData.SeedRolPermisos(dbContext);
+   SeedData.SeedAdminUser(dbContext); // Add this line
 }
 
 app.UseCors("AllowAll")
@@ -49,4 +50,4 @@ app.UseCors("AllowAll")
    .UseFastEndpoints()
    .UseSwaggerGen(); //add this
 
-app.Run();
+app.Run("http://*:80");

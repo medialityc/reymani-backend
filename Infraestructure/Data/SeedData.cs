@@ -1,4 +1,5 @@
 using System;
+using reymani_web_api.Application.Utils;
 
 namespace reymani_web_api.Infraestructure.Data;
 
@@ -9,6 +10,7 @@ public static class SeedData
     SeedRoles(context);
     SeedPermisos(context);
     SeedRolPermisos(context);
+    SeedAdminUser(context);
   }
 
   public static void SeedRoles(DBContext context)
@@ -119,6 +121,41 @@ public static class SeedData
       }
 
       context.SaveChanges();
+    }
+  }
+
+  public static void SeedAdminUser(DBContext context)
+  {
+    if (!context.Clientes.Any(c => c.Username == "rafael"))
+    {
+      var adminRole = context.Roles.FirstOrDefault(r => r.Nombre == "Administrador del Sistema");
+      if (adminRole != null)
+      {
+        var adminUser = new Cliente
+        {
+          IdCliente = Guid.NewGuid(),
+          NumeroCarnet = "03032267546",
+          Nombre = "Rafael",
+          Apellidos = "Rodriguez",
+          Username = "rafael",
+          PasswordHash = HashPassword.ComputeHash("Rafael123"),
+          FechaRegistro = DateTime.UtcNow,
+          Activo = true
+        };
+
+        context.Clientes.Add(adminUser);
+        context.SaveChanges();
+
+        var clienteRol = new ClienteRol
+        {
+          IdClienteRol = Guid.NewGuid(),
+          IdCliente = adminUser.IdCliente,
+          IdRol = adminRole.IdRol
+        };
+
+        context.ClientesRoles.Add(clienteRol);
+        context.SaveChanges();
+      }
     }
   }
 }
