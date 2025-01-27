@@ -7,10 +7,6 @@ public class CreateNegocioRequest
   public required string Nombre { get; set; }
   public required string Descripcion { get; set; }
   public bool EntregaDomicilio { get; set; }
-  public string? URLImagenPrincipal { get; set; }
-  public string? URLImagenLogo { get; set; }
-  public string? URLImagenBanner { get; set; }
-
 }
 
 public class CreateNegocioRequestValidator : Validator<CreateNegocioRequest>
@@ -29,17 +25,5 @@ public class CreateNegocioRequestValidator : Validator<CreateNegocioRequest>
 
     RuleFor(x => x.EntregaDomicilio)
       .NotNull().WithMessage("El campo entrega a domicilio es obligatorio.");
-
-    RuleFor(x => x.URLImagenPrincipal)
-      .Must(uri => Uri.IsWellFormedUriString(uri, UriKind.Absolute)).WithMessage("La URL de la imagen principal no es válida.")
-      .When(x => !string.IsNullOrEmpty(x.URLImagenPrincipal));
-
-    RuleFor(x => x.URLImagenLogo)
-      .Must(uri => Uri.IsWellFormedUriString(uri, UriKind.Absolute)).WithMessage("La URL del logo no es válida.")
-      .When(x => !string.IsNullOrEmpty(x.URLImagenLogo));
-
-    RuleFor(x => x.URLImagenBanner)
-      .Must(uri => Uri.IsWellFormedUriString(uri, UriKind.Absolute)).WithMessage("La URL del banner no es válida.")
-      .When(x => !string.IsNullOrEmpty(x.URLImagenBanner));
   }
 }

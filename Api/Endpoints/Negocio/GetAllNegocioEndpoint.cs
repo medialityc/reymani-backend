@@ -30,10 +30,7 @@ public class GetAllNegocioEndpoint : EndpointWithoutRequest<GetAllNegocioRespons
             IdNegocio = Guid.NewGuid(),
             Nombre = "Negocio Ejemplo",
             Descripcion = "Descripción del negocio",
-            EntregaDomicilio = true,
-            URLImagenPrincipal = "http://example.com/imagen.jpg",
-            URLImagenLogo = "http://example.com/logo.jpg",
-            URLImagenBanner = "http://example.com/banner.jpg"
+            EntregaDomicilio = true
           }
         }
       };
@@ -57,10 +54,7 @@ public class GetAllNegocioEndpoint : EndpointWithoutRequest<GetAllNegocioRespons
         IdNegocio = n.IdNegocio,
         Nombre = n.Nombre,
         Descripcion = n.Descripcion,
-        EntregaDomicilio = n.EntregaDomicilio,
-        URLImagenPrincipal = n.URLImagenPrincipal,
-        URLImagenLogo = n.URLImagenLogo,
-        URLImagenBanner = n.URLImagenBanner
+        EntregaDomicilio = n.EntregaDomicilio
       }).ToList()
     };
   }

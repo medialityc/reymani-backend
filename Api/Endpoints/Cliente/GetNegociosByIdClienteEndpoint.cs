@@ -37,10 +37,7 @@ namespace reymani_web_api.Api.Endpoints.Cliente
               IdNegocio = Guid.NewGuid(),
               Nombre = "Negocio Ejemplo",
               Descripcion = "Descripción Ejemplo",
-              EntregaDomicilio = true,
-              URLImagenPrincipal = "http://example.com/imagen.jpg",
-              URLImagenLogo = "http://example.com/logo.jpg",
-              URLImagenBanner = "http://example.com/banner.jpg"
+              EntregaDomicilio = true
             }
           }
         };
@@ -72,10 +69,7 @@ namespace reymani_web_api.Api.Endpoints.Cliente
         IdNegocio = n.IdNegocio,
         Nombre = n.Nombre,
         Descripcion = n.Descripcion,
-        EntregaDomicilio = n.EntregaDomicilio,
-        URLImagenPrincipal = n.URLImagenPrincipal,
-        URLImagenLogo = n.URLImagenLogo,
-        URLImagenBanner = n.URLImagenBanner
+        EntregaDomicilio = n.EntregaDomicilio
       });
 
       var response = new GetNegociosByIdClienteResponse

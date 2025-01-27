@@ -23,10 +23,7 @@ public sealed class CreateNegocioEndpoint : Endpoint<CreateNegocioRequest>
       {
         Nombre = "Negocio de Prueba",
         Descripcion = "Descripción del negocio de prueba",
-        EntregaDomicilio = true,
-        URLImagenPrincipal = "http://example.com/imagen.jpg",
-        URLImagenLogo = "http://example.com/logo.jpg",
-        URLImagenBanner = "http://example.com/banner.jpg",
+        EntregaDomicilio = true
       };
     });
   }
@@ -40,15 +37,12 @@ public sealed class CreateNegocioEndpoint : Endpoint<CreateNegocioRequest>
       await SendUnauthorizedAsync(ct);
     }
 
-    var negocio = new reymani_web_api.Domain.Entities.Negocio
+    var negocio = new Domain.Entities.Negocio
     {
       IdNegocio = Guid.NewGuid(),
       Nombre = req.Nombre,
       Descripcion = req.Descripcion,
-      EntregaDomicilio = req.EntregaDomicilio,
-      URLImagenPrincipal = req.URLImagenPrincipal,
-      URLImagenLogo = req.URLImagenLogo,
-      URLImagenBanner = req.URLImagenBanner
+      EntregaDomicilio = req.EntregaDomicilio
     };
 
     await _negocioService.AddAsync(negocio);

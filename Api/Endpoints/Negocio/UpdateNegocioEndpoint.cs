@@ -30,10 +30,7 @@ public class UpdateNegocioEndpoint : Endpoint<UpdateNegocioRequest>
         {
           Nombre = "Nuevo Negocio",
           Descripcion = "Descripción del negocio",
-          EntregaDomicilio = true,
-          URLImagenPrincipal = "http://example.com/imagen-principal.jpg",
-          URLImagenLogo = "http://example.com/logo.jpg",
-          URLImagenBanner = "http://example.com/banner.jpg"
+          EntregaDomicilio = true
         }
       };
     });
@@ -67,9 +64,6 @@ public class UpdateNegocioEndpoint : Endpoint<UpdateNegocioRequest>
       negocio.Nombre = req.Negocio.Nombre;
       negocio.Descripcion = req.Negocio.Descripcion ?? negocio.Descripcion;
       negocio.EntregaDomicilio = req.Negocio.EntregaDomicilio;
-      negocio.URLImagenPrincipal = req.Negocio.URLImagenPrincipal ?? negocio.URLImagenPrincipal;
-      negocio.URLImagenLogo = req.Negocio.URLImagenLogo ?? negocio.URLImagenLogo;
-      negocio.URLImagenBanner = req.Negocio.URLImagenBanner ?? negocio.URLImagenBanner;
       await _negocioService.UpdateAsync(negocio);
       await SendOkAsync(ct);
     }

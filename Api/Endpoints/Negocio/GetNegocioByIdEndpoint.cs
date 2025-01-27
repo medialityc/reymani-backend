@@ -31,10 +31,7 @@ namespace reymani_web_api.Api.Endpoints.Negocio
           IdNegocio = Guid.NewGuid(),
           Nombre = "Negocio Ejemplo",
           Descripcion = "Descripción del negocio",
-          EntregaDomicilio = true,
-          URLImagenPrincipal = "http://example.com/imagen.jpg",
-          URLImagenLogo = "http://example.com/logo.jpg",
-          URLImagenBanner = "http://example.com/banner.jpg"
+          EntregaDomicilio = true
         };
         s.Responses[404] = "Negocio no encontrado";
         s.Responses[200] = "Negocio encontrado";
@@ -62,10 +59,7 @@ namespace reymani_web_api.Api.Endpoints.Negocio
         IdNegocio = negocio.IdNegocio,
         Nombre = negocio.Nombre,
         Descripcion = negocio.Descripcion,
-        EntregaDomicilio = negocio.EntregaDomicilio,
-        URLImagenPrincipal = negocio.URLImagenPrincipal,
-        URLImagenLogo = negocio.URLImagenLogo,
-        URLImagenBanner = negocio.URLImagenBanner
+        EntregaDomicilio = negocio.EntregaDomicilio
       };
 
       await SendOkAsync(negocioDto, ct);
