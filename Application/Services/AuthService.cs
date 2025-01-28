@@ -9,34 +9,34 @@ namespace reymani_web_api.Application.Services;
 
 public class AuthService : IAuthService
 {
-  private readonly IClienteRepository _clienteRepository;
+  private readonly IUsuarioRepository _UsuarioRepository;
   private readonly IConfiguration _configuration;
 
-  public AuthService(IClienteRepository clienteRepository, IConfiguration configuration)
+  public AuthService(IUsuarioRepository UsuarioRepository, IConfiguration configuration)
   {
-    _clienteRepository = clienteRepository;
+    _UsuarioRepository = UsuarioRepository;
     _configuration = configuration;
   }
 
   public async Task<bool> IsNumeroCarnetInUseAsync(string numeroCarnet)
   {
-    var clientes = await _clienteRepository.GetAllAsync();
-    return clientes.Any(c => c.NumeroCarnet == numeroCarnet);
+    var Usuarios = await _UsuarioRepository.GetAllAsync();
+    return Usuarios.Any(c => c.NumeroCarnet == numeroCarnet);
   }
 
   public async Task<bool> IsUsernameInUseAsync(string username)
   {
-    var clientes = await _clienteRepository.GetAllAsync();
-    return clientes.Any(c => c.Username == username);
+    var Usuarios = await _UsuarioRepository.GetAllAsync();
+    return Usuarios.Any(c => c.Username == username);
   }
 
   public async Task<string> RegisterAsync(RegisterRequest request)
   {
     var hashedPassword = HashPassword.ComputeHash(request.Password);
 
-    var cliente = new Cliente
+    var Usuario = new Usuario
     {
-      IdCliente = Guid.NewGuid(),
+      IdUsuario = Guid.NewGuid(),
       NumeroCarnet = request.NumeroCarnet,
       Nombre = request.Nombre,
       Apellidos = request.Apellidos,
@@ -46,14 +46,14 @@ public class AuthService : IAuthService
       Activo = true
     };
 
-    await _clienteRepository.AddAsync(cliente);
+    await _UsuarioRepository.AddAsync(Usuario);
     var jwtSecret = _configuration["JwtSecret"];
     var jwtToken = JwtBearer.CreateToken(
       o =>
       {
         o.SigningKey = jwtSecret;
         o.ExpireAt = DateTime.UtcNow.AddDays(1);
-        o.User.Claims.Add(("IdCliente", cliente.IdCliente.ToString()));
+        o.User.Claims.Add(("IdUsuario", Usuario.IdUsuario.ToString()));
       });
 
     return jwtToken;
@@ -61,13 +61,13 @@ public class AuthService : IAuthService
 
   public async Task<string> LoginAsync(LoginRequest request)
   {
-    var cliente = await _clienteRepository.GetClienteByUsernameOrPhoneAsync(request.UsernameOrPhone);
-    if (cliente == null || !HashPassword.VerifyHash(request.Password, cliente.PasswordHash) || !cliente.Activo)
+    var Usuario = await _UsuarioRepository.GetUsuarioByUsernameOrPhoneAsync(request.UsernameOrPhone);
+    if (Usuario == null || !HashPassword.VerifyHash(request.Password, Usuario.PasswordHash) || !Usuario.Activo)
     {
       throw new UnauthorizedAccessException("Credenciales inválidas");
     }
 
-    var rolesId = await _clienteRepository.GetIdRolesClienteAsync(cliente.IdCliente);
+    var rolesId = await _UsuarioRepository.GetIdRolesUsuarioAsync(Usuario.IdUsuario);
     var jwtSecret = _configuration["JwtSecret"];
     var jwtToken = JwtBearer.CreateToken(
       o =>
@@ -75,13 +75,13 @@ public class AuthService : IAuthService
         o.SigningKey = jwtSecret;
         o.ExpireAt = DateTime.UtcNow.AddDays(1);
         o.User.Roles.AddRange(rolesId.Where(r => r != null)!);
-        o.User.Claims.Add(("IdCliente", cliente.IdCliente.ToString()));
+        o.User.Claims.Add(("IdUsuario", Usuario.IdUsuario.ToString()));
       });
 
     return jwtToken;
   }
 
-  public Guid GetIdClienteFromToken(string token)
+  public Guid GetIdUsuarioFromToken(string token)
   {
     var jwtSecret = _configuration["JwtSecret"];
     var handler = new JwtSecurityTokenHandler();
@@ -92,13 +92,13 @@ public class AuthService : IAuthService
       throw new UnauthorizedAccessException("Token inválido");
     }
 
-    var idClienteClaim = jsonToken.Claims.FirstOrDefault(c => c.Type == "IdCliente");
+    var idUsuarioClaim = jsonToken.Claims.FirstOrDefault(c => c.Type == "IdUsuario");
 
-    if (idClienteClaim == null)
+    if (idUsuarioClaim == null)
     {
       throw new UnauthorizedAccessException("Token inválido");
     }
 
-    return Guid.Parse(idClienteClaim.Value);
+    return Guid.Parse(idUsuarioClaim.Value);
   }
 }

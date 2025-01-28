@@ -9,5 +9,5 @@ public interface IAuthService
   Task<bool> IsNumeroCarnetInUseAsync(string numeroCarnet);
   Task<string> RegisterAsync(RegisterRequest request);
   Task<string> LoginAsync(LoginRequest request);
-  Guid GetIdClienteFromToken(string token);
+  Guid GetIdUsuarioFromToken(string token);
 }

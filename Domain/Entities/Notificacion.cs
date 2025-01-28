@@ -6,8 +6,8 @@ public class Notificacion
 {
   public Guid IdNotificacion { get; set; } // PK, tipo Guid
 
-  public Guid IdCliente { get; set; } // FK a Cliente
-  public Cliente? Cliente { get; set; } // Navegación a Cliente
+  public Guid IdUsuario { get; set; } // FK a Usuario
+  public Usuario? Usuario { get; set; } // Navegación a Usuario
 
   public Guid IdPedido { get; set; } // FK a Pedido
   public Pedido? Pedido { get; set; } // Navegación a Pedido

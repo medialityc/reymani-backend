@@ -36,7 +36,7 @@ public class Negocio
     // Relación 1:N con MensajeroNegocio (un negocio puede estar asociado a varios mensajeros)
     public ICollection<MensajeroNegocio> MensajerosNegocio { get; set; } = new List<MensajeroNegocio>();
 
-    // Relación 1:N con NegocioCliente (un negocio puede tener varios clientes)
-    public ICollection<NegocioCliente> Clientes { get; set; } = new List<NegocioCliente>();
+    // Relación 1:N con NegocioUsuario (un negocio puede tener varios Usuarios)
+    public ICollection<NegocioUsuario> Usuarios { get; set; } = new List<NegocioUsuario>();
 }
 

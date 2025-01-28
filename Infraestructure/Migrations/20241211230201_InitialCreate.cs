@@ -38,10 +38,10 @@ namespace reymani_web_api.Infraestructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Clientes",
+                name: "Usuarios",
                 columns: table => new
                 {
-                    IdCliente = table.Column<Guid>(type: "uuid", nullable: false),
+                    IdUsuario = table.Column<Guid>(type: "uuid", nullable: false),
                     NumeroCarnet = table.Column<string>(type: "character varying(11)", maxLength: 11, nullable: false),
                     Nombre = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Apellidos = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
@@ -52,7 +52,7 @@ namespace reymani_web_api.Infraestructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Clientes", x => x.IdCliente);
+                    table.PrimaryKey("PK_Usuarios", x => x.IdUsuario);
                 });
 
             migrationBuilder.CreateTable(
@@ -312,24 +312,24 @@ namespace reymani_web_api.Infraestructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "NegociosClientes",
+                name: "NegociosUsuarios",
                 columns: table => new
                 {
-                    IdNegocioCliente = table.Column<Guid>(type: "uuid", nullable: false),
-                    IdCliente = table.Column<Guid>(type: "uuid", nullable: false),
+                    IdNegocioUsuario = table.Column<Guid>(type: "uuid", nullable: false),
+                    IdUsuario = table.Column<Guid>(type: "uuid", nullable: false),
                     IdNegocio = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_NegociosClientes", x => x.IdNegocioCliente);
+                    table.PrimaryKey("PK_NegociosUsuarios", x => x.IdNegocioUsuario);
                     table.ForeignKey(
-                        name: "FK_NegociosClientes_Clientes_IdCliente",
-                        column: x => x.IdCliente,
-                        principalTable: "Clientes",
-                        principalColumn: "IdCliente",
+                        name: "FK_NegociosUsuarios_Usuarios_IdUsuario",
+                        column: x => x.IdUsuario,
+                        principalTable: "Usuarios",
+                        principalColumn: "IdUsuario",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_NegociosClientes_Negocios_IdNegocio",
+                        name: "FK_NegociosUsuarios_Negocios_IdNegocio",
                         column: x => x.IdNegocio,
                         principalTable: "Negocios",
                         principalColumn: "IdNegocio",
@@ -341,7 +341,7 @@ namespace reymani_web_api.Infraestructure.Migrations
                 columns: table => new
                 {
                     IdPedido = table.Column<Guid>(type: "uuid", nullable: false),
-                    IdCliente = table.Column<Guid>(type: "uuid", nullable: false),
+                    IdUsuario = table.Column<Guid>(type: "uuid", nullable: false),
                     IdMensajero = table.Column<Guid>(type: "uuid", nullable: false),
                     IdNegocio = table.Column<Guid>(type: "uuid", nullable: false),
                     DireccionEntrega = table.Column<Guid>(type: "uuid", nullable: false),
@@ -368,10 +368,10 @@ namespace reymani_web_api.Infraestructure.Migrations
                 {
                     table.PrimaryKey("PK_Pedidos", x => x.IdPedido);
                     table.ForeignKey(
-                        name: "FK_Pedidos_Clientes_IdCliente",
-                        column: x => x.IdCliente,
-                        principalTable: "Clientes",
-                        principalColumn: "IdCliente",
+                        name: "FK_Pedidos_Usuarios_IdUsuario",
+                        column: x => x.IdUsuario,
+                        principalTable: "Usuarios",
+                        principalColumn: "IdUsuario",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Pedidos_Direcciones_DireccionIdDireccion",
@@ -433,24 +433,24 @@ namespace reymani_web_api.Infraestructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ClientesRoles",
+                name: "UsuariosRoles",
                 columns: table => new
                 {
-                    IdClienteRol = table.Column<Guid>(type: "uuid", nullable: false),
-                    IdCliente = table.Column<Guid>(type: "uuid", nullable: false),
+                    IdUsuarioRol = table.Column<Guid>(type: "uuid", nullable: false),
+                    IdUsuario = table.Column<Guid>(type: "uuid", nullable: false),
                     IdRol = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ClientesRoles", x => x.IdClienteRol);
+                    table.PrimaryKey("PK_UsuariosRoles", x => x.IdUsuarioRol);
                     table.ForeignKey(
-                        name: "FK_ClientesRoles_Clientes_IdCliente",
-                        column: x => x.IdCliente,
-                        principalTable: "Clientes",
-                        principalColumn: "IdCliente",
+                        name: "FK_UsuariosRoles_Usuarios_IdUsuario",
+                        column: x => x.IdUsuario,
+                        principalTable: "Usuarios",
+                        principalColumn: "IdUsuario",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ClientesRoles_Roles_IdRol",
+                        name: "FK_UsuariosRoles_Roles_IdRol",
                         column: x => x.IdRol,
                         principalTable: "Roles",
                         principalColumn: "IdRol",
@@ -514,7 +514,7 @@ namespace reymani_web_api.Infraestructure.Migrations
                 columns: table => new
                 {
                     IdNotificacion = table.Column<Guid>(type: "uuid", nullable: false),
-                    IdCliente = table.Column<Guid>(type: "uuid", nullable: false),
+                    IdUsuario = table.Column<Guid>(type: "uuid", nullable: false),
                     IdPedido = table.Column<Guid>(type: "uuid", nullable: false),
                     IdNegocio = table.Column<Guid>(type: "uuid", nullable: false),
                     NegocioIdNegocio = table.Column<Guid>(type: "uuid", nullable: true),
@@ -525,10 +525,10 @@ namespace reymani_web_api.Infraestructure.Migrations
                 {
                     table.PrimaryKey("PK_Notificaciones", x => x.IdNotificacion);
                     table.ForeignKey(
-                        name: "FK_Notificaciones_Clientes_IdCliente",
-                        column: x => x.IdCliente,
-                        principalTable: "Clientes",
-                        principalColumn: "IdCliente",
+                        name: "FK_Notificaciones_Usuarios_IdUsuario",
+                        column: x => x.IdUsuario,
+                        principalTable: "Usuarios",
+                        principalColumn: "IdUsuario",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Notificaciones_Negocios_NegocioIdNegocio",
@@ -604,13 +604,13 @@ namespace reymani_web_api.Infraestructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClientesRoles_IdCliente",
-                table: "ClientesRoles",
-                column: "IdCliente");
+                name: "IX_UsuariosRoles_IdUsuario",
+                table: "UsuariosRoles",
+                column: "IdUsuario");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClientesRoles_IdRol",
-                table: "ClientesRoles",
+                name: "IX_UsuariosRoles_IdRol",
+                table: "UsuariosRoles",
                 column: "IdRol");
 
             migrationBuilder.CreateIndex(
@@ -654,19 +654,19 @@ namespace reymani_web_api.Infraestructure.Migrations
                 column: "IdNegocio");
 
             migrationBuilder.CreateIndex(
-                name: "IX_NegociosClientes_IdCliente",
-                table: "NegociosClientes",
-                column: "IdCliente");
+                name: "IX_NegociosUsuarios_IdUsuario",
+                table: "NegociosUsuarios",
+                column: "IdUsuario");
 
             migrationBuilder.CreateIndex(
-                name: "IX_NegociosClientes_IdNegocio",
-                table: "NegociosClientes",
+                name: "IX_NegociosUsuarios_IdNegocio",
+                table: "NegociosUsuarios",
                 column: "IdNegocio");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Notificaciones_IdCliente",
+                name: "IX_Notificaciones_IdUsuario",
                 table: "Notificaciones",
-                column: "IdCliente");
+                column: "IdUsuario");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Notificaciones_IdPedido",
@@ -694,9 +694,9 @@ namespace reymani_web_api.Infraestructure.Migrations
                 column: "EstadoPedidoIdEstado");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Pedidos_IdCliente",
+                name: "IX_Pedidos_IdUsuario",
                 table: "Pedidos",
-                column: "IdCliente");
+                column: "IdUsuario");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Pedidos_IdEstado",
@@ -764,7 +764,7 @@ namespace reymani_web_api.Infraestructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ClientesRoles");
+                name: "UsuariosRoles");
 
             migrationBuilder.DropTable(
                 name: "CostosEnvios");
@@ -785,7 +785,7 @@ namespace reymani_web_api.Infraestructure.Migrations
                 name: "NegocioCategorias");
 
             migrationBuilder.DropTable(
-                name: "NegociosClientes");
+                name: "NegociosUsuarios");
 
             migrationBuilder.DropTable(
                 name: "Notificaciones");
@@ -824,7 +824,7 @@ namespace reymani_web_api.Infraestructure.Migrations
                 name: "Roles");
 
             migrationBuilder.DropTable(
-                name: "Clientes");
+                name: "Usuarios");
 
             migrationBuilder.DropTable(
                 name: "Direcciones");

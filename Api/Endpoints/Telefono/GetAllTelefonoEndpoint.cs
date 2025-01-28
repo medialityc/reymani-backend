@@ -25,7 +25,7 @@ public class GetAllTelefonoEndpoint : EndpointWithoutRequest<GetAllTelefonoRespo
           new Domain.Entities.Telefono
           {
             IdTelefono = Guid.NewGuid(),
-            TipoEntidad = "Cliente",
+            TipoEntidad = "Usuario",
             IdEntidad = Guid.NewGuid(),
             NumeroTelefono = "123456789",
             Descripcion = "Teléfono de ejemplo"

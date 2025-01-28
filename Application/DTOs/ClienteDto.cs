@@ -4,7 +4,7 @@ using reymani_web_api.Api.Utils;
 
 namespace reymani_web_api.Application.DTOs;
 
-public class ClienteDto
+public class UsuarioDto
 {
   public Guid Id { get; set; }
   public required string NumeroCarnet { get; set; }
@@ -14,9 +14,9 @@ public class ClienteDto
   public bool Activo { get; set; }
 }
 
-public class ClienteDtoValidator : Validator<ClienteDto>
+public class UsuarioDtoValidator : Validator<UsuarioDto>
 {
-  public ClienteDtoValidator()
+  public UsuarioDtoValidator()
   {
     RuleFor(x => x.NumeroCarnet)
       .NotEmpty().WithMessage("El Número de Carnet es obligatorio.")
@@ -40,7 +40,7 @@ public class ClienteDtoValidator : Validator<ClienteDto>
       .Matches("^[a-zA-Z0-9]*$").WithMessage("El Nombre de Usuario solo puede contener letras y números.");
 
     RuleFor(x => x.Activo)
-      .NotNull().WithMessage("El estado del cliente es obligatorio.");
+      .NotNull().WithMessage("El estado del Usuario es obligatorio.");
 
   }
 }

@@ -6,7 +6,7 @@ namespace reymani_web_api.Domain.Entities;
 public class Pedido
 {
   public Guid IdPedido { get; set; }           // PK, tipo Guid
-  public Guid IdCliente { get; set; }          // FK, tipo Guid
+  public Guid IdUsuario { get; set; }          // FK, tipo Guid
   public Guid IdMensajero { get; set; }        // FK, tipo Guid
   public Guid IdNegocio { get; set; }          // FK, tipo Guid
   public Guid DireccionEntrega { get; set; }   // FK, tipo Guid
@@ -26,8 +26,8 @@ public class Pedido
   [StringLength(255)]
   public string? DescripcionDescuento { get; set; } // Descripción del descuento
 
-  // Relación muchos a uno con Cliente
-  public Cliente? Cliente { get; set; }
+  // Relación muchos a uno con Usuario
+  public Usuario? Usuario { get; set; }
 
   // Relación muchos a uno con Mensajero
   public Mensajero? Mensajero { get; set; }

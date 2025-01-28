@@ -27,7 +27,7 @@ public class GetMetodoPagoByIdEndpoint : Endpoint<GetMetodoPagoByIdRequest, Doma
       s.ResponseExamples[200] = new Domain.Entities.MetodoPago
       {
         IdMetodoPago = Guid.NewGuid(),
-        TipoEntidad = "Cliente",
+        TipoEntidad = "Usuario",
         IdEntidad = Guid.NewGuid(),
         Proveedor = "Proveedor Ejemplo",
         FechaExpiracion = DateTime.UtcNow.AddYears(1),

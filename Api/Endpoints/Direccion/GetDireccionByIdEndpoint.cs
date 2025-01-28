@@ -29,7 +29,7 @@ public class GetDireccionByIdEndpoint : Endpoint<GetDireccionByIdRequest, Domain
       s.ResponseExamples[200] = new Domain.Entities.Direccion
       {
         IdDireccion = Guid.NewGuid(),
-        TipoEntidad = "Cliente",
+        TipoEntidad = "Usuario",
         IdEntidad = Guid.NewGuid(),
         DireccionEntidad = "Calle Falsa 123",
         Municipio = "Ciudad",

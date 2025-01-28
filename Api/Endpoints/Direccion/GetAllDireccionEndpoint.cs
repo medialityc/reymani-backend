@@ -33,7 +33,7 @@ public class GetAllDireccionEndpoint : EndpointWithoutRequest<GetAllDireccionRes
           new Domain.Entities.Direccion
           {
             IdDireccion = Guid.NewGuid(),
-            TipoEntidad = "Cliente",
+            TipoEntidad = "Usuario",
             IdEntidad = Guid.NewGuid(),
             DireccionEntidad = "Calle Falsa 123",
             Municipio = "Ciudad Ejemplo",

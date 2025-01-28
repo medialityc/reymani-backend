@@ -3,10 +3,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace reymani_web_api.Domain.Entities;
 
-public class Cliente
+public class Usuario
 {
   [Key]
-  public Guid IdCliente { get; set; }  // PK
+  public Guid IdUsuario { get; set; }  // PK
 
   [StringLength(11)]
   public required string NumeroCarnet { get; set; }
@@ -33,9 +33,9 @@ public class Cliente
   // Relación 1:N con Notificacion
   public ICollection<Notificacion> Notificaciones { get; set; } = new List<Notificacion>();
 
-  // Relación 1:N con Cliente-Rol
-  public ICollection<ClienteRol> Roles { get; set; } = new List<ClienteRol>();
+  // Relación 1:N con Usuario-Rol
+  public ICollection<UsuarioRol> Roles { get; set; } = new List<UsuarioRol>();
 
-  // Relación 1:N con Negocio_Cliente
-  public ICollection<NegocioCliente> Negocios { get; set; } = new List<NegocioCliente>();
+  // Relación 1:N con Negocio_Usuario
+  public ICollection<NegocioUsuario> Negocios { get; set; } = new List<NegocioUsuario>();
 }

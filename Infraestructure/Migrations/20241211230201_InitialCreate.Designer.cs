@@ -61,9 +61,9 @@ namespace reymani_web_api.Infraestructure.Migrations
                     b.ToTable("CategoriasProducto");
                 });
 
-            modelBuilder.Entity("reymani_web_api.Domain.Entities.Cliente", b =>
+            modelBuilder.Entity("reymani_web_api.Domain.Entities.Usuario", b =>
                 {
-                    b.Property<Guid>("IdCliente")
+                    b.Property<Guid>("IdUsuario")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
@@ -98,30 +98,30 @@ namespace reymani_web_api.Infraestructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
-                    b.HasKey("IdCliente");
+                    b.HasKey("IdUsuario");
 
-                    b.ToTable("Clientes");
+                    b.ToTable("Usuarios");
                 });
 
-            modelBuilder.Entity("reymani_web_api.Domain.Entities.ClienteRol", b =>
+            modelBuilder.Entity("reymani_web_api.Domain.Entities.UsuarioRol", b =>
                 {
-                    b.Property<Guid>("IdClienteRol")
+                    b.Property<Guid>("IdUsuarioRol")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("IdCliente")
+                    b.Property<Guid>("IdUsuario")
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("IdRol")
                         .HasColumnType("uuid");
 
-                    b.HasKey("IdClienteRol");
+                    b.HasKey("IdUsuarioRol");
 
-                    b.HasIndex("IdCliente");
+                    b.HasIndex("IdUsuario");
 
                     b.HasIndex("IdRol");
 
-                    b.ToTable("ClientesRoles");
+                    b.ToTable("UsuariosRoles");
                 });
 
             modelBuilder.Entity("reymani_web_api.Domain.Entities.CostoEnvio", b =>
@@ -436,25 +436,25 @@ namespace reymani_web_api.Infraestructure.Migrations
                     b.ToTable("NegocioCategorias");
                 });
 
-            modelBuilder.Entity("reymani_web_api.Domain.Entities.NegocioCliente", b =>
+            modelBuilder.Entity("reymani_web_api.Domain.Entities.NegocioUsuario", b =>
                 {
-                    b.Property<Guid>("IdNegocioCliente")
+                    b.Property<Guid>("IdNegocioUsuario")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("IdCliente")
+                    b.Property<Guid>("IdUsuario")
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("IdNegocio")
                         .HasColumnType("uuid");
 
-                    b.HasKey("IdNegocioCliente");
+                    b.HasKey("IdNegocioUsuario");
 
-                    b.HasIndex("IdCliente");
+                    b.HasIndex("IdUsuario");
 
                     b.HasIndex("IdNegocio");
 
-                    b.ToTable("NegociosClientes");
+                    b.ToTable("NegociosUsuarios");
                 });
 
             modelBuilder.Entity("reymani_web_api.Domain.Entities.Notificacion", b =>
@@ -466,7 +466,7 @@ namespace reymani_web_api.Infraestructure.Migrations
                     b.Property<DateTime>("FechaEnvio")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("IdCliente")
+                    b.Property<Guid>("IdUsuario")
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("IdNegocio")
@@ -483,7 +483,7 @@ namespace reymani_web_api.Infraestructure.Migrations
 
                     b.HasKey("IdNotificacion");
 
-                    b.HasIndex("IdCliente");
+                    b.HasIndex("IdUsuario");
 
                     b.HasIndex("IdPedido");
 
@@ -531,7 +531,7 @@ namespace reymani_web_api.Infraestructure.Migrations
                     b.Property<DateTime>("FechaFinalizacion")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("IdCliente")
+                    b.Property<Guid>("IdUsuario")
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("IdEstado")
@@ -573,7 +573,7 @@ namespace reymani_web_api.Infraestructure.Migrations
 
                     b.HasIndex("EstadoPedidoIdEstado");
 
-                    b.HasIndex("IdCliente");
+                    b.HasIndex("IdUsuario");
 
                     b.HasIndex("IdEstado");
 
@@ -798,21 +798,21 @@ namespace reymani_web_api.Infraestructure.Migrations
                     b.ToTable("Telefonos");
                 });
 
-            modelBuilder.Entity("reymani_web_api.Domain.Entities.ClienteRol", b =>
+            modelBuilder.Entity("reymani_web_api.Domain.Entities.UsuarioRol", b =>
                 {
-                    b.HasOne("reymani_web_api.Domain.Entities.Cliente", "Cliente")
+                    b.HasOne("reymani_web_api.Domain.Entities.Usuario", "Usuario")
                         .WithMany("Roles")
-                        .HasForeignKey("IdCliente")
+                        .HasForeignKey("IdUsuario")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("reymani_web_api.Domain.Entities.Rol", "Rol")
-                        .WithMany("Clientes")
+                        .WithMany("Usuarios")
                         .HasForeignKey("IdRol")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Cliente");
+                    b.Navigation("Usuario");
 
                     b.Navigation("Rol");
                 });
@@ -896,30 +896,30 @@ namespace reymani_web_api.Infraestructure.Migrations
                     b.Navigation("Negocio");
                 });
 
-            modelBuilder.Entity("reymani_web_api.Domain.Entities.NegocioCliente", b =>
+            modelBuilder.Entity("reymani_web_api.Domain.Entities.NegocioUsuario", b =>
                 {
-                    b.HasOne("reymani_web_api.Domain.Entities.Cliente", "Cliente")
+                    b.HasOne("reymani_web_api.Domain.Entities.Usuario", "Usuario")
                         .WithMany("Negocios")
-                        .HasForeignKey("IdCliente")
+                        .HasForeignKey("IdUsuario")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("reymani_web_api.Domain.Entities.Negocio", "Negocio")
-                        .WithMany("Clientes")
+                        .WithMany("Usuarios")
                         .HasForeignKey("IdNegocio")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Cliente");
+                    b.Navigation("Usuario");
 
                     b.Navigation("Negocio");
                 });
 
             modelBuilder.Entity("reymani_web_api.Domain.Entities.Notificacion", b =>
                 {
-                    b.HasOne("reymani_web_api.Domain.Entities.Cliente", "Cliente")
+                    b.HasOne("reymani_web_api.Domain.Entities.Usuario", "Usuario")
                         .WithMany("Notificaciones")
-                        .HasForeignKey("IdCliente")
+                        .HasForeignKey("IdUsuario")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -939,7 +939,7 @@ namespace reymani_web_api.Infraestructure.Migrations
                         .WithMany()
                         .HasForeignKey("NegocioIdNegocio");
 
-                    b.Navigation("Cliente");
+                    b.Navigation("Usuario");
 
                     b.Navigation("Negocio");
 
@@ -958,9 +958,9 @@ namespace reymani_web_api.Infraestructure.Migrations
                         .WithMany("Pedidos")
                         .HasForeignKey("EstadoPedidoIdEstado");
 
-                    b.HasOne("reymani_web_api.Domain.Entities.Cliente", "Cliente")
+                    b.HasOne("reymani_web_api.Domain.Entities.Usuario", "Usuario")
                         .WithMany("Pedidos")
-                        .HasForeignKey("IdCliente")
+                        .HasForeignKey("IdUsuario")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -982,7 +982,7 @@ namespace reymani_web_api.Infraestructure.Migrations
                         .WithMany()
                         .HasForeignKey("NegocioIdNegocio");
 
-                    b.Navigation("Cliente");
+                    b.Navigation("Usuario");
 
                     b.Navigation("Direccion");
 
@@ -1084,7 +1084,7 @@ namespace reymani_web_api.Infraestructure.Migrations
                     b.Navigation("ProductosCategorias");
                 });
 
-            modelBuilder.Entity("reymani_web_api.Domain.Entities.Cliente", b =>
+            modelBuilder.Entity("reymani_web_api.Domain.Entities.Usuario", b =>
                 {
                     b.Navigation("Negocios");
 
@@ -1113,7 +1113,7 @@ namespace reymani_web_api.Infraestructure.Migrations
 
             modelBuilder.Entity("reymani_web_api.Domain.Entities.Negocio", b =>
                 {
-                    b.Navigation("Clientes");
+                    b.Navigation("Usuarios");
 
                     b.Navigation("CostosEnvio");
 
@@ -1152,7 +1152,7 @@ namespace reymani_web_api.Infraestructure.Migrations
 
             modelBuilder.Entity("reymani_web_api.Domain.Entities.Rol", b =>
                 {
-                    b.Navigation("Clientes");
+                    b.Navigation("Usuarios");
 
                     b.Navigation("Permisos");
                 });

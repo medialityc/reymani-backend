@@ -5,68 +5,68 @@ using reymani_web_api.Domain.Enums;
 namespace reymani_web_api.Infraestructure.Repositories;
 
 
-public class ClienteRepository : IClienteRepository
+public class UsuarioRepository : IUsuarioRepository
 {
   private readonly DBContext _context;
 
-  public ClienteRepository(DBContext context)
+  public UsuarioRepository(DBContext context)
   {
     _context = context;
   }
 
-  public async Task<IEnumerable<Cliente>> GetAllAsync()
+  public async Task<IEnumerable<Usuario>> GetAllAsync()
   {
-    return await _context.Clientes.ToListAsync();
+    return await _context.Usuarios.ToListAsync();
   }
 
-  public async Task<Cliente?> GetByIdAsync(Guid id)
+  public async Task<Usuario?> GetByIdAsync(Guid id)
   {
-    return await _context.Clientes.FindAsync(id);
+    return await _context.Usuarios.FindAsync(id);
   }
 
-  public async Task AddAsync(Cliente cliente)
+  public async Task AddAsync(Usuario Usuario)
   {
-    await _context.Clientes.AddAsync(cliente);
+    await _context.Usuarios.AddAsync(Usuario);
     await _context.SaveChangesAsync();
   }
 
-  public async Task UpdateAsync(Cliente cliente)
+  public async Task UpdateAsync(Usuario Usuario)
   {
-    _context.Clientes.Update(cliente);
+    _context.Usuarios.Update(Usuario);
     await _context.SaveChangesAsync();
   }
 
-  public async Task DeleteAsync(Cliente cliente)
+  public async Task DeleteAsync(Usuario Usuario)
   {
-    _context.Clientes.Remove(cliente);
+    _context.Usuarios.Remove(Usuario);
     await _context.SaveChangesAsync();
   }
 
-  public async Task<Cliente?> GetClienteByUsernameOrPhoneAsync(string usernameOrPhone)
+  public async Task<Usuario?> GetUsuarioByUsernameOrPhoneAsync(string usernameOrPhone)
   {
-    var cliente = await _context.Clientes
+    var Usuario = await _context.Usuarios
         .FirstOrDefaultAsync(c => c.Username == usernameOrPhone ||
             _context.Telefonos.Any(t => t.NumeroTelefono == usernameOrPhone &&
-                t.IdEntidad == c.IdCliente &&
-                t.TipoEntidad == EntitiesTypes.Cliente.ToString()));
+                t.IdEntidad == c.IdUsuario &&
+                t.TipoEntidad == EntitiesTypes.Usuario.ToString()));
 
-    return cliente ?? null;
+    return Usuario ?? null;
   }
 
-  public async Task<string[]> GetIdRolesClienteAsync(Guid id)
+  public async Task<string[]> GetIdRolesUsuarioAsync(Guid id)
   {
-    var roles = await _context.Clientes
-        .Where(c => c.IdCliente == id)
-        .SelectMany(c => c.Roles.Select(cr => cr.Rol!.IdRol.ToString())) // Navega de Cliente -> ClienteRol -> Rol -> Nombre
+    var roles = await _context.Usuarios
+        .Where(c => c.IdUsuario == id)
+        .SelectMany(c => c.Roles.Select(cr => cr.Rol!.IdRol.ToString())) // Navega de Usuario -> UsuarioRol -> Rol -> Nombre
         .ToArrayAsync();
 
     return roles;
   }
 
-  public async Task<List<string>> GetPermissionsAsync(Guid clienteId)
+  public async Task<List<string>> GetPermissionsAsync(Guid UsuarioId)
   {
-    var permisos = await _context.ClientesRoles
-             .Where(cr => cr.IdCliente == clienteId && cr.Rol != null)
+    var permisos = await _context.UsuariosRoles
+             .Where(cr => cr.IdUsuario == UsuarioId && cr.Rol != null)
              .SelectMany(cr => cr.Rol!.Permisos)
              .Where(rp => rp.Permiso != null)
              .Select(rp => rp.Permiso!.Codigo)

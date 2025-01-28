@@ -3,12 +3,12 @@ namespace reymani_web_api.Api.Endpoints.Auth;
 public class LoginEndpoint : Endpoint<LoginRequest, LoginResponse>
 {
   private readonly IAuthService _authService;
-  private readonly IClienteService _clienteService;
+  private readonly IUsuarioService _UsuarioService;
 
-  public LoginEndpoint(IAuthService authService, IClienteService clienteService)
+  public LoginEndpoint(IAuthService authService, IUsuarioService UsuarioService)
   {
     _authService = authService;
-    _clienteService = clienteService;
+    _UsuarioService = UsuarioService;
   }
 
   public override void Configure()
@@ -30,10 +30,10 @@ public class LoginEndpoint : Endpoint<LoginRequest, LoginResponse>
         Token = "fhusdyr723ryui23rh7891y43u1b4u12gbrfef13",
         Permissions = new List<string>
         {
-          "Ver_Clientes",
-          "Crear_Clientes",
-          "Editar_Clientes",
-          "Eliminar_Clientes"
+          "Ver_Usuarios",
+          "Crear_Usuarios",
+          "Editar_Usuarios",
+          "Eliminar_Usuarios"
         }
       };
     });
@@ -44,8 +44,8 @@ public class LoginEndpoint : Endpoint<LoginRequest, LoginResponse>
     try
     {
       var token = await _authService.LoginAsync(req);
-      var clienteId = _authService.GetIdClienteFromToken(token);
-      var permissions = await _clienteService.GetPermissionsAsync(clienteId);
+      var UsuarioId = _authService.GetIdUsuarioFromToken(token);
+      var permissions = await _UsuarioService.GetPermissionsAsync(UsuarioId);
       await SendOkAsync(new LoginResponse { Token = token, Permissions = permissions }, ct);
     }
     catch (UnauthorizedAccessException)

@@ -30,8 +30,8 @@ public class GetPermisoByIdEndpoint : Endpoint<GetPermisoByIdRequest, PermisoDto
       s.ResponseExamples[200] = new PermisoDto
       {
         Id = Guid.NewGuid(),
-        Codigo = "Crear_Cliente",
-        Descripcion = "Permiso para crear cliente"
+        Codigo = "Crear_Usuario",
+        Descripcion = "Permiso para crear Usuario"
       };
       s.Responses[404] = "Permiso no encontrado";
       s.Responses[200] = "Permiso encontrado";

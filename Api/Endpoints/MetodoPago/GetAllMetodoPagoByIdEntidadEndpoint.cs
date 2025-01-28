@@ -29,7 +29,7 @@ public class GetAllMetodoPagoByIdEntidadEndpoint : Endpoint<GetAllMetodoPagoById
         new Domain.Entities.MetodoPago
         {
           IdMetodoPago = Guid.NewGuid(),
-          TipoEntidad = "Cliente",
+          TipoEntidad = "Usuario",
           IdEntidad = Guid.NewGuid(),
           Proveedor = "Proveedor Ejemplo",
           FechaExpiracion = DateTime.UtcNow.AddYears(1),

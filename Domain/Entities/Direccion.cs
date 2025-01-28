@@ -8,7 +8,7 @@ public class Direccion
   public Guid IdDireccion { get; set; } // PK, tipo Guid
 
   [StringLength(50)]
-  public required string TipoEntidad { get; set; } // Tipo de entidad a la que pertenece la dirección (Negocio, Cliente, etc.)
+  public required string TipoEntidad { get; set; } // Tipo de entidad a la que pertenece la dirección (Negocio, Usuario, etc.)
   public Guid IdEntidad { get; set; } // FK, tipo Guid
 
   [StringLength(255)]

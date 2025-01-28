@@ -4,43 +4,43 @@ using reymani_web_api.Domain.Entities;
 
 namespace reymani_web_api.Application.Services
 {
-  public class NegocioClienteService : INegocioClienteService
+  public class NegocioUsuarioService : INegocioUsuarioService
   {
-    private readonly INegocioClienteRepository _negocioClienteRepository;
+    private readonly INegocioUsuarioRepository _negocioUsuarioRepository;
 
-    public NegocioClienteService(INegocioClienteRepository negocioClienteRepository)
+    public NegocioUsuarioService(INegocioUsuarioRepository negocioUsuarioRepository)
     {
-      _negocioClienteRepository = negocioClienteRepository;
+      _negocioUsuarioRepository = negocioUsuarioRepository;
     }
 
-    public async Task AddAsync(NegocioCliente negocioCliente)
+    public async Task AddAsync(NegocioUsuario negocioUsuario)
     {
-      await _negocioClienteRepository.AddAsync(negocioCliente);
+      await _negocioUsuarioRepository.AddAsync(negocioUsuario);
     }
 
-    public async Task DeleteAsync(Guid clienteId, Guid negocioId)
+    public async Task DeleteAsync(Guid UsuarioId, Guid negocioId)
     {
-      await _negocioClienteRepository.DeleteAsync(clienteId, negocioId);
+      await _negocioUsuarioRepository.DeleteAsync(UsuarioId, negocioId);
     }
 
-    public async Task<NegocioCliente?> GetByIdAsync(Guid id)
+    public async Task<NegocioUsuario?> GetByIdAsync(Guid id)
     {
-      return await _negocioClienteRepository.GetByIdAsync(id);
+      return await _negocioUsuarioRepository.GetByIdAsync(id);
     }
 
-    public async Task<IEnumerable<Negocio>> GetNegociosByClienteIdAsync(Guid clienteId)
+    public async Task<IEnumerable<Negocio>> GetNegociosByUsuarioIdAsync(Guid UsuarioId)
     {
-      return await _negocioClienteRepository.GetNegociosByClienteIdAsync(clienteId);
+      return await _negocioUsuarioRepository.GetNegociosByUsuarioIdAsync(UsuarioId);
     }
 
-    public async Task<IEnumerable<Cliente>> GetClientesByNegocioIdAsync(Guid negocioId)
+    public async Task<IEnumerable<Usuario>> GetUsuariosByNegocioIdAsync(Guid negocioId)
     {
-      return await _negocioClienteRepository.GetClientesByNegocioIdAsync(negocioId);
+      return await _negocioUsuarioRepository.GetUsuariosByNegocioIdAsync(negocioId);
     }
 
-    public async Task<NegocioCliente?> GetByIdClienteAndIdNegocio(Guid idCliente, Guid idNegocio)
+    public async Task<NegocioUsuario?> GetByIdUsuarioAndIdNegocio(Guid idUsuario, Guid idNegocio)
     {
-      return await _negocioClienteRepository.GetByIdClienteAndIdNegocio(idCliente, idNegocio);
+      return await _negocioUsuarioRepository.GetByIdUsuarioAndIdNegocio(idUsuario, idNegocio);
     }
   }
 }

@@ -20,7 +20,7 @@ public static class SeedData
       context.Roles.AddRange(
         new Rol { IdRol = Guid.NewGuid(), Nombre = "Administrador del Sistema", Descripcion = "Administrador del sistema" },
         new Rol { IdRol = Guid.NewGuid(), Nombre = "Administrador del Negocio", Descripcion = "Administrador del negocio" },
-        new Rol { IdRol = Guid.NewGuid(), Nombre = "Cliente", Descripcion = "Cliente" },
+        new Rol { IdRol = Guid.NewGuid(), Nombre = "Usuario", Descripcion = "Usuario" },
         new Rol { IdRol = Guid.NewGuid(), Nombre = "Mensajero", Descripcion = "Mensajero" }
       );
       context.SaveChanges();
@@ -32,14 +32,14 @@ public static class SeedData
     if (!context.Permisos.Any())
     {
       context.Permisos.AddRange(
-        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Ver_Clientes", Descripcion = "Ver todos los clientes del sistema" },
-        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Cambiar_Contraseña", Descripcion = "Cambiar contraseña del cliente" },
-        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Eliminar_Cliente", Descripcion = "Eliminar cliente del sistema" },
-        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Ver_Cliente", Descripcion = "Ver informacion de cliente" },
-        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Actualizar_Cliente", Descripcion = "Actualizar informacion del cliente" },
+        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Ver_Usuarios", Descripcion = "Ver todos los Usuarios del sistema" },
+        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Cambiar_Contraseña", Descripcion = "Cambiar contraseña del Usuario" },
+        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Eliminar_Usuario", Descripcion = "Eliminar Usuario del sistema" },
+        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Ver_Usuario", Descripcion = "Ver informacion de Usuario" },
+        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Actualizar_Usuario", Descripcion = "Actualizar informacion del Usuario" },
         new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Ver_Permisos", Descripcion = "Ver todos los permisos del sistema" },
         new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Ver_Permiso", Descripcion = "Ver informacion del permiso" },
-        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Asignar_Roles_A_Cliente", Descripcion = "Asignar rol a los clientes del sistema" },
+        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Asignar_Roles_A_Usuario", Descripcion = "Asignar rol a los Usuarios del sistema" },
         new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Asignar_Permisos_A_Rol", Descripcion = "Asignar permisos a rol" },
         new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Crear_Rol", Descripcion = "Crear nuevo rol" },
         new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Eliminar_Rol", Descripcion = "Eliminar rol" },
@@ -47,7 +47,7 @@ public static class SeedData
         new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Ver_Rol", Descripcion = "Ver informacion del rol" },
         new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Actualizar_Rol", Descripcion = "Actualizar rol" },
         new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Ver_Permisos_Rol", Descripcion = "Ver permisos de un rol" },
-        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Cambiar_Estado_Cliente", Descripcion = "Cambiar estado del cliente" },
+        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Cambiar_Estado_Usuario", Descripcion = "Cambiar estado del Usuario" },
         new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Crear_Negocio", Descripcion = "Crear nuevo negocio" },
         new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Ver_Negocios", Descripcion = "Ver todos los negocios del sistema" },
         new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Ver_Negocio", Descripcion = "Ver informacion del negocio" },
@@ -84,10 +84,10 @@ public static class SeedData
         new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Eliminar_Horario_Negocio", Descripcion = "Eliminar horario de negocio" },
         new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Actualizar_Horario_Negocio", Descripcion = "Actualizar informacion del horario de negocio" },
         new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Ver_Horarios_Negocio_Negocio", Descripcion = "Ver horarios de negocio de un negocio" },
-        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Crear_Negocio_Cliente", Descripcion = "Subscribirse a un negocio" },
-        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Eliminar_Negocio_Cliente", Descripcion = "Desubscribirse de un negocio" },
-        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Ver_Clientes_Del_Negocio", Descripcion = "Ver todos los clientes de un negocio" },
-        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Ver_Negocios_Del_Cliente", Descripcion = "Ver todos los negocios de un cliente" },
+        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Crear_Negocio_Usuario", Descripcion = "Subscribirse a un negocio" },
+        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Eliminar_Negocio_Usuario", Descripcion = "Desubscribirse de un negocio" },
+        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Ver_Usuarios_Del_Negocio", Descripcion = "Ver todos los Usuarios de un negocio" },
+        new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Ver_Negocios_Del_Usuario", Descripcion = "Ver todos los negocios de un Usuario" },
         new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Crear_Metodo_Pago", Descripcion = "Crear nuevo metodo de pago" },
         new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Ver_Metodos_Pago", Descripcion = "Ver todos los metodos de pago del sistema" },
         new Permiso { IdPermiso = Guid.NewGuid(), Codigo = "Ver_Metodo_Pago", Descripcion = "Ver informacion del metodo de pago" },
@@ -103,21 +103,21 @@ public static class SeedData
   public static void SeedRolPermisos(DBContext context)
   {
     var adminRol = context.Roles.FirstOrDefault(r => r.Nombre == "Administrador del Sistema");
-    var clienteRol = context.Roles.FirstOrDefault(r => r.Nombre == "Cliente");
+    var UsuarioRol = context.Roles.FirstOrDefault(r => r.Nombre == "Usuario");
 
-    if (adminRol != null && clienteRol != null)
+    if (adminRol != null && UsuarioRol != null)
     {
       var permisos = context.Permisos.ToList();
-      var clientePermisos = permisos.Where(p => p.Codigo.Contains("Cliente")).ToList();
+      var UsuarioPermisos = permisos.Where(p => p.Codigo.Contains("Usuario")).ToList();
 
       foreach (var permiso in permisos)
       {
         context.RolesPermisos.Add(new RolPermiso { IdRolPermiso = Guid.NewGuid(), IdRol = adminRol.IdRol, IdPermiso = permiso.IdPermiso });
       }
 
-      foreach (var permiso in clientePermisos)
+      foreach (var permiso in UsuarioPermisos)
       {
-        context.RolesPermisos.Add(new RolPermiso { IdRolPermiso = Guid.NewGuid(), IdRol = clienteRol.IdRol, IdPermiso = permiso.IdPermiso });
+        context.RolesPermisos.Add(new RolPermiso { IdRolPermiso = Guid.NewGuid(), IdRol = UsuarioRol.IdRol, IdPermiso = permiso.IdPermiso });
       }
 
       context.SaveChanges();
@@ -126,14 +126,14 @@ public static class SeedData
 
   public static void SeedAdminUser(DBContext context)
   {
-    if (!context.Clientes.Any(c => c.Username == "rafael"))
+    if (!context.Usuarios.Any(c => c.Username == "rafael"))
     {
       var adminRole = context.Roles.FirstOrDefault(r => r.Nombre == "Administrador del Sistema");
       if (adminRole != null)
       {
-        var adminUser = new Cliente
+        var adminUser = new Usuario
         {
-          IdCliente = Guid.NewGuid(),
+          IdUsuario = Guid.NewGuid(),
           NumeroCarnet = "03032267546",
           Nombre = "Rafael",
           Apellidos = "Rodriguez",
@@ -143,17 +143,17 @@ public static class SeedData
           Activo = true
         };
 
-        context.Clientes.Add(adminUser);
+        context.Usuarios.Add(adminUser);
         context.SaveChanges();
 
-        var clienteRol = new ClienteRol
+        var UsuarioRol = new UsuarioRol
         {
-          IdClienteRol = Guid.NewGuid(),
-          IdCliente = adminUser.IdCliente,
+          IdUsuarioRol = Guid.NewGuid(),
+          IdUsuario = adminUser.IdUsuario,
           IdRol = adminRole.IdRol
         };
 
-        context.ClientesRoles.Add(clienteRol);
+        context.UsuariosRoles.Add(UsuarioRol);
         context.SaveChanges();
       }
     }

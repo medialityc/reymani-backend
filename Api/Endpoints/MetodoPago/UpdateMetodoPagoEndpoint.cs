@@ -6,15 +6,15 @@ public class UpdateMetodoPagoEndpoint : Endpoint<UpdateMetodoPagoRequest>
 {
   private readonly IMetodoPagoService _metodoPagoService;
   private readonly IAuthorizationService _authorizationService;
-  private readonly IClienteService _clienteService;
+  private readonly IUsuarioService _UsuarioService;
   private readonly INegocioService _negocioService;
 
-  public UpdateMetodoPagoEndpoint(IMetodoPagoService metodoPagoService, IAuthorizationService authorizationService, INegocioService negocioService, IClienteService clienteService)
+  public UpdateMetodoPagoEndpoint(IMetodoPagoService metodoPagoService, IAuthorizationService authorizationService, INegocioService negocioService, IUsuarioService UsuarioService)
   {
     _metodoPagoService = metodoPagoService;
     _authorizationService = authorizationService;
     _negocioService = negocioService;
-    _clienteService = clienteService;
+    _UsuarioService = UsuarioService;
   }
 
   public override void Configure()
@@ -65,12 +65,12 @@ public class UpdateMetodoPagoEndpoint : Endpoint<UpdateMetodoPagoRequest>
       AddError(r => r.TipoEntidad, "Tipo de entidad inválido");
     }
 
-    if (tipoEntidad != null && (EntitiesTypes)tipoEntidad == EntitiesTypes.Cliente)
+    if (tipoEntidad != null && (EntitiesTypes)tipoEntidad == EntitiesTypes.Usuario)
     {
-      var cliente = await _clienteService.GetClienteByIdAsync(req.IdEntidad);
-      if (cliente == null)
+      var Usuario = await _UsuarioService.GetUsuarioByIdAsync(req.IdEntidad);
+      if (Usuario == null)
       {
-        AddError(r => r.IdEntidad, "Cliente no encontrado");
+        AddError(r => r.IdEntidad, "Usuario no encontrado");
       }
     }
     else if (tipoEntidad != null && (EntitiesTypes)tipoEntidad == EntitiesTypes.Negocio)

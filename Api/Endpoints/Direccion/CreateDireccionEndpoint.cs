@@ -11,14 +11,14 @@ public sealed class CreateDireccionEndpoint : Endpoint<CreateDireccionRequest>
 {
   private readonly IDireccionService _direccionService;
   private readonly IAuthorizationService _authorizationService;
-  private readonly IClienteService _clienteService;
+  private readonly IUsuarioService _UsuarioService;
   private readonly INegocioService _negocioService;
 
-  public CreateDireccionEndpoint(IDireccionService direccionService, IAuthorizationService authorizationService, IClienteService clienteService, INegocioService negocioService)
+  public CreateDireccionEndpoint(IDireccionService direccionService, IAuthorizationService authorizationService, IUsuarioService UsuarioService, INegocioService negocioService)
   {
     _direccionService = direccionService;
     _authorizationService = authorizationService;
-    _clienteService = clienteService;
+    _UsuarioService = UsuarioService;
     _negocioService = negocioService;
   }
 
@@ -58,12 +58,12 @@ public sealed class CreateDireccionEndpoint : Endpoint<CreateDireccionRequest>
       AddError(r => r.TipoEntidad, "Tipo de entidad inválido");
     }
 
-    if (tipoEntidad != null && (EntitiesTypes)tipoEntidad == EntitiesTypes.Cliente)
+    if (tipoEntidad != null && (EntitiesTypes)tipoEntidad == EntitiesTypes.Usuario)
     {
-      var cliente = await _clienteService.GetClienteByIdAsync(req.IdEntidad);
-      if (cliente == null)
+      var Usuario = await _UsuarioService.GetUsuarioByIdAsync(req.IdEntidad);
+      if (Usuario == null)
       {
-        AddError(r => r.IdEntidad, "Cliente no encontrado");
+        AddError(r => r.IdEntidad, "Usuario no encontrado");
       }
     }
     else if (tipoEntidad != null && (EntitiesTypes)tipoEntidad == EntitiesTypes.Negocio)

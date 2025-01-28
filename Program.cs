@@ -50,4 +50,4 @@ app.UseCors("AllowAll")
    .UseFastEndpoints()
    .UseSwaggerGen(); //add this
 
-app.Run("http://*:80");
+app.Run();

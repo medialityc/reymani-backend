@@ -3,13 +3,13 @@ using reymani_web_api.Domain.Entities;
 
 namespace reymani_web_api.Application.Interfaces
 {
-  public interface INegocioClienteRepository
+  public interface INegocioUsuarioRepository
   {
-    Task AddAsync(NegocioCliente negocioCliente);
-    Task DeleteAsync(Guid clienteId, Guid negocioId);
-    Task<NegocioCliente?> GetByIdAsync(Guid id);
-    Task<IEnumerable<Negocio>> GetNegociosByClienteIdAsync(Guid clienteId);
-    Task<IEnumerable<Cliente>> GetClientesByNegocioIdAsync(Guid negocioId);
-    Task<NegocioCliente?> GetByIdClienteAndIdNegocio(Guid idCliente, Guid idNegocio);
+    Task AddAsync(NegocioUsuario negocioUsuario);
+    Task DeleteAsync(Guid UsuarioId, Guid negocioId);
+    Task<NegocioUsuario?> GetByIdAsync(Guid id);
+    Task<IEnumerable<Negocio>> GetNegociosByUsuarioIdAsync(Guid UsuarioId);
+    Task<IEnumerable<Usuario>> GetUsuariosByNegocioIdAsync(Guid negocioId);
+    Task<NegocioUsuario?> GetByIdUsuarioAndIdNegocio(Guid idUsuario, Guid idNegocio);
   }
 }

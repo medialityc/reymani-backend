@@ -7,14 +7,14 @@ public class UpdateDireccionEndpoint : Endpoint<UpdateDireccionRequest>
 {
   private readonly IDireccionService _direccionService;
   private readonly IAuthorizationService _authorizationService;
-  private readonly IClienteService _clienteService;
+  private readonly IUsuarioService _UsuarioService;
   private readonly INegocioService _negocioService;
 
-  public UpdateDireccionEndpoint(IDireccionService direccionService, IAuthorizationService authorizationService, IClienteService clienteService, INegocioService negocioService)
+  public UpdateDireccionEndpoint(IDireccionService direccionService, IAuthorizationService authorizationService, IUsuarioService UsuarioService, INegocioService negocioService)
   {
     _direccionService = direccionService;
     _authorizationService = authorizationService;
-    _clienteService = clienteService;
+    _UsuarioService = UsuarioService;
     _negocioService = negocioService;
   }
 
@@ -72,12 +72,12 @@ public class UpdateDireccionEndpoint : Endpoint<UpdateDireccionRequest>
 
     ThrowIfAnyErrors();
 
-    if (tipoEntidad != null && (EntitiesTypes)tipoEntidad == EntitiesTypes.Cliente)
+    if (tipoEntidad != null && (EntitiesTypes)tipoEntidad == EntitiesTypes.Usuario)
     {
-      var cliente = await _clienteService.GetClienteByIdAsync(req.Direccion.IdEntidad);
-      if (cliente == null)
+      var Usuario = await _UsuarioService.GetUsuarioByIdAsync(req.Direccion.IdEntidad);
+      if (Usuario == null)
       {
-        AddError(r => r.Direccion.IdEntidad, "Cliente no encontrado");
+        AddError(r => r.Direccion.IdEntidad, "Usuario no encontrado");
       }
     }
     else if (tipoEntidad != null && (EntitiesTypes)tipoEntidad == EntitiesTypes.Negocio)

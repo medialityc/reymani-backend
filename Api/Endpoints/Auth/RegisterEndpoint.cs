@@ -5,12 +5,12 @@ namespace reymani_web_api.Api.Endpoints.Auth;
 public class RegisterEndpoint : Endpoint<RegisterRequest, RegisterResponse>
 {
   private readonly IAuthService _authService;
-  private readonly IClienteService _clienteService;
+  private readonly IUsuarioService _UsuarioService;
 
-  public RegisterEndpoint(IAuthService authService, IClienteService clienteService)
+  public RegisterEndpoint(IAuthService authService, IUsuarioService UsuarioService)
   {
     _authService = authService;
-    _clienteService = clienteService;
+    _UsuarioService = UsuarioService;
   }
 
   public override void Configure()
@@ -20,8 +20,8 @@ public class RegisterEndpoint : Endpoint<RegisterRequest, RegisterResponse>
     AllowAnonymous();
     Summary(s =>
     {
-      s.Summary = "Registrar Cliente";
-      s.Description = "Registra un nuevo cliente en la aplicación";
+      s.Summary = "Registrar Usuario";
+      s.Description = "Registra un nuevo Usuario en la aplicación";
       s.ExampleRequest = new RegisterRequest
       {
         NumeroCarnet = "04112086258",
@@ -35,10 +35,10 @@ public class RegisterEndpoint : Endpoint<RegisterRequest, RegisterResponse>
         Token = "fhusdyr723ryui23rh7891y43u1b4u12gbrfef13",
         Permissions = new List<string>
         {
-          "Ver_Clientes",
-          "Crear_Clientes",
-          "Editar_Clientes",
-          "Eliminar_Clientes"
+          "Ver_Usuarios",
+          "Crear_Usuarios",
+          "Editar_Usuarios",
+          "Eliminar_Usuarios"
       }
       };
     });
@@ -58,8 +58,8 @@ public class RegisterEndpoint : Endpoint<RegisterRequest, RegisterResponse>
 
     ThrowIfAnyErrors();
     var token = await _authService.RegisterAsync(req);
-    var clienteId = _authService.GetIdClienteFromToken(token);
-    var permissions = await _clienteService.GetPermissionsAsync(clienteId);
+    var UsuarioId = _authService.GetIdUsuarioFromToken(token);
+    var permissions = await _UsuarioService.GetPermissionsAsync(UsuarioId);
     await SendOkAsync(new RegisterResponse { Token = token, Permissions = permissions }, ct);
   }
 }

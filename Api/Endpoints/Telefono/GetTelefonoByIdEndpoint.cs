@@ -31,7 +31,7 @@ namespace reymani_web_api.Api.Endpoints.Telefono
           IdTelefono = Guid.NewGuid(),
           NumeroTelefono = "123456789",
           IdEntidad = Guid.NewGuid(),
-          TipoEntidad = "Cliente",
+          TipoEntidad = "Usuario",
           Descripcion = "Teléfono de ejemplo"
         };
         s.Responses[404] = "Teléfono no encontrado";

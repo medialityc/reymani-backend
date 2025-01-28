@@ -2,62 +2,62 @@ using Microsoft.EntityFrameworkCore;
 
 namespace reymani_web_api.Infraestructure.Repositories
 {
-  public class NegocioClienteRepository : INegocioClienteRepository
+  public class NegocioUsuarioRepository : INegocioUsuarioRepository
   {
     private readonly DBContext _context;
 
-    public NegocioClienteRepository(DBContext context)
+    public NegocioUsuarioRepository(DBContext context)
     {
       _context = context;
     }
 
-    public async Task AddAsync(NegocioCliente negocioCliente)
+    public async Task AddAsync(NegocioUsuario negocioUsuario)
     {
-      await _context.NegociosClientes.AddAsync(negocioCliente);
+      await _context.NegociosUsuarios.AddAsync(negocioUsuario);
       await _context.SaveChangesAsync();
     }
 
-    public async Task DeleteAsync(Guid clienteId, Guid negocioId)
+    public async Task DeleteAsync(Guid UsuarioId, Guid negocioId)
     {
-      var negocioCliente = await _context.NegociosClientes
-        .FirstOrDefaultAsync(nc => nc.IdCliente == clienteId && nc.IdNegocio == negocioId);
-      if (negocioCliente != null)
+      var negocioUsuario = await _context.NegociosUsuarios
+        .FirstOrDefaultAsync(nc => nc.IdUsuario == UsuarioId && nc.IdNegocio == negocioId);
+      if (negocioUsuario != null)
       {
-        _context.NegociosClientes.Remove(negocioCliente);
+        _context.NegociosUsuarios.Remove(negocioUsuario);
         await _context.SaveChangesAsync();
       }
     }
 
-    public async Task<NegocioCliente?> GetByIdAsync(Guid id)
+    public async Task<NegocioUsuario?> GetByIdAsync(Guid id)
     {
-      return await _context.NegociosClientes.FindAsync(id);
+      return await _context.NegociosUsuarios.FindAsync(id);
     }
 
-    public async Task<IEnumerable<NegocioCliente>> GetAllAsync()
+    public async Task<IEnumerable<NegocioUsuario>> GetAllAsync()
     {
-      return await _context.NegociosClientes.ToListAsync();
+      return await _context.NegociosUsuarios.ToListAsync();
     }
 
-    public async Task<IEnumerable<Negocio>> GetNegociosByClienteIdAsync(Guid clienteId)
+    public async Task<IEnumerable<Negocio>> GetNegociosByUsuarioIdAsync(Guid UsuarioId)
     {
-      return await _context.NegociosClientes
-          .Where(nc => nc.IdCliente == clienteId)
+      return await _context.NegociosUsuarios
+          .Where(nc => nc.IdUsuario == UsuarioId)
           .Select(nc => nc.Negocio!)
           .ToListAsync();
     }
 
-    public async Task<IEnumerable<Cliente>> GetClientesByNegocioIdAsync(Guid negocioId)
+    public async Task<IEnumerable<Usuario>> GetUsuariosByNegocioIdAsync(Guid negocioId)
     {
-      return await _context.NegociosClientes
+      return await _context.NegociosUsuarios
           .Where(nc => nc.IdNegocio == negocioId)
-          .Select(nc => nc.Cliente!)
+          .Select(nc => nc.Usuario!)
           .ToListAsync();
     }
 
-    public async Task<NegocioCliente?> GetByIdClienteAndIdNegocio(Guid idCliente, Guid idNegocio)
+    public async Task<NegocioUsuario?> GetByIdUsuarioAndIdNegocio(Guid idUsuario, Guid idNegocio)
     {
-      return await _context.NegociosClientes
-        .FirstOrDefaultAsync(nc => nc.IdCliente == idCliente && nc.IdNegocio == idNegocio);
+      return await _context.NegociosUsuarios
+        .FirstOrDefaultAsync(nc => nc.IdUsuario == idUsuario && nc.IdNegocio == idNegocio);
     }
   }
 }

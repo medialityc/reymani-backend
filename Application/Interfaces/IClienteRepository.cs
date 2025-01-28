@@ -2,14 +2,14 @@ using System;
 
 namespace reymani_web_api.Application.Interfaces;
 
-public interface IClienteRepository
+public interface IUsuarioRepository
 {
-  Task<IEnumerable<Cliente>> GetAllAsync();
-  Task<Cliente?> GetByIdAsync(Guid id);
-  Task AddAsync(Cliente cliente);
-  Task UpdateAsync(Cliente cliente);
-  Task DeleteAsync(Cliente cliente);
-  Task<Cliente?> GetClienteByUsernameOrPhoneAsync(string usernameOrPhone);
-  Task<string[]> GetIdRolesClienteAsync(Guid id);
-  Task<List<string>> GetPermissionsAsync(Guid clienteId);
+  Task<IEnumerable<Usuario>> GetAllAsync();
+  Task<Usuario?> GetByIdAsync(Guid id);
+  Task AddAsync(Usuario Usuario);
+  Task UpdateAsync(Usuario Usuario);
+  Task DeleteAsync(Usuario Usuario);
+  Task<Usuario?> GetUsuarioByUsernameOrPhoneAsync(string usernameOrPhone);
+  Task<string[]> GetIdRolesUsuarioAsync(Guid id);
+  Task<List<string>> GetPermissionsAsync(Guid UsuarioId);
 }

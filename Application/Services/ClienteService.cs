@@ -2,65 +2,65 @@ using reymani_web_api.Application.Utils;
 
 namespace reymani_web_api.Application.Services;
 
-public class ClienteService : IClienteService
+public class UsuarioService : IUsuarioService
 {
-  private readonly IClienteRepository _clienteRepository;
+  private readonly IUsuarioRepository _UsuarioRepository;
   private readonly IRolRepository _rolRepository;
 
-  public ClienteService(IClienteRepository clienteRepository, IRolRepository rolRepository)
+  public UsuarioService(IUsuarioRepository UsuarioRepository, IRolRepository rolRepository)
   {
-    _clienteRepository = clienteRepository;
+    _UsuarioRepository = UsuarioRepository;
     _rolRepository = rolRepository;
   }
 
-  public async Task<IEnumerable<Cliente>> GetAllClientesAsync()
+  public async Task<IEnumerable<Usuario>> GetAllUsuariosAsync()
   {
-    return await _clienteRepository.GetAllAsync();
+    return await _UsuarioRepository.GetAllAsync();
   }
 
-  public async Task<Cliente?> GetClienteByIdAsync(Guid id)
+  public async Task<Usuario?> GetUsuarioByIdAsync(Guid id)
   {
-    return await _clienteRepository.GetByIdAsync(id);
+    return await _UsuarioRepository.GetByIdAsync(id);
   }
 
-  public async Task UpdateClienteAsync(Cliente cliente)
+  public async Task UpdateUsuarioAsync(Usuario Usuario)
   {
-    await _clienteRepository.UpdateAsync(cliente);
+    await _UsuarioRepository.UpdateAsync(Usuario);
   }
 
-  public async Task DeleteClienteAsync(Guid id)
+  public async Task DeleteUsuarioAsync(Guid id)
   {
-    var cliente = await _clienteRepository.GetByIdAsync(id);
+    var Usuario = await _UsuarioRepository.GetByIdAsync(id);
 
-    if (cliente == null)
+    if (Usuario == null)
     {
-      throw new Exception("Cliente no encontrado.");
+      throw new Exception("Usuario no encontrado.");
     }
 
-    await _clienteRepository.DeleteAsync(cliente);
+    await _UsuarioRepository.DeleteAsync(Usuario);
 
   }
 
-  public Task<bool> CheckPasswordAsync(Cliente cliente, string password)
+  public Task<bool> CheckPasswordAsync(Usuario Usuario, string password)
   {
-    return Task.FromResult(HashPassword.VerifyHash(password, cliente.PasswordHash));
+    return Task.FromResult(HashPassword.VerifyHash(password, Usuario.PasswordHash));
   }
 
-  public Task ChangePasswordAsync(Cliente cliente, string newPassword)
+  public Task ChangePasswordAsync(Usuario Usuario, string newPassword)
   {
-    cliente.PasswordHash = HashPassword.ComputeHash(newPassword);
-    return _clienteRepository.UpdateAsync(cliente);
+    Usuario.PasswordHash = HashPassword.ComputeHash(newPassword);
+    return _UsuarioRepository.UpdateAsync(Usuario);
   }
 
-  public async Task AssignRolesToClienteAsync(Guid clienteId, IEnumerable<Guid> roleIds)
+  public async Task AssignRolesToUsuarioAsync(Guid UsuarioId, IEnumerable<Guid> roleIds)
   {
-    var cliente = await _clienteRepository.GetByIdAsync(clienteId);
-    if (cliente == null)
+    var Usuario = await _UsuarioRepository.GetByIdAsync(UsuarioId);
+    if (Usuario == null)
     {
-      throw new Exception("Cliente no encontrado.");
+      throw new Exception("Usuario no encontrado.");
     }
 
-    cliente.Roles.Clear();
+    Usuario.Roles.Clear();
     foreach (var roleId in roleIds)
     {
       var rol = await _rolRepository.GetByIdAsync(roleId);
@@ -68,28 +68,28 @@ public class ClienteService : IClienteService
       {
         throw new Exception($"Rol con ID {roleId} no encontrado.");
       }
-      cliente.Roles.Add(new ClienteRol { IdCliente = clienteId, IdRol = roleId });
+      Usuario.Roles.Add(new UsuarioRol { IdUsuario = UsuarioId, IdRol = roleId });
     }
 
-    await _clienteRepository.UpdateAsync(cliente);
+    await _UsuarioRepository.UpdateAsync(Usuario);
   }
 
-  public async Task<List<string>> GetPermissionsAsync(Guid clienteId)
+  public async Task<List<string>> GetPermissionsAsync(Guid UsuarioId)
   {
-    var permisos = await _clienteRepository.GetPermissionsAsync(clienteId);
+    var permisos = await _UsuarioRepository.GetPermissionsAsync(UsuarioId);
 
     return permisos;
   }
 
-  public async Task ChangeClienteStatusAsync(Guid id, bool activo)
+  public async Task ChangeUsuarioStatusAsync(Guid id, bool activo)
   {
-    var cliente = await _clienteRepository.GetByIdAsync(id);
-    if (cliente == null)
+    var Usuario = await _UsuarioRepository.GetByIdAsync(id);
+    if (Usuario == null)
     {
-      throw new Exception("Cliente no encontrado.");
+      throw new Exception("Usuario no encontrado.");
     }
 
-    cliente.Activo = activo;
-    await _clienteRepository.UpdateAsync(cliente);
+    Usuario.Activo = activo;
+    await _UsuarioRepository.UpdateAsync(Usuario);
   }
 }
