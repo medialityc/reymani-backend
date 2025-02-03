@@ -1,21 +1,23 @@
-# Etapa de construcción (build)
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-WORKDIR /src
-
-# Copiar y restaurar dependencias
-COPY *.csproj .
-RUN dotnet restore
-
-# Copiar todo el código y compilar
-COPY . .
-RUN dotnet publish -c Release -o /app
-
-# Etapa final (runtime)
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+USER $APP_UID
 WORKDIR /app
-COPY --from=build /app .
-ENV ASPNETCORE_ENVIRONMENT=Development
+EXPOSE 8080
+EXPOSE 8081
 
-# Puerto expuesto y comando de inicio
-EXPOSE 80
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+ARG BUILD_CONFIGURATION=Release
+WORKDIR /src
+COPY ["reymani-web-api.csproj", "./"]
+RUN dotnet restore "reymani-web-api.csproj"
+COPY . .
+WORKDIR "/src/"
+RUN dotnet build "reymani-web-api.csproj" -c $BUILD_CONFIGURATION -o /app/build
+
+FROM build AS publish
+ARG BUILD_CONFIGURATION=Release
+RUN dotnet publish "reymani-web-api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "reymani-web-api.dll"]
