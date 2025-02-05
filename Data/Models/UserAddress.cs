@@ -12,8 +12,8 @@ namespace ReymaniWebApi.Data.Models
     public required string Name { get; set; }
     public required string? Notes { get; set; }
     public required string Address { get; set; }
-    public int MunicipalityId { get; set; }
-    public required Municipality Municipality { get; set; }
+    public required int MunicipalityId { get; set; }
+    public Municipality? Municipality { get; set; }
     public required bool IsActive { get; set; }
   }
 }

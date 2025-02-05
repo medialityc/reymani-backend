@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using reymani_web_api.Data;
@@ -12,9 +13,11 @@ using reymani_web_api.Data;
 namespace reymani_web_api.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250205230538_FixedTypoInOrderEntity")]
+    partial class FixedTypoInOrderEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -139,14 +142,11 @@ namespace reymani_web_api.Data.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CourierId")
+                    b.Property<int?>("CourierId")
                         .HasColumnType("integer");
 
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("CustomerAddressId")
-                        .HasColumnType("integer");
 
                     b.Property<int>("CustomerId")
                         .HasColumnType("integer");
@@ -166,13 +166,16 @@ namespace reymani_web_api.Data.Migrations
                     b.Property<DateTimeOffset>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<int>("UserAddressId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CourierId");
 
-                    b.HasIndex("CustomerAddressId");
-
                     b.HasIndex("CustomerId");
+
+                    b.HasIndex("UserAddressId");
 
                     b.ToTable("Orders");
                 });
@@ -624,15 +627,7 @@ namespace reymani_web_api.Data.Migrations
                 {
                     b.HasOne("ReymaniWebApi.Data.Models.User", "Courier")
                         .WithMany()
-                        .HasForeignKey("CourierId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ReymaniWebApi.Data.Models.UserAddress", "CustomerAddress")
-                        .WithMany()
-                        .HasForeignKey("CustomerAddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CourierId");
 
                     b.HasOne("ReymaniWebApi.Data.Models.User", "Customer")
                         .WithMany()
@@ -640,11 +635,17 @@ namespace reymani_web_api.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("ReymaniWebApi.Data.Models.UserAddress", "UserAddress")
+                        .WithMany()
+                        .HasForeignKey("UserAddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Courier");
 
                     b.Navigation("Customer");
 
-                    b.Navigation("CustomerAddress");
+                    b.Navigation("UserAddress");
                 });
 
             modelBuilder.Entity("ReymaniWebApi.Data.Models.OrderItem", b =>
