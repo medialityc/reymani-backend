@@ -1,14 +1,14 @@
 using System;
 
+using reymani_web_api.Data.Models;
+
 namespace ReymaniWebApi.Data.Models
 {
-    public class Municipality
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public int ProvinceId { get; set; }
-        public Province Province { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
-    }
+  public class Municipality : BaseEntity
+  {
+    public int Id { get; set; }
+    public required string Name { get; set; }
+    public int ProvinceId { get; set; }
+    public required Province Province { get; set; }
+  }
 }

@@ -1,7 +1,7 @@
 namespace reymani_web_api.Data.Models;
 
-public enum PaymentMethod
+public enum PaymentMethod : short
 {
-    Transfer,
-    Cash
+  Transfer,
+  Cash
 }

@@ -1,9 +1,12 @@
-using Microsoft.EntityFrameworkCore;
-using FastEndpoints.Security;
-using FastEndpoints;
-using FastEndpoints.Swagger;
-using reymani_web_api.Data;
 using System.Text.Json.Serialization;
+
+using FastEndpoints;
+using FastEndpoints.Security;
+using FastEndpoints.Swagger;
+
+using Microsoft.EntityFrameworkCore;
+
+using reymani_web_api.Data;
 
 var bld = WebApplication.CreateBuilder();
 bld.Services

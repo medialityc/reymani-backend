@@ -1,25 +1,25 @@
 using System;
 using System.Collections.Generic;
 
+using reymani_web_api.Data.Models;
+
 namespace ReymaniWebApi.Data.Models
 {
-    public class Product
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string? Description { get; set; }
-        public int BusinessId { get; set; }
-        public Business Business { get; set; }
-        public bool IsAvailable { get; set; }
-        public bool IsActive { get; set; }
-        public List<string>? Images { get; set; } // Optional
-        public decimal Price { get; set; }
-        public decimal? DiscountPrice { get; set; }
-        public double Rating { get; set; } // 0 to 5
-        public int CategoryId { get; set; }
-        public ProductCategory Category { get; set; }
-        public int Capacity { get; set; } // High -> 3, Medium -> 2, Low -> 1
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
-    }
+  public class Product : BaseEntity
+  {
+    public int Id { get; set; }
+    public required string Name { get; set; }
+    public required string? Description { get; set; }
+    public int BusinessId { get; set; }
+    public required Business Business { get; set; }
+    public required bool IsAvailable { get; set; }
+    public required bool IsActive { get; set; }
+    public required List<string>? Images { get; set; } // Optional
+    public required decimal Price { get; set; }
+    public required decimal? DiscountPrice { get; set; }
+    public required double Rating { get; set; } // 0 to 5
+    public int CategoryId { get; set; }
+    public required ProductCategory Category { get; set; }
+    public required int Capacity { get; set; } // High -> 3, Medium -> 2, Low -> 1
+  }
 }
