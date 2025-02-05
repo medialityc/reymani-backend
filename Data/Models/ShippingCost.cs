@@ -7,10 +7,10 @@ namespace ReymaniWebApi.Data.Models
   public class ShippingCost : BaseEntity
   {
     public int Id { get; set; }
-    public int VehicleTypeId { get; set; }
-    public required VehicleType VehicleType { get; set; }
-    public int MunicipalityId { get; set; }
-    public required Municipality Municipality { get; set; }
+    public required int VehicleTypeId { get; set; }
+    public VehicleType? VehicleType { get; set; }
+    public required int MunicipalityId { get; set; }
+    public Municipality? Municipality { get; set; }
     public required decimal Cost { get; set; }
   }
 }

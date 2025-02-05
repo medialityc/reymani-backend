@@ -10,16 +10,16 @@ namespace ReymaniWebApi.Data.Models
     public int Id { get; set; }
     public required string Name { get; set; }
     public required string? Description { get; set; }
-    public int BusinessId { get; set; }
-    public required Business Business { get; set; }
+    public required int BusinessId { get; set; }
+    public Business? Business { get; set; }
     public required bool IsAvailable { get; set; }
     public required bool IsActive { get; set; }
     public required List<string>? Images { get; set; } // Optional
     public required decimal Price { get; set; }
     public required decimal? DiscountPrice { get; set; }
     public required double Rating { get; set; } // 0 to 5
-    public int CategoryId { get; set; }
-    public required ProductCategory Category { get; set; }
+    public required int CategoryId { get; set; }
+    public ProductCategory? Category { get; set; }
     public required int Capacity { get; set; } // High -> 3, Medium -> 2, Low -> 1
   }
 }
