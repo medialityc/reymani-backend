@@ -1,13 +1,13 @@
 namespace reymani_web_api.Data.Models;
 
-public enum OrderStatus
+public enum OrderStatus : short
 {
-    InProcess,
-    Approved,
-    InPreparation,
-    InPickup,
-    OnTheWay,
-    Delivered,
-    Completed,
-    Cancelled
+  InProcess,
+  Approved,
+  InPreparation,
+  InPickup,
+  OnTheWay,
+  Delivered,
+  Completed,
+  Cancelled
 }

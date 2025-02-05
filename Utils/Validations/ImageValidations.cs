@@ -22,12 +22,12 @@ namespace reymani_web_api.Utils.Validations
       if (file == null) return true;
       return file.Length > 0;
     }
-    
+
     public static bool HaveValidImages(List<IFormFile>? images)
     {
       if (images == null || !images.Any())
         return true;
-      
+
       foreach (var image in images)
       {
         if (!BeAValidImage(image) || !HaveValidLength(image))

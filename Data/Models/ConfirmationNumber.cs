@@ -1,13 +1,14 @@
 using System;
 
+using reymani_web_api.Data.Models;
+
 namespace ReymaniWebApi.Data.Models
 {
-    public class ConfirmationNumber
-    {
-        public int Id { get; set; }
-        public string Number { get; set; }
-        public int UserId { get; set; }
-        public User User { get; set; }
-        public DateTime CreatedAt { get; set; }
-    }
+  public class ConfirmationNumber : BaseEntity
+  {
+    public int Id { get; set; }
+    public required string Number { get; set; }
+    public int UserId { get; set; }
+    public required User User { get; set; }
+  }
 }
