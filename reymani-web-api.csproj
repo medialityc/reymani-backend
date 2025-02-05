@@ -24,9 +24,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Api\Endpoints\MetodoPago\" />
-    <Folder Include="Domain\Entities\" />
-    <Folder Include="Infraestructure\Migrations\" />
+    <Folder Include="Services\" />
+    <Folder Include="Data\" />
+    <Folder Include="Data\Migrations\" />
+
   </ItemGroup>
 
 </Project>
