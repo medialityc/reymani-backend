@@ -8,6 +8,6 @@ namespace ReymaniWebApi.Data.Models
   {
     public int Id { get; set; }
     public required string Name { get; set; }
-    public required ICollection<Municipality> Municipalities { get; set; }
+    public ICollection<Municipality>? Municipalities { get; set; }
   }
 }
