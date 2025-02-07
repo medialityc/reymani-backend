@@ -27,6 +27,11 @@ namespace reymani_web_api.Endpoints.Auth
       Post("/auth/register");
       AllowAnonymous();
       AllowFormData();
+      Summary(s =>
+      {
+        s.Summary = "Register";
+        s.Description = "Register a new user";
+      });
     }
 
     public override async Task<Results<Ok<RegisterResponse>, Conflict>> ExecuteAsync(RegisterRequest request, CancellationToken ct)

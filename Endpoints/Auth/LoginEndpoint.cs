@@ -25,6 +25,11 @@ namespace reymani_web_api.Endpoints.Auth
     {
       Post("/auth/login");
       AllowAnonymous();
+      Summary(s =>
+      {
+        s.Summary = "Login";
+        s.Description = "Login to the application";
+      });
     }
 
     public override async Task<Results<Ok<LoginResponse>, UnauthorizedHttpResult>> ExecuteAsync(LoginRequest request, CancellationToken ct)

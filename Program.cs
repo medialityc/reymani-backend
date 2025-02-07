@@ -51,4 +51,10 @@ app.UseCors("AllowAll")
   .UseFastEndpoints()
   .UseSwaggerGen(); //add this
 
+app.MapGet("/", context =>
+{
+  context.Response.Redirect("/swagger");
+  return Task.CompletedTask;
+});
+
 app.Run();
