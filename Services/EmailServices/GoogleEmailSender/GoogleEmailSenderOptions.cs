@@ -1,6 +1,6 @@
 using System;
 
-namespace reymani_web_api.Utils.EmailServices.GoogleEmailSender;
+namespace reymani_web_api.Services.EmailServices.GoogleEmailSender;
 
 public class GoogleEmailSenderOptions
 {

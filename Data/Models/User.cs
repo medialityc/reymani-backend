@@ -15,5 +15,6 @@ namespace ReymaniWebApi.Data.Models
     public required string Password { get; set; }
     public bool IsActive { get; set; }
     public UserRole Role { get; set; }
+    public bool IsConfirmed { get; set; }
   }
 }

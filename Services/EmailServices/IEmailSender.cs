@@ -1,6 +1,6 @@
 using System;
 
-namespace reymani_web_api.Utils.EmailServices;
+namespace reymani_web_api.Services.EmailServices;
 
 public interface IEmailSender
 {

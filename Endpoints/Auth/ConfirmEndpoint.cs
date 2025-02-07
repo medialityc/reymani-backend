@@ -47,6 +47,7 @@ namespace reymani_web_api.Endpoints.Auth
       ThrowIfAnyErrors();
 
       _dbContext.ConfirmationNumbers.Remove(confirmation);
+      user.IsConfirmed = true;
       await _dbContext.SaveChangesAsync(ct);
 
       return TypedResults.Ok("User confirmed successfully");
