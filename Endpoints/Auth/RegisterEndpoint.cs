@@ -62,6 +62,15 @@ namespace reymani_web_api.Endpoints.Auth
       var rnd = new Random();
       int confirmationCode = rnd.Next(1000, 10000);
 
+      // Guardar el código de confirmación en base de datos usando la entidad ConfirmationNumber
+      var confirmation = new ConfirmationNumber
+      {
+        UserId = user.Id,
+        Number = confirmationCode.ToString()
+      };
+      _dbContext.Set<ConfirmationNumber>().Add(confirmation);
+      await _dbContext.SaveChangesAsync();
+
       // Enviar correo con el código de confirmación
       await _emailSender.SendEmailAsync(user.Email, "Confirm your account", $"Your confirmation code is: {confirmationCode}");
 
