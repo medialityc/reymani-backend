@@ -31,6 +31,7 @@ bld.Services.AddDbContextFactory<AppDbContext>(options =>
     bld.Configuration.GetConnectionString("DefaultConnection")
   ));
 
+
 bld.Services.Configure<GoogleEmailSenderOptions>(bld.Configuration.GetSection("GoogleEmailSender"));
 bld.Services.AddSingleton<IEmailSender, GoogleEmailSender>();
 
