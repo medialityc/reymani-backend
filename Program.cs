@@ -7,6 +7,8 @@ using FastEndpoints.Swagger;
 using Microsoft.EntityFrameworkCore;
 
 using reymani_web_api.Data;
+using reymani_web_api.Utils.EmailServices;
+using reymani_web_api.Utils.EmailServices.GoogleEmailSender;
 
 var bld = WebApplication.CreateBuilder();
 bld.Services
@@ -29,6 +31,7 @@ bld.Services.AddDbContextFactory<AppDbContext>(options =>
     bld.Configuration.GetConnectionString("DefaultConnection")
   ));
 
+bld.Services.AddSingleton<GoogleEmailSender>();
 
 bld.Services.AddControllers().AddJsonOptions(options =>
 {
