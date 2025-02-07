@@ -20,6 +20,7 @@ namespace reymani_web_api.Endpoints.Auth
     public override void Configure()
     {
       Post("/auth/confirm");
+      AllowAnonymous();
       Summary(s =>
       {
         s.Summary = "Confirm user";

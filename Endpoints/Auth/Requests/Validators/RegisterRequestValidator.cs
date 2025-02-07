@@ -19,7 +19,7 @@ public class RegisterRequestValidator : Validator<RegisterRequest>
       .MinimumLength(8)
       .Matches(@"[A-Z]").WithMessage("Password must contain at least one uppercase letter.")
       .Matches(@"[0-9]").WithMessage("Password must contain at least one number.")
-      .Matches(@"[\W]").WithMessage("Password must contain at least one special character."); ;
+      .Matches(@"[\W]").WithMessage("Password must contain at least one special character.");
 
     RuleFor(x => x.FirstName).NotEmpty();
 
