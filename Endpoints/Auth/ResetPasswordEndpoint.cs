@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
 using reymani_web_api.Data;
+using reymani_web_api.Data.Models;
 using reymani_web_api.Endpoints.Auth.Requests;
 using reymani_web_api.Services.EmailServices;
 
@@ -37,9 +38,9 @@ namespace reymani_web_api.Endpoints.Auth
 
     public override async Task<Results<Ok<string>, NotFound>> ExecuteAsync(ResetPasswordRequest request, CancellationToken ct)
     {
-      // Buscar el registro de ConfirmationNumber por el código
+      // Buscar el registro de ForgotPasswordNumber por el código
       var confirmation = await _dbContext
-        .Set<ConfirmationNumber>()
+        .Set<ForgotPasswordNumber>()
         .FirstOrDefaultAsync(c => c.Number == request.ConfirmationCode, ct);
       if (confirmation == null)
         return TypedResults.NotFound();
@@ -54,7 +55,7 @@ namespace reymani_web_api.Endpoints.Auth
       _dbContext.Users.Update(user);
 
       // Eliminar el registro de confirmation
-      _dbContext.Set<ConfirmationNumber>().Remove(confirmation);
+      _dbContext.Set<ForgotPasswordNumber>().Remove(confirmation);
 
       await _dbContext.SaveChangesAsync(ct);
 

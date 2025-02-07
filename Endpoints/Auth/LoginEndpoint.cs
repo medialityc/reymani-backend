@@ -35,7 +35,7 @@ namespace reymani_web_api.Endpoints.Auth
     public override async Task<Results<Ok<LoginResponse>, UnauthorizedHttpResult>> ExecuteAsync(LoginRequest request, CancellationToken ct)
     {
       var user = await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Email == request.Email, ct);
-      if (user is null || !user.IsActive || !BCrypt.Net.BCrypt.Verify(request.Password, user.Password))
+      if (user is null || !user.IsActive || !user.IsConfirmed || !BCrypt.Net.BCrypt.Verify(request.Password, user.Password))
         return TypedResults.Unauthorized();
 
       var token = TokenGenerator.GenerateToken(user);

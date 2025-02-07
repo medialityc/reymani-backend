@@ -6,10 +6,9 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
 using reymani_web_api.Data;
+using reymani_web_api.Data.Models;
 using reymani_web_api.Endpoints.Auth.Requests;
 using reymani_web_api.Services.EmailServices;
-
-using ReymaniWebApi.Data.Models; // Asumiendo que ConfirmationNumber se encuentra aquí
 
 namespace reymani_web_api.Endpoints.Auth
 {
@@ -26,7 +25,7 @@ namespace reymani_web_api.Endpoints.Auth
 
     public override void Configure()
     {
-      Post("/auth/forgotpassword");
+      Post("/auth/forgot-password");
       AllowAnonymous();
       Summary(s =>
       {
@@ -46,12 +45,12 @@ namespace reymani_web_api.Endpoints.Auth
       int resetCode = rnd.Next(1000, 10000);
 
       // Almacenar el código de reseteo en la BD
-      var passwordReset = new ConfirmationNumber
+      var passwordReset = new ForgotPasswordNumber
       {
         UserId = user.Id,
         Number = resetCode.ToString()
       };
-      _dbContext.Set<ConfirmationNumber>().Add(passwordReset);
+      _dbContext.Set<ForgotPasswordNumber>().Add(passwordReset);
       await _dbContext.SaveChangesAsync(ct);
 
       // Enviar correo con el código de restablecimiento
