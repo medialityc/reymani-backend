@@ -32,11 +32,11 @@ namespace reymani_web_api.Endpoints.Auth
 
     public override async Task<Results<Ok<string>, UnauthorizedHttpResult, NotFound>> ExecuteAsync(ChangePasswordRequest request, CancellationToken ct)
     {
-      var emailClaim = User.Claims.FirstOrDefault(c => c.Type == "Email");
-      if (emailClaim == null || string.IsNullOrEmpty(emailClaim.Value))
+      var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == "Id");
+      if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out int userId))
         return TypedResults.Unauthorized();
 
-      var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == emailClaim.Value, ct);
+      var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId, ct);
       if (user is null)
         return TypedResults.NotFound();
 

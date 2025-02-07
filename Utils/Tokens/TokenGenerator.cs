@@ -1,11 +1,5 @@
-using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using System.IO;
-using Microsoft.Extensions.Configuration;
 using FastEndpoints.Security;
-using Microsoft.IdentityModel.Tokens;
+
 using ReymaniWebApi.Data.Models;
 
 namespace reymani_web_api.Utils.Tokens
@@ -21,13 +15,13 @@ namespace reymani_web_api.Utils.Tokens
       var secretKey = configuration["JwtSecret"];
       if (string.IsNullOrEmpty(secretKey))
         throw new Exception("JwtSecret is not set");
-      
+
       return JwtBearer.CreateToken(o =>
       {
         o.ExpireAt = DateTime.UtcNow.AddDays(2);
         o.SigningKey = secretKey;
         o.User.Roles.Add(user.Role.ToString());
-        o.User.Claims.Add(("Email", user.Email));
+        o.User.Claims.Add(("Id", user.Id.ToString()));
       });
 
     }
