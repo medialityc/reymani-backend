@@ -27,6 +27,7 @@ public class RegisterRequestValidator : Validator<RegisterRequest>
 
     RuleFor(x => x.Phone).NotEmpty();
 
-    RuleFor(x => x.ProfilePicture).Must(ImageValidations.BeAValidImage);
+    RuleFor(x => x.ProfilePicture)
+        .Must(file => file == null || (ImageValidations.BeAValidImage(file) && ImageValidations.HaveValidLength(file)));
   }
 }

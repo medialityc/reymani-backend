@@ -46,12 +46,11 @@ namespace reymani_web_api.Endpoints.Auth
       if (user != null)
         return TypedResults.Conflict();
 
-      string profilePictureUrl = string.Empty;
-      if (request.ProfilePicture != null && ImageValidations.HaveValidLength(request.ProfilePicture))
+      string objectPath = string.Empty;
+      if (request.ProfilePicture != null)
       {
         string fileCode = $"{Guid.NewGuid()}";
-        await _blobService.UploadObject(request.ProfilePicture, fileCode, ct);
-        profilePictureUrl = await _blobService.PresignedGetUrl($"images/{fileCode}{Path.GetExtension(request.ProfilePicture.FileName)}", ct);
+        objectPath = await _blobService.UploadObject(request.ProfilePicture, fileCode, ct);
       }
 
       user = new User
@@ -61,7 +60,7 @@ namespace reymani_web_api.Endpoints.Auth
         FirstName = request.FirstName,
         LastName = request.LastName,
         Phone = request.Phone,
-        ProfilePicture = profilePictureUrl,
+        ProfilePicture = objectPath,
         IsActive = true,
         Role = UserRole.Customer,
         IsConfirmed = false

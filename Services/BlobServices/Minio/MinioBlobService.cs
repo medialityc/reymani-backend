@@ -22,7 +22,7 @@ public class MinioBlobService : IBlobService
         .Build();
   }
 
-  public async Task UploadObject(IFormFile file, string codeObj, CancellationToken ct)
+  public async Task<string> UploadObject(IFormFile file, string codeObj, CancellationToken ct)
   {
     // Validar si el archivo es una imagen válida y tiene contenido
     if (!ImageValidations.BeAValidImage(file))
@@ -48,6 +48,7 @@ public class MinioBlobService : IBlobService
         .WithContentType(file.ContentType);
 
     await _minioClient.PutObjectAsync(uploadArgs, ct);
+    return objectPath;
   }
 
   public async Task<string> PresignedGetUrl(string objPath, CancellationToken ct)
