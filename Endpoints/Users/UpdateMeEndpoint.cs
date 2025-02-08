@@ -23,6 +23,11 @@ namespace reymani_web_api.Endpoints.Users
     public override void Configure()
     {
       Put("/users/me");
+      Summary(s =>
+      {
+        s.Summary = "Update current user";
+        s.Description = "Updates details of the authenticated user.";
+      });
       AllowFormData();
     }
 

@@ -19,6 +19,11 @@ namespace reymani_web_api.Endpoints.Users
     public override void Configure()
     {
       Delete("/users/{id}");
+      Summary(s =>
+      {
+        s.Summary = "Delete user";
+        s.Description = "Deletes an existing user by ID.";
+      });
       Roles("SystemAdmin");
     }
 

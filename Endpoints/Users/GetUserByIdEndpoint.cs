@@ -18,6 +18,11 @@ public class GetUserByIdEndpoint : Endpoint<GetUserByIdRequest, Results<Ok<UserR
   public override void Configure()
   {
     Get("/users/{id}");
+    Summary(s =>
+    {
+      s.Summary = "Get user by Id";
+      s.Description = "Retrieves details of a user by their ID.";
+    });
     Roles("SystemAdmin");
   }
 

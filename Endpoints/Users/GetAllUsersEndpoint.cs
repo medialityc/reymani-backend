@@ -18,6 +18,11 @@ namespace reymani_web_api.Endpoints.Users
     public override void Configure()
     {
       Get("/users");
+      Summary(s =>
+      {
+        s.Summary = "Get all users";
+        s.Description = "Retrieves a list of all users.";
+      });
       Roles("SystemAdmin");
     }
 
