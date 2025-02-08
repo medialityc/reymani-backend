@@ -39,6 +39,8 @@ bld.Services.AddSingleton<IEmailSender, GoogleEmailSender>();
 
 bld.Services.Configure<MinioOptions>(bld.Configuration.GetSection("Minio"));
 bld.Services.AddScoped<IBlobService, MinioBlobService>();
+bld.Services.AddScoped<IEmailTemplateService, EmailTemplateService>();
+
 
 bld.Services.AddControllers().AddJsonOptions(options =>
 {

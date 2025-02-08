@@ -20,12 +20,14 @@ namespace reymani_web_api.Endpoints.Auth
     private readonly AppDbContext _dbContext;
     private readonly IEmailSender _emailSender;
     private readonly IBlobService _blobService;
+    private readonly IEmailTemplateService _emailTemplateService;
 
-    public RegisterEndpoint(AppDbContext dbContext, IEmailSender emailSender, IBlobService blobService)
+    public RegisterEndpoint(AppDbContext dbContext, IEmailSender emailSender, IBlobService blobService, IEmailTemplateService emailTemplateService)
     {
       _dbContext = dbContext;
       _emailSender = emailSender;
       _blobService = blobService;
+      _emailTemplateService = emailTemplateService;
     }
 
     public override void Configure()
@@ -82,11 +84,11 @@ namespace reymani_web_api.Endpoints.Auth
       _dbContext.Set<ConfirmationNumber>().Add(confirmation);
       await _dbContext.SaveChangesAsync();
 
-      // Enviar correo con el código de confirmación
-      string path = Path.Combine(Directory.GetCurrentDirectory(), "Services", "EmailServices", "Templates", "ConfirmationEmail.html");
-      string emailTemplate = File.ReadAllText(path);
-      emailTemplate = emailTemplate.Replace("{{confirmationCode}}", confirmationCode.ToString());
-      await _emailSender.SendEmailAsync(user.Email, "Confirm your account", emailTemplate);
+      var emailBody = await _emailTemplateService.GetTemplateAsync("ConfirmationEmail", new
+      {
+        confirmationCode
+      });
+      await _emailSender.SendEmailAsync(user.Email, "Confirm your account", emailBody);
 
       return TypedResults.Ok("User registered successfully. Please check your email to confirm your account.");
     }

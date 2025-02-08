@@ -1,6 +1,3 @@
-using System;
-using System.IO;
-
 using FastEndpoints;
 
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -17,11 +14,13 @@ namespace reymani_web_api.Endpoints.Auth
   {
     private readonly AppDbContext _dbContext;
     private readonly IEmailSender _emailSender;
+    private readonly IEmailTemplateService _emailTemplateService;
 
-    public ForgotPasswordEndpoint(AppDbContext dbContext, IEmailSender emailSender)
+    public ForgotPasswordEndpoint(AppDbContext dbContext, IEmailSender emailSender, IEmailTemplateService emailTemplateService)
     {
       _dbContext = dbContext;
       _emailSender = emailSender;
+      _emailTemplateService = emailTemplateService;
     }
 
     public override void Configure()
@@ -54,15 +53,12 @@ namespace reymani_web_api.Endpoints.Auth
       _dbContext.Set<ForgotPasswordNumber>().Add(passwordReset);
       await _dbContext.SaveChangesAsync(ct);
 
-      // Leer el template del email
-      string templatePath = Path.Combine(Directory.GetCurrentDirectory(), "Services", "EmailServices", "Templates", "PasswordResetEmail.html");
-      string emailBody = await File.ReadAllTextAsync(templatePath, ct);
+      var emailBody = await _emailTemplateService.GetTemplateAsync("PasswordResetEmail", new
+      {
+        UserName = user.FirstName,
+        ResetCode = resetCode
+      });
 
-      // Reemplazar los valores dinámicos en el template
-      emailBody = emailBody.Replace("{{UserName}}", user.FirstName)
-                           .Replace("{{ResetCode}}", resetCode.ToString());
-
-      // Enviar el email con el template
       await _emailSender.SendEmailAsync(user.Email, "Reset your password", emailBody);
 
       return TypedResults.Ok("A reset code has been sent to your email.");

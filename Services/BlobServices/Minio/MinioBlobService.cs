@@ -24,13 +24,6 @@ public class MinioBlobService : IBlobService
 
   public async Task<string> UploadObject(IFormFile file, string codeObj, CancellationToken ct)
   {
-    // Validar si el archivo es una imagen válida y tiene contenido
-    if (!ImageValidations.BeAValidImage(file))
-      throw new InvalidOperationException("El archivo no es un tipo de imagen permitido.");
-
-    if (!ImageValidations.HaveValidLength(file))
-      throw new InvalidOperationException("El archivo está vacío o no es válido.");
-
     // Obtener la extensión real del archivo
     var ext = Path.GetExtension(file.FileName).ToLower();
     if (string.IsNullOrEmpty(ext))
