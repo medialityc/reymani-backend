@@ -13,8 +13,8 @@ namespace ReymaniWebApi.Data.Models
     public required string Email { get; set; }
     public required string Phone { get; set; }
     public required string Password { get; set; }
-    public bool IsActive { get; set; }
-    public UserRole Role { get; set; }
-    public bool IsConfirmed { get; set; }
+    public required bool IsActive { get; set; }
+    public required UserRole Role { get; set; }
+    public required bool IsConfirmed { get; set; }
   }
 }

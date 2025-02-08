@@ -27,6 +27,8 @@
 
   <ItemGroup>
     <Folder Include="Data\Migrations\" />
+    <Folder Include="Endpoints\Users\Requests\" />
+    <Folder Include="Endpoints\Users\Requests\Validators\" />
 
   </ItemGroup>
 
