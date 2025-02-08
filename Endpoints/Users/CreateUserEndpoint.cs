@@ -27,6 +27,7 @@ namespace reymani_web_api.Endpoints.Users
     {
       Post("/users");
       AllowFormData();
+      Roles("SystemAdmin");
     }
 
     public override async Task<Results<Created<UserResponse>, Conflict, ProblemDetails>> ExecuteAsync(CreateUserRequest req, CancellationToken ct)
