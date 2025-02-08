@@ -6,7 +6,9 @@ using Microsoft.EntityFrameworkCore;
 using reymani_web_api.Data;
 using reymani_web_api.Data.Models;
 using reymani_web_api.Endpoints.Auth.Requests;
+using reymani_web_api.Services.BlobServices;
 using reymani_web_api.Services.EmailServices;
+using reymani_web_api.Utils.Validations;
 
 using ReymaniWebApi.Data.Models;
 
@@ -16,12 +18,14 @@ namespace reymani_web_api.Endpoints.Auth
   public class RegisterEndpoint : Endpoint<RegisterRequest, Results<Ok<string>, Conflict>>
   {
     private readonly AppDbContext _dbContext;
-    private readonly IEmailSender _emailSender; // Nueva inyección
+    private readonly IEmailSender _emailSender;
+    private readonly IBlobService _blobService;
 
-    public RegisterEndpoint(AppDbContext dbContext, IEmailSender emailSender) // Constructor modificado
+    public RegisterEndpoint(AppDbContext dbContext, IEmailSender emailSender, IBlobService blobService)
     {
       _dbContext = dbContext;
       _emailSender = emailSender;
+      _blobService = blobService;
     }
 
     public override void Configure()
@@ -42,6 +46,14 @@ namespace reymani_web_api.Endpoints.Auth
       if (user != null)
         return TypedResults.Conflict();
 
+      string profilePictureUrl = string.Empty;
+      if (request.ProfilePicture != null && ImageValidations.HaveValidLength(request.ProfilePicture))
+      {
+        string fileCode = $"{Guid.NewGuid()}";
+        await _blobService.UploadObject(request.ProfilePicture, fileCode, ct);
+        profilePictureUrl = await _blobService.PresignedGetUrl($"images/{fileCode}{Path.GetExtension(request.ProfilePicture.FileName)}", ct);
+      }
+
       user = new User
       {
         Email = request.Email,
@@ -49,7 +61,7 @@ namespace reymani_web_api.Endpoints.Auth
         FirstName = request.FirstName,
         LastName = request.LastName,
         Phone = request.Phone,
-        ProfilePicture = "", //Falta poner la url de la imagen cuando se suba a minio
+        ProfilePicture = profilePictureUrl,
         IsActive = true,
         Role = UserRole.Customer,
         IsConfirmed = false

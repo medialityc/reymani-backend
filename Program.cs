@@ -7,6 +7,8 @@ using FastEndpoints.Swagger;
 using Microsoft.EntityFrameworkCore;
 
 using reymani_web_api.Data;
+using reymani_web_api.Services.BlobServices;
+using reymani_web_api.Services.BlobServices.Minio;
 using reymani_web_api.Services.EmailServices;
 using reymani_web_api.Services.EmailServices.GoogleEmailSender;
 
@@ -34,6 +36,9 @@ bld.Services.AddDbContextFactory<AppDbContext>(options =>
 
 bld.Services.Configure<GoogleEmailSenderOptions>(bld.Configuration.GetSection("GoogleEmailSender"));
 bld.Services.AddSingleton<IEmailSender, GoogleEmailSender>();
+
+bld.Services.Configure<MinioOptions>(bld.Configuration.GetSection("Minio"));
+bld.Services.AddScoped<IBlobService, MinioBlobService>();
 
 bld.Services.AddControllers().AddJsonOptions(options =>
 {
