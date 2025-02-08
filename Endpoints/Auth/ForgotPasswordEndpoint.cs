@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 
 using FastEndpoints;
 
@@ -44,7 +45,7 @@ namespace reymani_web_api.Endpoints.Auth
       var rnd = new Random();
       int resetCode = rnd.Next(1000, 10000);
 
-      // Almacenar el código de reseteo en la BD
+      // Almacenar el código en la BD
       var passwordReset = new ForgotPasswordNumber
       {
         UserId = user.Id,
@@ -53,8 +54,16 @@ namespace reymani_web_api.Endpoints.Auth
       _dbContext.Set<ForgotPasswordNumber>().Add(passwordReset);
       await _dbContext.SaveChangesAsync(ct);
 
-      // Enviar correo con el código de restablecimiento
-      await _emailSender.SendEmailAsync(user.Email, "Reset your password", $"Your password reset code is: {resetCode}");
+      // Leer el template del email
+      string templatePath = Path.Combine(Directory.GetCurrentDirectory(), "Services", "EmailServices", "Templates", "PasswordResetEmail.html");
+      string emailBody = await File.ReadAllTextAsync(templatePath, ct);
+
+      // Reemplazar los valores dinámicos en el template
+      emailBody = emailBody.Replace("{{UserName}}", user.FirstName)
+                           .Replace("{{ResetCode}}", resetCode.ToString());
+
+      // Enviar el email con el template
+      await _emailSender.SendEmailAsync(user.Email, "Reset your password", emailBody);
 
       return TypedResults.Ok("A reset code has been sent to your email.");
     }

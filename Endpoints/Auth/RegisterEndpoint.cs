@@ -84,7 +84,10 @@ namespace reymani_web_api.Endpoints.Auth
       await _dbContext.SaveChangesAsync();
 
       // Enviar correo con el código de confirmación
-      await _emailSender.SendEmailAsync(user.Email, "Confirm your account", $"Your confirmation code is: {confirmationCode}");
+      string path = Path.Combine(Directory.GetCurrentDirectory(), "Services", "EmailServices", "Templates", "ConfirmationEmail.html");
+      string emailTemplate = File.ReadAllText(path);
+      emailTemplate = emailTemplate.Replace("{{confirmationCode}}", confirmationCode.ToString());
+      await _emailSender.SendEmailAsync(user.Email, "Confirm your account", emailTemplate);
 
       return TypedResults.Ok("User registered successfully. Please check your email to confirm your account.");
     }
