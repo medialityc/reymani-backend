@@ -7,6 +7,10 @@ using FastEndpoints.Swagger;
 using Microsoft.EntityFrameworkCore;
 
 using reymani_web_api.Data;
+using reymani_web_api.Services.BlobServices;
+using reymani_web_api.Services.BlobServices.Minio;
+using reymani_web_api.Services.EmailServices;
+using reymani_web_api.Services.EmailServices.GoogleEmailSender;
 
 var bld = WebApplication.CreateBuilder();
 bld.Services
@@ -30,6 +34,14 @@ bld.Services.AddDbContextFactory<AppDbContext>(options =>
   ));
 
 
+bld.Services.Configure<GoogleEmailSenderOptions>(bld.Configuration.GetSection("GoogleEmailSender"));
+bld.Services.AddSingleton<IEmailSender, GoogleEmailSender>();
+
+bld.Services.Configure<MinioOptions>(bld.Configuration.GetSection("Minio"));
+bld.Services.AddScoped<IBlobService, MinioBlobService>();
+bld.Services.AddScoped<IEmailTemplateService, EmailTemplateService>();
+
+
 bld.Services.AddControllers().AddJsonOptions(options =>
 {
   options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
@@ -50,5 +62,11 @@ app.UseCors("AllowAll")
   .UseAuthorization()
   .UseFastEndpoints()
   .UseSwaggerGen(); //add this
+
+app.MapGet("/", context =>
+{
+  context.Response.Redirect("/swagger");
+  return Task.CompletedTask;
+});
 
 app.Run();

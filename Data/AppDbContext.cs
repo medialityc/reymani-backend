@@ -30,6 +30,7 @@ namespace reymani_web_api.Data
     public DbSet<Order> Orders { get; set; }
     public DbSet<OrderItem> OrderItems { get; set; }
     public DbSet<ConfirmationNumber> ConfirmationNumbers { get; set; }
+    public DbSet<ForgotPasswordNumber> ForgotPasswordNumbers { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
