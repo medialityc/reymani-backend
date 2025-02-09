@@ -17,6 +17,11 @@ namespace reymani_web_api.Endpoints.Users
     public override void Configure()
     {
       Get("/users/me");
+      Summary(s =>
+      {
+        s.Summary = "Get current user";
+        s.Description = "Retrieves details of the authenticated user.";
+      });
     }
 
     public override async Task<Results<Ok<UserResponse>, NotFound>> ExecuteAsync(CancellationToken ct)

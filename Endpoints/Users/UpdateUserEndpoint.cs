@@ -23,6 +23,11 @@ namespace reymani_web_api.Endpoints.Users
     public override void Configure()
     {
       Put("/users/{id}");
+      Summary(s =>
+      {
+        s.Summary = "Update user";
+        s.Description = "Updates details of an existing user.";
+      });
       Roles("SystemAdmin");
       AllowFormData();
     }

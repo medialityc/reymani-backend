@@ -26,6 +26,11 @@ namespace reymani_web_api.Endpoints.Users
     public override void Configure()
     {
       Post("/users");
+      Summary(s =>
+      {
+        s.Summary = "Create user";
+        s.Description = "Creates a new user.";
+      });
       AllowFormData();
       Roles("SystemAdmin");
     }
