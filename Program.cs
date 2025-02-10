@@ -11,6 +11,7 @@ using reymani_web_api.Services.BlobServices;
 using reymani_web_api.Services.BlobServices.Minio;
 using reymani_web_api.Services.EmailServices;
 using reymani_web_api.Services.EmailServices.GoogleEmailSender;
+using reymani_web_api.Utils.Seeders;
 
 var bld = WebApplication.CreateBuilder();
 bld.Services
@@ -54,6 +55,7 @@ using (var scope = app.Services.CreateScope())
 {
   var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
   dbContext.Database.Migrate();
+  SeedData.Initialize(scope.ServiceProvider);
 }
 
 app.UseCors("AllowAll")
