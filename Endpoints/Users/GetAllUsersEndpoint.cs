@@ -6,14 +6,20 @@ using Microsoft.AspNetCore.Http.HttpResults;
 
 using reymani_web_api.Data;
 using reymani_web_api.Endpoints.Users.Responses;
+using reymani_web_api.Services.BlobServices;
 
 namespace reymani_web_api.Endpoints.Users
 {
   public class GetAllUsersEndpoint : EndpointWithoutRequest<Results<Ok<IEnumerable<UserResponse>>, ProblemDetails>>
   {
     private readonly AppDbContext _dbContext;
+    private readonly IBlobService _blobService;
 
-    public GetAllUsersEndpoint(AppDbContext dbContext) => _dbContext = dbContext;
+    public GetAllUsersEndpoint(AppDbContext dbContext, IBlobService blobService)
+    {
+      _dbContext = dbContext;
+      _blobService = blobService;
+    }
 
     public override void Configure()
     {
@@ -29,10 +35,10 @@ namespace reymani_web_api.Endpoints.Users
     public override async Task<Results<Ok<IEnumerable<UserResponse>>, ProblemDetails>> ExecuteAsync(CancellationToken ct)
     {
       var users = _dbContext.Users.OrderBy(u => u.Id).AsEnumerable();
-      var response = users.Select(u => new UserResponse
+      var response = await Task.WhenAll(users.Select(async u => new UserResponse
       {
         Id = u.Id,
-        ProfilePicture = u.ProfilePicture,
+        ProfilePicture = u.ProfilePicture != null ? await _blobService.PresignedGetUrl(u.ProfilePicture, ct) : null,
         FirstName = u.FirstName,
         LastName = u.LastName,
         Email = u.Email,
@@ -40,8 +46,8 @@ namespace reymani_web_api.Endpoints.Users
         IsActive = u.IsActive,
         Role = u.Role,
         IsConfirmed = u.IsConfirmed
-      });
-      return TypedResults.Ok(response);
+      }));
+      return TypedResults.Ok(response.AsEnumerable());
     }
   }
 }
