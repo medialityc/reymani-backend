@@ -1,8 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using BCrypt.Net;
+using Microsoft.Extensions.Options;
 
 using reymani_web_api.Data;
 using reymani_web_api.Data.Models;
+using reymani_web_api.Utils.Options;
 
 using ReymaniWebApi.Data.Models;
 
@@ -15,6 +16,9 @@ public class SeedData
     using var context = new AppDbContext(
         serviceProvider.GetRequiredService<DbContextOptions<AppDbContext>>());
 
+    // Obtén AuthOptions
+    var authOptions = serviceProvider.GetRequiredService<IOptions<AuthOptions>>().Value;
+
     if (!context.Users.Any())
     {
       context.Users.AddRange(
@@ -22,10 +26,10 @@ public class SeedData
           {
             FirstName = "Admin",
             LastName = "System",
-            ProfilePicture = "https://randomuser.me/api/portraits",
-            Email = "admin@system.com",
+            ProfilePicture = string.Empty,
+            Email = authOptions.SystemAdminEmail,
             Phone = "1234567890",
-            Password = BCrypt.Net.BCrypt.HashPassword("adminpassword"),
+            Password = BCrypt.Net.BCrypt.HashPassword(authOptions.SystemAdminPassword),
             IsActive = true,
             Role = UserRole.SystemAdmin,
             IsConfirmed = true
@@ -34,10 +38,10 @@ public class SeedData
           {
             FirstName = "Admin",
             LastName = "Business",
-            ProfilePicture = "https://randomuser.me/api/portraits",
-            Email = "admin@business.com",
+            ProfilePicture = string.Empty,
+            Email = authOptions.BusinessAdminEmail,
             Phone = "1234567891",
-            Password = BCrypt.Net.BCrypt.HashPassword("adminpassword"),
+            Password = BCrypt.Net.BCrypt.HashPassword(authOptions.BusinessAdminPassword),
             IsActive = true,
             Role = UserRole.BusinessAdmin,
             IsConfirmed = true
@@ -46,10 +50,10 @@ public class SeedData
           {
             FirstName = "Courier",
             LastName = "User",
-            ProfilePicture = "https://randomuser.me/api/portraits",
-            Email = "courier@user.com",
+            ProfilePicture = string.Empty,
+            Email = authOptions.CourierEmail,
             Phone = "1234567892",
-            Password = BCrypt.Net.BCrypt.HashPassword("courierpassword"),
+            Password = BCrypt.Net.BCrypt.HashPassword(authOptions.CourierPassword),
             IsActive = true,
             Role = UserRole.Courier,
             IsConfirmed = true
@@ -58,10 +62,10 @@ public class SeedData
           {
             FirstName = "Customer",
             LastName = "User",
-            ProfilePicture = "https://randomuser.me/api/portraits",
-            Email = "customer@user.com",
+            ProfilePicture = string.Empty,
+            Email = authOptions.CustomerEmail,
             Phone = "1234567893",
-            Password = BCrypt.Net.BCrypt.HashPassword("customerpassword"),
+            Password = BCrypt.Net.BCrypt.HashPassword(authOptions.CustomerPassword),
             IsActive = true,
             Role = UserRole.Customer,
             IsConfirmed = true
