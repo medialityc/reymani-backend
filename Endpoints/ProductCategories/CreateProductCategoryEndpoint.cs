@@ -25,7 +25,7 @@ namespace reymani_web_api.Endpoints.ProductCategories
 
     public override void Configure()
     {
-      Post("/productcategories");
+      Post("/product-categories");
       Summary(s =>
       {
         s.Summary = "Create product category";

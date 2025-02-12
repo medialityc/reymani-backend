@@ -8,12 +8,12 @@ using reymani_web_api.Services.BlobServices;
 
 namespace reymani_web_api.Endpoints.ProductCategories
 {
-  public class GetAllProductCategoriesEndpoint : EndpointWithoutRequest<Results<Ok<IEnumerable<ProductCategoryResponse>>, ProblemDetails>>
+  public class GetAllProductCategoriesSystemAdminEndpoint : EndpointWithoutRequest<Results<Ok<IEnumerable<ProductCategoryResponse>>, ProblemDetails>>
   {
     private readonly AppDbContext _dbContext;
     private readonly IBlobService _blobService;
 
-    public GetAllProductCategoriesEndpoint(AppDbContext dbContext, IBlobService blobService)
+    public GetAllProductCategoriesSystemAdminEndpoint(AppDbContext dbContext, IBlobService blobService)
     {
       _dbContext = dbContext;
       _blobService = blobService;
@@ -21,20 +21,20 @@ namespace reymani_web_api.Endpoints.ProductCategories
 
     public override void Configure()
     {
-      Get("/product-categories");
+      Get("/product-categories/system-admin");
       Summary(s =>
       {
-        s.Summary = "Get all active product categories";
-        s.Description = "Retrieves a list of active product categories.";
+        s.Summary = "Get all product categories for system admin";
+        s.Description = "Retrieves a list of all product categories, without filtering by active status.";
       });
+      Roles("SystemAdmin");
     }
 
     public override async Task<Results<Ok<IEnumerable<ProductCategoryResponse>>, ProblemDetails>> ExecuteAsync(CancellationToken ct)
     {
       var categories = _dbContext.ProductCategories
-        .Where(pc => pc.IsActive)
-        .OrderBy(pc => pc.Id)
-        .AsEnumerable();
+          .OrderBy(pc => pc.Id)
+          .AsEnumerable();
 
       var response = await Task.WhenAll(categories.Select(async pc => new ProductCategoryResponse
       {
