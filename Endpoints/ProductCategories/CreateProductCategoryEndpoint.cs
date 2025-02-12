@@ -26,6 +26,11 @@ namespace reymani_web_api.Endpoints.ProductCategories
     public override void Configure()
     {
       Post("/productcategories");
+      Summary(s =>
+      {
+        s.Summary = "Create product category";
+        s.Description = "Creates a new product category by verifying its uniqueness and uploading its logo via Minio.";
+      });
       Roles("SystemAdmin");
       AllowFormData();
     }
