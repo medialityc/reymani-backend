@@ -1,18 +1,16 @@
-using System;
 using FastEndpoints;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using reymani_web_api.Data;
-using reymani_web_api.Data.Models;
 using reymani_web_api.Endpoints.Users.Requests;
-using reymani_web_api.Endpoints.Commons.Responses; // Asumiendo que existe un PaginatedResponse<T>
-using System.Linq;
+using reymani_web_api.Endpoints.Commons.Responses;
 using reymani_web_api.Endpoints.Users.Responses;
 using ReymaniWebApi.Data.Models;
+using reymani_web_api.Services.BlobServices;
 
 namespace reymani_web_api.Endpoints.Users
 {
-  public class SearchUsersEndpoint(AppDbContext dbContext)
+  public class SearchUsersEndpoint(AppDbContext dbContext, IBlobService blobService)
       : Endpoint<SearchUsersRequest, Results<Ok<PaginatedResponse<UserResponse>>, ProblemDetails>>
   {
     public override void Configure()
@@ -81,10 +79,10 @@ namespace reymani_web_api.Endpoints.Users
       var data = users.Skip(((req.Page ?? 1) - 1) * (req.PageSize ?? 10)).Take(req.PageSize ?? 10);
 
       // Mapeo a UserResponse (se asume que dicho tipo define estas propiedades)
-      var responseData = data.Select(u => new UserResponse
+      var responseData = await Task.WhenAll(data.Select(async u => new UserResponse
       {
         Id = u.Id,
-        ProfilePicture = u.ProfilePicture,
+        ProfilePicture = u.ProfilePicture != null ? await blobService.PresignedGetUrl(u.ProfilePicture, ct) : null,
         FirstName = u.FirstName,
         LastName = u.LastName,
         Email = u.Email,
@@ -92,7 +90,7 @@ namespace reymani_web_api.Endpoints.Users
         IsActive = u.IsActive,
         IsConfirmed = u.IsConfirmed,
         Role = u.Role
-      });
+      }));
 
       return TypedResults.Ok(new PaginatedResponse<UserResponse>
       {

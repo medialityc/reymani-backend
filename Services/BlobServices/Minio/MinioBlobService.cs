@@ -3,6 +3,7 @@ using Microsoft.Extensions.Options;
 using Minio;
 using Minio.DataModel.Args;
 
+using reymani_web_api.Utils.Options;
 using reymani_web_api.Utils.Validations;
 
 namespace reymani_web_api.Services.BlobServices.Minio;
@@ -16,7 +17,7 @@ public class MinioBlobService : IBlobService
   {
     _bucketName = options.Value.Bucket;
     _minioClient = new MinioClient()
-        .WithEndpoint(options.Value.Endpoint)
+        .WithEndpoint(options.Value.Endpoint, options.Value.Port)
         .WithCredentials(options.Value.AccessKey, options.Value.SecretKey)
         .WithSSL(false)
         .Build();

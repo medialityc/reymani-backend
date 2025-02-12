@@ -3,16 +3,19 @@ using reymani_web_api.Data;
 using FastEndpoints;
 using reymani_web_api.Endpoints.Users.Requests;
 using Microsoft.AspNetCore.Http.HttpResults;
+using reymani_web_api.Services.BlobServices;
 
 namespace reymani_web_api.Endpoints.Users;
 
 public class GetUserByIdEndpoint : Endpoint<GetUserByIdRequest, Results<Ok<UserResponse>, NotFound, ProblemDetails>>
 {
   private readonly AppDbContext _dbContext;
+  private readonly IBlobService _blobService;
 
-  public GetUserByIdEndpoint(AppDbContext dbContext)
+  public GetUserByIdEndpoint(AppDbContext dbContext, IBlobService blobService)
   {
     _dbContext = dbContext;
+    _blobService = blobService;
   }
 
   public override void Configure()
@@ -36,7 +39,7 @@ public class GetUserByIdEndpoint : Endpoint<GetUserByIdRequest, Results<Ok<UserR
     return TypedResults.Ok(new UserResponse
     {
       Id = user.Id,
-      ProfilePicture = user.ProfilePicture,
+      ProfilePicture = user.ProfilePicture != null ? await _blobService.PresignedGetUrl(user.ProfilePicture, ct) : null,
       FirstName = user.FirstName,
       LastName = user.LastName,
       Email = user.Email,

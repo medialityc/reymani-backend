@@ -15,10 +15,12 @@ namespace reymani_web_api.Endpoints.Auth
   public class LoginEndpoint : Endpoint<LoginRequest, Results<Ok<LoginResponse>, UnauthorizedHttpResult>>
   {
     private readonly AppDbContext _dbContext;
+    private readonly TokenGenerator _tokenGenerator;
 
-    public LoginEndpoint(AppDbContext dbContext)
+    public LoginEndpoint(AppDbContext dbContext, TokenGenerator tokenGenerator)
     {
       _dbContext = dbContext;
+      _tokenGenerator = tokenGenerator;
     }
 
     public override void Configure()
@@ -38,7 +40,7 @@ namespace reymani_web_api.Endpoints.Auth
       if (user is null || !user.IsActive || !user.IsConfirmed || !BCrypt.Net.BCrypt.Verify(request.Password, user.Password))
         return TypedResults.Unauthorized();
 
-      var token = TokenGenerator.GenerateToken(user);
+      var token = _tokenGenerator.GenerateToken(user);
       return TypedResults.Ok(new LoginResponse { Token = token });
     }
   }

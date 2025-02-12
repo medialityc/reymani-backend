@@ -11,8 +11,16 @@ using reymani_web_api.Services.BlobServices;
 using reymani_web_api.Services.BlobServices.Minio;
 using reymani_web_api.Services.EmailServices;
 using reymani_web_api.Services.EmailServices.GoogleEmailSender;
+using reymani_web_api.Utils.Options;
+using reymani_web_api.Utils.Seeders;
+using reymani_web_api.Utils.Tokens;
 
 var bld = WebApplication.CreateBuilder();
+
+// Registrar AuthOptions
+bld.Services.Configure<AuthOptions>(bld.Configuration.GetSection("AuthOptions"));
+bld.Services.AddScoped<TokenGenerator>();
+
 bld.Services
   .AddCors(options =>
     {
@@ -23,7 +31,7 @@ bld.Services
                  .AllowAnyHeader();
         });
     })
-  .AddAuthenticationJwtBearer(s => s.SigningKey = bld.Configuration["jwtsecret"])
+  .AddAuthenticationJwtBearer(s => s.SigningKey = bld.Configuration["AuthOptions:JwtToken"])
   .AddAuthorization()
   .AddFastEndpoints()
   .SwaggerDocument(); //define a swagger document
@@ -54,6 +62,7 @@ using (var scope = app.Services.CreateScope())
 {
   var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
   dbContext.Database.Migrate();
+  SeedData.Initialize(scope.ServiceProvider);
 }
 
 app.UseCors("AllowAll")

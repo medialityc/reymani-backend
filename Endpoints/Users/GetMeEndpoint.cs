@@ -2,16 +2,19 @@ using reymani_web_api.Data;
 using FastEndpoints;
 using reymani_web_api.Endpoints.Users.Responses;
 using Microsoft.AspNetCore.Http.HttpResults;
+using reymani_web_api.Services.BlobServices;
 
 namespace reymani_web_api.Endpoints.Users
 {
   public class GetMeEndpoint : EndpointWithoutRequest<Results<Ok<UserResponse>, NotFound>>
   {
     private readonly AppDbContext _dbContext;
+    private readonly IBlobService _blobService;
 
-    public GetMeEndpoint(AppDbContext dbContext)
+    public GetMeEndpoint(AppDbContext dbContext, IBlobService blobService)
     {
       _dbContext = dbContext;
+      _blobService = blobService;
     }
 
     public override void Configure()
@@ -37,7 +40,7 @@ namespace reymani_web_api.Endpoints.Users
       return TypedResults.Ok(new UserResponse
       {
         Id = user.Id,
-        ProfilePicture = user.ProfilePicture,
+        ProfilePicture = user.ProfilePicture != null ? await _blobService.PresignedGetUrl(user.ProfilePicture, ct) : null,
         FirstName = user.FirstName,
         LastName = user.LastName,
         Email = user.Email,

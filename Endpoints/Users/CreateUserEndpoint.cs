@@ -69,7 +69,7 @@ namespace reymani_web_api.Endpoints.Users
       var response = new UserResponse
       {
         Id = user.Id,
-        ProfilePicture = user.ProfilePicture,
+        ProfilePicture = user.ProfilePicture != null ? await _blobService.PresignedGetUrl(user.ProfilePicture, ct) : null,
         FirstName = user.FirstName,
         LastName = user.LastName,
         Email = user.Email,
