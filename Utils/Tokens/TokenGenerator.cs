@@ -1,20 +1,25 @@
 using FastEndpoints.Security;
-
 using ReymaniWebApi.Data.Models;
+using reymani_web_api.Utils.Options;
+using Microsoft.Extensions.Options;
 
 namespace reymani_web_api.Utils.Tokens
 {
   public class TokenGenerator
   {
-    public static string GenerateToken(User user)
+    private readonly AuthOptions _authOptions;
+
+    // Constructor con inyección de IOptions<AuthOptions>
+    public TokenGenerator(IOptions<AuthOptions> options)
     {
-      var configuration = new ConfigurationBuilder()
-          .SetBasePath(Directory.GetCurrentDirectory())
-          .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-          .Build();
-      var secretKey = configuration["JwtSecret"];
+      _authOptions = options.Value;
+    }
+
+    public string GenerateToken(User user)
+    {
+      var secretKey = _authOptions.JwtToken;
       if (string.IsNullOrEmpty(secretKey))
-        throw new Exception("JwtSecret is not set");
+        throw new Exception("JwtToken is not set in AuthOptions");
 
       return JwtBearer.CreateToken(o =>
       {
@@ -23,7 +28,6 @@ namespace reymani_web_api.Utils.Tokens
         o.User.Roles.Add(user.Role.ToString());
         o.User.Claims.Add(("Id", user.Id.ToString()));
       });
-
     }
   }
 }

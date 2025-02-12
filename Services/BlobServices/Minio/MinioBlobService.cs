@@ -3,6 +3,7 @@ using Microsoft.Extensions.Options;
 using Minio;
 using Minio.DataModel.Args;
 
+using reymani_web_api.Utils.Options;
 using reymani_web_api.Utils.Validations;
 
 namespace reymani_web_api.Services.BlobServices.Minio;

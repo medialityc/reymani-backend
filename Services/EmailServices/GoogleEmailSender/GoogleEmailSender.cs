@@ -3,6 +3,8 @@ using System.Net;
 using System.Net.Mail;
 
 using Microsoft.Extensions.Options;
+
+using reymani_web_api.Utils.Options;
 namespace reymani_web_api.Services.EmailServices.GoogleEmailSender;
 
 public class GoogleEmailSender : IEmailSender

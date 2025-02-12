@@ -1,6 +1,6 @@
 using System;
 
-namespace reymani_web_api.Services.BlobServices.Minio;
+namespace reymani_web_api.Utils.Options;
 
 public class MinioOptions
 {
