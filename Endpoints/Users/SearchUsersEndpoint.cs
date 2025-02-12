@@ -82,7 +82,7 @@ namespace reymani_web_api.Endpoints.Users
       var responseData = await Task.WhenAll(data.Select(async u => new UserResponse
       {
         Id = u.Id,
-        ProfilePicture = u.ProfilePicture != null ? await blobService.PresignedGetUrl(u.ProfilePicture, ct) : null,
+        ProfilePicture = !string.IsNullOrEmpty(u.ProfilePicture) ? await blobService.PresignedGetUrl(u.ProfilePicture, ct) : null,
         FirstName = u.FirstName,
         LastName = u.LastName,
         Email = u.Email,

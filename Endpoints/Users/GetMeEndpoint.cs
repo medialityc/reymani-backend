@@ -40,7 +40,7 @@ namespace reymani_web_api.Endpoints.Users
       return TypedResults.Ok(new UserResponse
       {
         Id = user.Id,
-        ProfilePicture = user.ProfilePicture != null ? await _blobService.PresignedGetUrl(user.ProfilePicture, ct) : null,
+        ProfilePicture = !string.IsNullOrEmpty(user.ProfilePicture) ? await _blobService.PresignedGetUrl(user.ProfilePicture, ct) : null,
         FirstName = user.FirstName,
         LastName = user.LastName,
         Email = user.Email,
