@@ -5,7 +5,7 @@ using reymani_web_api.Endpoints.ProductCategories.Responses;
 
 using ReymaniWebApi.Data.Models;
 
-namespace reymani_web_api.Utils.Mappers;
+namespace reymani_web_api.Endpoints.Mappers;
 
 public class ProductCategoryMapper
 {

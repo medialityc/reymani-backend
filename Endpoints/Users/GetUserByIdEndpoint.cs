@@ -4,7 +4,7 @@ using FastEndpoints;
 using reymani_web_api.Endpoints.Users.Requests;
 using Microsoft.AspNetCore.Http.HttpResults;
 using reymani_web_api.Services.BlobServices;
-using reymani_web_api.Utils.Mappers;
+using reymani_web_api.Endpoints.Mappers;
 
 namespace reymani_web_api.Endpoints.Users;
 
