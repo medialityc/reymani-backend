@@ -27,6 +27,7 @@ namespace reymani_web_api.Endpoints.ProductCategories
         s.Summary = "Get all active product categories";
         s.Description = "Retrieves a list of active product categories.";
       });
+      AllowAnonymous();
     }
 
     public override async Task<Results<Ok<IEnumerable<ProductCategoryResponse>>, ProblemDetails>> ExecuteAsync(CancellationToken ct)

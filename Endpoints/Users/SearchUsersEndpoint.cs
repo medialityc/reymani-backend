@@ -7,6 +7,7 @@ using reymani_web_api.Endpoints.Commons.Responses;
 using reymani_web_api.Endpoints.Users.Responses;
 using ReymaniWebApi.Data.Models;
 using reymani_web_api.Services.BlobServices;
+using reymani_web_api.Utils.Mappers;
 
 namespace reymani_web_api.Endpoints.Users
 {
@@ -78,18 +79,13 @@ namespace reymani_web_api.Endpoints.Users
       var totalCount = users.Count();
       var data = users.Skip(((req.Page ?? 1) - 1) * (req.PageSize ?? 10)).Take(req.PageSize ?? 10);
 
-      // Mapeo a UserResponse (se asume que dicho tipo define estas propiedades)
-      var responseData = await Task.WhenAll(data.Select(async u => new UserResponse
+      var mapper = new UserMapper();
+      var responseData = await Task.WhenAll(data.Select(async u =>
       {
-        Id = u.Id,
-        ProfilePicture = !string.IsNullOrEmpty(u.ProfilePicture) ? await blobService.PresignedGetUrl(u.ProfilePicture, ct) : null,
-        FirstName = u.FirstName,
-        LastName = u.LastName,
-        Email = u.Email,
-        Phone = u.Phone,
-        IsActive = u.IsActive,
-        IsConfirmed = u.IsConfirmed,
-        Role = u.Role
+        var resp = mapper.FromEntity(u);
+        if (!string.IsNullOrEmpty(u.ProfilePicture))
+          resp.ProfilePicture = await blobService.PresignedGetUrl(u.ProfilePicture, ct);
+        return resp;
       }));
 
       return TypedResults.Ok(new PaginatedResponse<UserResponse>

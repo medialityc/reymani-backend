@@ -22,6 +22,7 @@ namespace reymani_web_api.Endpoints.ProductCategories
         s.Summary = "Search product categories";
         s.Description = "Searches for product categories based on the specified criteria.";
       });
+      AllowAnonymous();
     }
 
     public override async Task<Results<Ok<PaginatedResponse<ProductCategoryResponse>>, ProblemDetails>>

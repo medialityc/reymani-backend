@@ -28,6 +28,7 @@ namespace reymani_web_api.Endpoints.ProductCategories
         s.Summary = "Get an active product category by Id";
         s.Description = "Retrieves a single active product category by Id.";
       });
+      AllowAnonymous();
     }
 
     public override async Task<Results<Ok<ProductCategoryResponse>, NotFound, ProblemDetails>> ExecuteAsync(GetProductCategoryByIdRequest req, CancellationToken ct)

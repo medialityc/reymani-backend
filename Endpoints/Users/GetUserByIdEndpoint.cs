@@ -4,6 +4,7 @@ using FastEndpoints;
 using reymani_web_api.Endpoints.Users.Requests;
 using Microsoft.AspNetCore.Http.HttpResults;
 using reymani_web_api.Services.BlobServices;
+using reymani_web_api.Utils.Mappers;
 
 namespace reymani_web_api.Endpoints.Users;
 
@@ -36,17 +37,11 @@ public class GetUserByIdEndpoint : Endpoint<GetUserByIdRequest, Results<Ok<UserR
     if (user is null)
       return TypedResults.NotFound();
 
-    return TypedResults.Ok(new UserResponse
-    {
-      Id = user.Id,
-      ProfilePicture = !string.IsNullOrEmpty(user.ProfilePicture) ? await _blobService.PresignedGetUrl(user.ProfilePicture, ct) : null,
-      FirstName = user.FirstName,
-      LastName = user.LastName,
-      Email = user.Email,
-      Phone = user.Phone,
-      IsActive = user.IsActive,
-      Role = user.Role,
-      IsConfirmed = user.IsConfirmed
-    });
+    var mapper = new UserMapper();
+    var response = mapper.FromEntity(user);
+    if (!string.IsNullOrEmpty(user.ProfilePicture))
+      response.ProfilePicture = await _blobService.PresignedGetUrl(user.ProfilePicture, ct);
+
+    return TypedResults.Ok(response);
   }
 }

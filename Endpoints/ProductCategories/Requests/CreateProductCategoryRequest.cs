@@ -6,6 +6,6 @@ namespace reymani_web_api.Endpoints.ProductCategories.Requests
   {
     public required string Name { get; set; }
 
-    public required IFormFile Logo { get; set; }
+    public required IFormFile? Logo { get; set; }
   }
 }
