@@ -74,6 +74,7 @@ namespace reymani_web_api.Endpoints.Business
       }
 
       business.Municipality = municipality;
+      business.User = user;
 
       _dbContext.Businesses.Add(business);
       await _dbContext.SaveChangesAsync(ct);

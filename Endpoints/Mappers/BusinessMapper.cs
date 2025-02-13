@@ -60,10 +60,10 @@ namespace reymani_web_api.Endpoints.Mappers
         Name = business.Name,
         Description = business.Description,
         Address = business.Address,
-        MunicipalityId = business.Municipality?.Id ?? business.MunicipalityId,
-        MunicipalityName = business.Municipality?.Name ?? "",
+        MunicipalityId = business.Municipality?.Id ?? 0,
+        MunicipalityName = business.Municipality?.Name ?? string.Empty,
         ProvinceId = business.Municipality?.ProvinceId ?? 0,
-        ProvinceName = business.Municipality?.Province?.Name ?? "",
+        ProvinceName = business.Municipality?.Province?.Name ?? string.Empty,
         IsAvailable = business.IsAvailable,
         Logo = string.Empty,
         Banner = string.Empty
