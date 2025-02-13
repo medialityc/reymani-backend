@@ -8,6 +8,7 @@ using reymani_web_api.Endpoints.Commons.Responses;
 using ReymaniWebApi.Data.Models;
 using reymani_web_api.Services.BlobServices;
 using reymani_web_api.Endpoints.ProductCategories.Responses;
+using reymani_web_api.Utils.Mappers;
 
 namespace reymani_web_api.Endpoints.ProductCategories
 {
@@ -67,14 +68,15 @@ namespace reymani_web_api.Endpoints.ProductCategories
                            .Take(req.PageSize ?? 10);
 
       // Mapeo a ProductCategoryResponse
-      var responseData = await Task.WhenAll(data.Select(async pc => new ProductCategoryResponse
+      var mapper = new ProductCategoryMapper();
+      var responseData = await Task.WhenAll(data.Select(async pc =>
       {
-        Id = pc.Id,
-        Name = pc.Name,
-        Logo = !string.IsNullOrEmpty(pc.Logo)
-                 ? await blobService.PresignedGetUrl(pc.Logo, ct)
-                 : null,
-        IsActive = pc.IsActive
+        var response = mapper.FromEntity(pc);
+        // Actualizar logo con URL pre-firmada si corresponde
+        response.Logo = !string.IsNullOrEmpty(pc.Logo)
+                        ? await blobService.PresignedGetUrl(pc.Logo, ct)
+                        : null;
+        return response;
       }));
 
       return TypedResults.Ok(new PaginatedResponse<ProductCategoryResponse>

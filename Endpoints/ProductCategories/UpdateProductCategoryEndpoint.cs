@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using reymani_web_api.Data;
 using reymani_web_api.Endpoints.ProductCategories.Requests;
 using reymani_web_api.Services.BlobServices;
+using reymani_web_api.Utils.Mappers;
 
 namespace reymani_web_api.Endpoints.ProductCategories
 {
@@ -46,17 +47,16 @@ namespace reymani_web_api.Endpoints.ProductCategories
       if (category is null)
         return TypedResults.NotFound();
 
-      // Si se actualiza el logo, almacenarlo usando el servicio de blob
+      var mapper = new ProductCategoryMapper();
+      // Actualizar entidad con los datos de la request
+      category = mapper.ToEntity(req, category);
+
       if (req.Logo != null)
       {
         string fileCode = Guid.NewGuid().ToString();
         string objectPath = await _blobService.UploadObject(req.Logo, fileCode, ct);
         category.Logo = objectPath;
       }
-
-      // Actualizar propiedades
-      category.Name = req.Name;
-      category.IsActive = req.IsActive;
 
       await _dbContext.SaveChangesAsync(ct);
       return TypedResults.Ok();

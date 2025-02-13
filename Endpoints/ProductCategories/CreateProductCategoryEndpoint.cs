@@ -9,6 +9,7 @@ using reymani_web_api.Endpoints.ProductCategories.Requests;
 using reymani_web_api.Services.BlobServices;
 
 using ReymaniWebApi.Data.Models;
+using reymani_web_api.Utils.Mappers;
 
 namespace reymani_web_api.Endpoints.ProductCategories
 {
@@ -43,20 +44,15 @@ namespace reymani_web_api.Endpoints.ProductCategories
         return TypedResults.Conflict();
       }
 
-      var imageUrl = string.Empty;
+      var mapper = new ProductCategoryMapper();
+      var productCategory = mapper.ToEntity(req);
+
       if (req.Logo != null)
       {
         string fileCode = Guid.NewGuid().ToString();
         string objectPath = await _blobService.UploadObject(req.Logo, fileCode, ct);
-        imageUrl = objectPath;
+        productCategory.Logo = objectPath;
       }
-
-      var productCategory = new ProductCategory
-      {
-        Name = req.Name.Trim(),
-        Logo = imageUrl,
-        IsActive = true
-      };
 
       await _dbContext.ProductCategories.AddAsync(productCategory, ct);
       await _dbContext.SaveChangesAsync(ct);

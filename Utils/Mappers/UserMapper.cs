@@ -7,9 +7,9 @@ using ReymaniWebApi.Data.Models;
 
 namespace reymani_web_api.Utils.Mappers;
 
-public class UserMapper : Mapper<CreateUserRequest, UserResponse, User>
+public class UserMapper
 {
-  public override User ToEntity(CreateUserRequest r) => new()
+  public User ToEntity(CreateUserRequest r) => new()
   {
     ProfilePicture = string.Empty,
     FirstName = r.FirstName,
@@ -22,7 +22,7 @@ public class UserMapper : Mapper<CreateUserRequest, UserResponse, User>
     IsConfirmed = r.IsConfirmed
   };
 
-  public override UserResponse FromEntity(User e) => new()
+  public UserResponse FromEntity(User e) => new()
   {
     Id = e.Id,
     ProfilePicture = e.ProfilePicture,

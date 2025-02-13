@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using reymani_web_api.Data;
 using reymani_web_api.Endpoints.ProductCategories.Responses;
 using reymani_web_api.Services.BlobServices;
+using reymani_web_api.Utils.Mappers;
 
 namespace reymani_web_api.Endpoints.ProductCategories
 {
@@ -36,12 +37,14 @@ namespace reymani_web_api.Endpoints.ProductCategories
           .OrderBy(pc => pc.Id)
           .AsEnumerable();
 
-      var response = await Task.WhenAll(categories.Select(async pc => new ProductCategoryResponse
+      var mapper = new ProductCategoryMapper();
+      var response = await Task.WhenAll(categories.Select(async pc =>
       {
-        Id = pc.Id,
-        Name = pc.Name,
-        Logo = pc.Logo != null ? await _blobService.PresignedGetUrl(pc.Logo, ct) : null,
-        IsActive = pc.IsActive
+        var res = mapper.FromEntity(pc);
+        res.Logo = !string.IsNullOrEmpty(pc.Logo)
+            ? await _blobService.PresignedGetUrl(pc.Logo, ct)
+            : null;
+        return res;
       }));
 
       return TypedResults.Ok(response.AsEnumerable());

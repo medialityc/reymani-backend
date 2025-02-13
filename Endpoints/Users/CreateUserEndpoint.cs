@@ -12,7 +12,7 @@ using reymani_web_api.Utils.Mappers;
 
 namespace reymani_web_api.Endpoints.Users
 {
-  public class CreateUserEndpoint : Endpoint<CreateUserRequest, Results<Created<UserResponse>, Conflict, ProblemDetails>, UserMapper>
+  public class CreateUserEndpoint : Endpoint<CreateUserRequest, Results<Created<UserResponse>, Conflict, ProblemDetails>>
   {
     private readonly AppDbContext _dbContext;
     private readonly IBlobService _blobService;
@@ -43,7 +43,8 @@ namespace reymani_web_api.Endpoints.Users
         return TypedResults.Conflict();
       }
 
-      var user = Map.ToEntity(req);
+      var mapper = new UserMapper();
+      var user = mapper.ToEntity(req);
       user.Password = BCrypt.Net.BCrypt.HashPassword(req.Password);
 
       if (req.ProfilePicture != null)
@@ -56,7 +57,7 @@ namespace reymani_web_api.Endpoints.Users
       _dbContext.Users.Add(user);
       await _dbContext.SaveChangesAsync(ct);
 
-      var response = Map.FromEntity(user);
+      var response = mapper.FromEntity(user);
       if (!string.IsNullOrEmpty(user.ProfilePicture))
       {
         response.ProfilePicture = await _blobService.PresignedGetUrl(user.ProfilePicture, ct);

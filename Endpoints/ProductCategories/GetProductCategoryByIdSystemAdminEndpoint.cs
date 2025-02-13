@@ -6,6 +6,7 @@ using reymani_web_api.Data;
 using reymani_web_api.Endpoints.ProductCategories.Responses;
 using reymani_web_api.Endpoints.ProductCategories.Requests;
 using reymani_web_api.Services.BlobServices;
+using reymani_web_api.Utils.Mappers;
 
 namespace reymani_web_api.Endpoints.ProductCategories
 {
@@ -33,18 +34,15 @@ namespace reymani_web_api.Endpoints.ProductCategories
 
     public override async Task<Results<Ok<ProductCategoryResponse>, NotFound, ProblemDetails>> ExecuteAsync(GetProductCategoryByIdRequest req, CancellationToken ct)
     {
-      // Buscar la categoría por Id sin filtrar por IsActive
       var pc = await _dbContext.ProductCategories.FirstOrDefaultAsync(p => p.Id == req.Id, ct);
       if (pc == null)
         return TypedResults.NotFound();
 
-      var response = new ProductCategoryResponse
-      {
-        Id = pc.Id,
-        Name = pc.Name,
-        Logo = pc.Logo != null ? await _blobService.PresignedGetUrl(pc.Logo, ct) : null,
-        IsActive = pc.IsActive
-      };
+      var mapper = new ProductCategoryMapper();
+      var response = mapper.FromEntity(pc);
+      response.Logo = !string.IsNullOrEmpty(pc.Logo)
+          ? await _blobService.PresignedGetUrl(pc.Logo, ct)
+          : null;
 
       return TypedResults.Ok(response);
     }
