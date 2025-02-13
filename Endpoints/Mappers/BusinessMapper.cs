@@ -51,5 +51,23 @@ namespace reymani_web_api.Endpoints.Mappers
         ProvinceName = provinceName
       };
     }
+
+    public BusinessResponse ToBusinessResponse(BusinessModel business)
+    {
+      return new BusinessResponse
+      {
+        Id = business.Id,
+        Name = business.Name,
+        Description = business.Description,
+        Address = business.Address,
+        MunicipalityId = business.Municipality?.Id ?? business.MunicipalityId,
+        MunicipalityName = business.Municipality?.Name ?? "",
+        ProvinceId = business.Municipality?.ProvinceId ?? 0,
+        ProvinceName = business.Municipality?.Province?.Name ?? "",
+        IsAvailable = business.IsAvailable,
+        Logo = string.Empty,
+        Banner = string.Empty
+      };
+    }
   }
 }
