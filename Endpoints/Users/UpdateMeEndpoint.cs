@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using reymani_web_api.Data;
 using reymani_web_api.Endpoints.Users.Requests;
 using reymani_web_api.Services.BlobServices;
+using reymani_web_api.Endpoints.Mappers;
 
 namespace reymani_web_api.Endpoints.Users
 {
@@ -57,11 +58,8 @@ namespace reymani_web_api.Endpoints.Users
         user.ProfilePicture = objectPath;
       }
 
-      // Actualizar propiedades del usuario
-      user.FirstName = req.FirstName;
-      user.LastName = req.LastName;
-      user.Email = req.Email;
-      user.Phone = req.Phone;
+      // Actualizar el resto de propiedades usando el mapper
+      new UserMapper().ToEntity(req, user);
 
       await _dbContext.SaveChangesAsync(ct);
       return TypedResults.Ok();
