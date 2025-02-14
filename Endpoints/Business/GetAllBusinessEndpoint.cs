@@ -37,7 +37,7 @@ namespace reymani_web_api.Endpoints.Business
     {
       var businesses = _dbContext.Businesses
         .Include(b => b.Municipality)
-        .ThenInclude(m => m.Province!)
+        .ThenInclude(m => m!.Province)
         .Where(b => b.IsActive)
         .OrderBy(b => b.Id)
         .AsEnumerable();

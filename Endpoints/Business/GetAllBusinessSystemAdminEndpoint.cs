@@ -38,7 +38,7 @@ public class GetAllBusinessSystemAdminEndpoint : EndpointWithoutRequest<Results<
   {
     var businesses = _dbContext.Businesses
       .Include(b => b.Municipality)
-      .ThenInclude(m => m.Province!)
+      .ThenInclude(m => m!.Province)
       .Include(b => b.User)
       .OrderBy(b => b.Id)
       .AsEnumerable();
