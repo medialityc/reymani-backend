@@ -25,6 +25,29 @@ namespace reymani_web_api.Endpoints.Mappers
       };
     }
 
+    public BusinessModel ToEntity(UpdateBusinessRequest r, BusinessModel existing)
+    {
+      existing.Name = r.Name;
+      existing.Description = r.Description;
+      existing.UserId = r.UserId;
+      existing.Address = r.Address;
+      existing.MunicipalityId = r.MunicipalityId;
+      existing.IsAvailable = r.IsAvailable;
+      existing.IsActive = r.IsActive;
+      return existing;
+    }
+
+    // Nuevo método para mapear UpdateMyBusinessRequest
+    public BusinessModel ToEntity(UpdateMyBusinessRequest req, BusinessModel existing)
+    {
+      existing.Name = req.Name;
+      existing.Description = req.Description;
+      existing.Address = req.Address;
+      existing.MunicipalityId = req.MunicipalityId;
+      existing.IsAvailable = req.IsAvailable;
+      return existing;
+    }
+
     public BusinessSystemAdminResponse FromEntity(BusinessModel business)
     {
       // Se aplican comprobaciones para evitar referencias nulas.
