@@ -12,7 +12,7 @@ using reymani_web_api.Services.BlobServices;
 
 namespace reymani_web_api.Endpoints.Business;
 
-public class GetAllBusinessSystemAdminEndpoint : EndpointWithoutRequest<Results<Ok<IEnumerable<BusinessSystemAdminResponse>>, ProblemDetails>>
+public class GetAllBusinessSystemAdminEndpoint : EndpointWithoutRequest<Results<Ok<IEnumerable<SimpleBusinessSystemAdminResponse>>, ProblemDetails>>
 {
   private readonly AppDbContext _dbContext;
   private readonly IBlobService _blobService;
@@ -34,7 +34,7 @@ public class GetAllBusinessSystemAdminEndpoint : EndpointWithoutRequest<Results<
     Roles("SystemAdmin");
   }
 
-  public override async Task<Results<Ok<IEnumerable<BusinessSystemAdminResponse>>, ProblemDetails>> ExecuteAsync(CancellationToken ct)
+  public override async Task<Results<Ok<IEnumerable<SimpleBusinessSystemAdminResponse>>, ProblemDetails>> ExecuteAsync(CancellationToken ct)
   {
     var businesses = _dbContext.Businesses
       .Include(b => b.Municipality)
@@ -46,7 +46,7 @@ public class GetAllBusinessSystemAdminEndpoint : EndpointWithoutRequest<Results<
     var mapper = new BusinessMapper();
     var response = await Task.WhenAll(businesses.Select(async b =>
     {
-      var res = mapper.FromEntity(b);
+      var res = mapper.ToSimpleBusinessSystemAdminResponse(b);
 
       if (!string.IsNullOrEmpty(b.Logo))
         res.Logo = await _blobService.PresignedGetUrl(b.Logo, ct);

@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace reymani_web_api.Endpoints.Business
 {
-  public class GetAllBusinessEndpoint : EndpointWithoutRequest<Results<Ok<IEnumerable<BusinessResponse>>, ProblemDetails>>
+  public class GetAllBusinessEndpoint : EndpointWithoutRequest<Results<Ok<IEnumerable<SimpleBusinessResponse>>, ProblemDetails>>
   {
     private readonly AppDbContext _dbContext;
     private readonly IBlobService _blobService;
@@ -33,7 +33,7 @@ namespace reymani_web_api.Endpoints.Business
       AllowAnonymous();
     }
 
-    public override async Task<Results<Ok<IEnumerable<BusinessResponse>>, ProblemDetails>> ExecuteAsync(CancellationToken ct)
+    public override async Task<Results<Ok<IEnumerable<SimpleBusinessResponse>>, ProblemDetails>> ExecuteAsync(CancellationToken ct)
     {
       var businesses = _dbContext.Businesses
         .Include(b => b.Municipality)
@@ -45,7 +45,7 @@ namespace reymani_web_api.Endpoints.Business
       var mapper = new BusinessMapper();
       var response = await Task.WhenAll(businesses.Select(async b =>
       {
-        var res = mapper.ToBusinessResponse(b);
+        var res = mapper.ToSimpleBusinessResponse(b);
 
         if (!string.IsNullOrEmpty(b.Logo))
           res.Logo = await _blobService.PresignedGetUrl(b.Logo, ct);

@@ -92,5 +92,41 @@ namespace reymani_web_api.Endpoints.Mappers
         Banner = string.Empty
       };
     }
+
+    // Mapea de BusinessModel a SimpleBusinessResponse
+    public SimpleBusinessResponse ToSimpleBusinessResponse(BusinessModel business)
+    {
+      return new SimpleBusinessResponse
+      {
+        Id = business.Id,
+        Name = business.Name,
+        Description = business.Description,
+        Address = business.Address,
+        MunicipalityId = business.Municipality?.Id ?? business.MunicipalityId,
+        IsAvailable = business.IsAvailable,
+        Logo = string.Empty,
+        Banner = string.Empty
+      };
+    }
+
+    // Mapea de BusinessModel a SimpleBusinessSystemAdminResponse
+    public SimpleBusinessSystemAdminResponse ToSimpleBusinessSystemAdminResponse(BusinessModel business)
+    {
+      var userFullName = ((business.User?.FirstName ?? "") + " " + (business.User?.LastName ?? "")).Trim();
+      return new SimpleBusinessSystemAdminResponse
+      {
+        Id = business.Id,
+        Name = business.Name,
+        Description = business.Description,
+        UserId = business.UserId,
+        UserFullName = userFullName,
+        Address = business.Address,
+        MunicipalityId = business.Municipality?.Id ?? business.MunicipalityId,
+        IsAvailable = business.IsAvailable,
+        IsActive = business.IsActive,
+        Logo = string.Empty,
+        Banner = string.Empty
+      };
+    }
   }
 }
