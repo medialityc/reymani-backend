@@ -4,6 +4,7 @@ using reymani_web_api.Endpoints.Users.Responses;
 using Microsoft.AspNetCore.Http.HttpResults;
 using reymani_web_api.Services.BlobServices;
 using reymani_web_api.Endpoints.Mappers;
+using Microsoft.EntityFrameworkCore;
 
 namespace reymani_web_api.Endpoints.Users
 {
@@ -34,7 +35,10 @@ namespace reymani_web_api.Endpoints.Users
       var userIdClaim = User.Claims.First(c => c.Type == "Id");
       int userId = int.Parse(userIdClaim.Value);
 
-      var user = await _dbContext.Users.FindAsync(new object[] { userId }, ct);
+      // Uso de AsNoTracking para evitar el seguimiento del contexto
+      var user = await _dbContext.Users
+        .AsNoTracking()
+        .FirstOrDefaultAsync(u => u.Id == userId, ct);
       if (user is null)
         return TypedResults.NotFound();
 

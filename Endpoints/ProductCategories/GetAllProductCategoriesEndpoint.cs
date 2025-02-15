@@ -6,6 +6,7 @@ using reymani_web_api.Data;
 using reymani_web_api.Endpoints.ProductCategories.Responses;
 using reymani_web_api.Services.BlobServices;
 using reymani_web_api.Endpoints.Mappers;
+using Microsoft.EntityFrameworkCore;
 
 namespace reymani_web_api.Endpoints.ProductCategories
 {
@@ -36,6 +37,7 @@ namespace reymani_web_api.Endpoints.ProductCategories
       var categories = _dbContext.ProductCategories
         .Where(pc => pc.IsActive)
         .OrderBy(pc => pc.Id)
+        .AsNoTracking()
         .AsEnumerable();
 
       var mapper = new ProductCategoryMapper();

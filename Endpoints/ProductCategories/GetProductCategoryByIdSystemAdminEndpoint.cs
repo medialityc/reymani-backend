@@ -34,7 +34,7 @@ namespace reymani_web_api.Endpoints.ProductCategories
 
     public override async Task<Results<Ok<ProductCategoryResponse>, NotFound, ProblemDetails>> ExecuteAsync(GetProductCategoryByIdRequest req, CancellationToken ct)
     {
-      var pc = await _dbContext.ProductCategories.FirstOrDefaultAsync(p => p.Id == req.Id, ct);
+      var pc = await _dbContext.ProductCategories.AsNoTracking().FirstOrDefaultAsync(p => p.Id == req.Id, ct);
       if (pc == null)
         return TypedResults.NotFound();
 

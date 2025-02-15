@@ -8,6 +8,7 @@ using reymani_web_api.Data;
 using reymani_web_api.Endpoints.Users.Responses;
 using reymani_web_api.Services.BlobServices;
 using reymani_web_api.Endpoints.Mappers;
+using Microsoft.EntityFrameworkCore;
 
 namespace reymani_web_api.Endpoints.Users
 {
@@ -36,7 +37,7 @@ namespace reymani_web_api.Endpoints.Users
     public override async Task<Results<Ok<IEnumerable<UserResponse>>, ProblemDetails>> ExecuteAsync(CancellationToken ct)
     {
       var mapper = new UserMapper();
-      var users = _dbContext.Users.OrderBy(u => u.Id).AsEnumerable();
+      var users = _dbContext.Users.OrderBy(u => u.Id).AsNoTracking().AsEnumerable();
       var response = await Task.WhenAll(users.Select(async u =>
       {
         var resp = mapper.FromEntity(u);

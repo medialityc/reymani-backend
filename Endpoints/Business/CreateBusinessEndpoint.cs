@@ -34,20 +34,20 @@ namespace reymani_web_api.Endpoints.Business
 
     public override async Task<Results<Created<BusinessSystemAdminResponse>, Conflict, ProblemDetails>> ExecuteAsync(CreateBusinessRequest req, CancellationToken ct)
     {
-      var existingBusiness = await _dbContext.Businesses.FirstOrDefaultAsync(x => x.Name == req.Name, ct);
+      var existingBusiness = await _dbContext.Businesses.AsNoTracking().FirstOrDefaultAsync(x => x.Name == req.Name, ct);
       if (existingBusiness != null)
       {
         return TypedResults.Conflict();
       }
 
-      var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Id == req.UserId, ct);
+      var user = await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Id == req.UserId, ct);
       if (user == null || user.Role != Data.Models.UserRole.BusinessAdmin)
       {
         AddError(req => req.UserId, "Usuario no encontrado o no es un administrador de negocio.");
       }
 
       var municipality = await _dbContext.Municipalities
-                            .Include(x => x.Province)
+                            .Include(x => x.Province).AsNoTracking()
                             .FirstOrDefaultAsync(x => x.Id == req.MunicipalityId, ct);
       if (municipality == null)
       {
