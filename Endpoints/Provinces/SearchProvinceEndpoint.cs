@@ -43,13 +43,19 @@ public class SearchProvincesEndpoint : Endpoint<SearchProvincesRequest, Results<
     // Filtrado
     if (!string.IsNullOrEmpty(req.Name))
     {
-      query = query.Where(p => p.Name.Contains(req.Name));
+      query = query.Where(p => p.Name.ToLower().Contains(req.Name.ToLower()));
     }
 
     if (req.Id.HasValue)
     {
       query = query.Where(p => p.Id == req.Id.Value);
     }
+
+    if (!string.IsNullOrEmpty(req.NameMunicipalitie))
+    {
+      query = query.Where(p => p.Municipalities.Any(m => m.Name.ToLower().Contains(req.NameMunicipalitie.ToLower())));
+    }
+
 
     // Ordenamiento
     if (!string.IsNullOrEmpty(req.SortBy))

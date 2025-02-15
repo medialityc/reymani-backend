@@ -4,6 +4,7 @@ public class SearchProvincesRequest
 {
   public int? Id { get; set; }
   public string? Name { get; set; }
+  public string? NameMunicipalitie { get; set; }
 
   // Ordenamiento y paginación
   public string? SortBy { get; set; } = "FirstName";

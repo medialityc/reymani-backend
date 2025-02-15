@@ -33,7 +33,6 @@ public class UpdateProvinceEndpoint : Endpoint<UpdateProvinceRequest, Results<Ok
       s.Description = "Updates details of an existing province.";
     });
     Roles("SystemAdmin");
-    AllowFormData();
   }
 
   public override async Task<Results<Ok, NotFound, Conflict, UnauthorizedHttpResult, ForbidHttpResult, ProblemDetails>> ExecuteAsync(UpdateProvinceRequest req, CancellationToken ct)

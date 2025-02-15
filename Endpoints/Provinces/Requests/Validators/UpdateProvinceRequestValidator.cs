@@ -8,7 +8,6 @@ public class UpdateProvinceRequestValidator : Validator<UpdateProvinceRequest>
 {
   public UpdateProvinceRequestValidator()
   {
-
     RuleFor(x => x.Name).NotEmpty();
   }
 }
