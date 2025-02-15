@@ -32,8 +32,7 @@ public class CreateProvinceEndpoint : Endpoint<CreateProvinceRequest, Results<Cr
       s.Description = "Creates a new province.";
     });
     AllowFormData();
-    //Roles("SystemAdmin");
-    AllowAnonymous();
+    Roles("SystemAdmin");
   }
 
   public override async Task<Results<Created<ProvinceResponse>, Conflict, UnauthorizedHttpResult, ForbidHttpResult, ProblemDetails>> ExecuteAsync(CreateProvinceRequest req, CancellationToken ct)

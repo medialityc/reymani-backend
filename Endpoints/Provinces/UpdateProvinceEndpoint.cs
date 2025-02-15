@@ -32,8 +32,7 @@ public class UpdateProvinceEndpoint : Endpoint<UpdateProvinceRequest, Results<Ok
       s.Summary = "Update province";
       s.Description = "Updates details of an existing province.";
     });
-    //Roles("SystemAdmin");
-    AllowAnonymous();
+    Roles("SystemAdmin");
     AllowFormData();
   }
 

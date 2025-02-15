@@ -27,8 +27,7 @@ public class DeleteProvinceEndpoint : Endpoint<DeleteProvinceRequest, Results<Ok
       s.Summary = "Delete province";
       s.Description = "Deletes a province if it is not in use by any municipalities.";
     });
-    //Roles("SystemAdmin");
-    AllowAnonymous();
+    Roles("SystemAdmin");
   }
 
   public override async Task<Results<Ok, NotFound, Conflict, UnauthorizedHttpResult, ForbidHttpResult, ProblemDetails>> ExecuteAsync(DeleteProvinceRequest req, CancellationToken ct)
