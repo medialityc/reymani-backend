@@ -2,21 +2,23 @@ name: Tests
 
 on:
   push:
-    branches: 
+    branches:
       - main
       - dev
+      - eduardo
   pull_request:
-    branches: 
+    branches:
       - main
       - dev
+      - eduardo
   workflow_dispatch:
 
 jobs:
   build-test:
     name: Build & Test
     env:
-      BUILD_CONFIG: 'Release'
-      SOLUTION: 'reymani-web-api.sln'
+      BUILD_CONFIG: "Release"
+      SOLUTION: "reymani-web-api.sln"
     runs-on: ubuntu-latest
     permissions:
       id-token: write
@@ -25,12 +27,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      
+
       - name: Setup .Net
         uses: actions/setup-dotnet@v2
         with:
           dotnet-version: 8.x
-          
+
       - name: Restore dependencies
         run: dotnet restore $SOLUTION
 
@@ -45,6 +47,6 @@ jobs:
         if: always()
         with:
           name: Test Report
-          path: '**/test-results.trx'
+          path: "**/test-results.trx"
           reporter: dotnet-trx
           fail-on-error: true
