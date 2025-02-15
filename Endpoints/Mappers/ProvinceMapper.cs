@@ -1,5 +1,7 @@
-﻿using reymani_web_api.Endpoints.Municipalities.Responses;
-using reymani_web_api.Endpoints.Users.Responses;
+﻿
+using reymani_web_api.Endpoints.Municipalities.Responses;
+using reymani_web_api.Endpoints.Provinces.Requests;
+using reymani_web_api.Endpoints.Provinces.Responses;
 using ReymaniWebApi.Data.Models;
 
 namespace reymani_web_api.Endpoints.Mappers;
@@ -22,4 +24,13 @@ public class ProvinceMapper
     };
   }
 
+  public Province ToEntity(CreateProvinceRequest req)
+  {
+    return new Province
+    {
+      Name = req.Name,
+      CreatedAt = DateTime.UtcNow,
+      UpdatedAt = DateTime.UtcNow
+    };
+  }
 }

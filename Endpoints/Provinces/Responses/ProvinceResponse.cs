@@ -3,9 +3,8 @@ using System;
 using reymani_web_api.Data.Models;
 using reymani_web_api.Endpoints.Municipalities.Responses;
 
-using ReymaniWebApi.Data.Models;
 
-namespace reymani_web_api.Endpoints.Users.Responses;
+namespace reymani_web_api.Endpoints.Provinces.Responses;
 
 public class ProvinceResponse
 {

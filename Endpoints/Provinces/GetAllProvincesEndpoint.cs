@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using reymani_web_api.Data;
 
 using reymani_web_api.Endpoints.Mappers;
-using reymani_web_api.Endpoints.Users.Responses;
+using reymani_web_api.Endpoints.Provinces.Responses;
 using reymani_web_api.Services.BlobServices;
 
 namespace reymani_web_api.Endpoints.Provinces;
