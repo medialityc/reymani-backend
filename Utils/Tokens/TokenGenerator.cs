@@ -15,7 +15,7 @@ namespace reymani_web_api.Utils.Tokens
       _authOptions = options.Value;
     }
 
-    public string GenerateToken(User user)
+    public virtual string GenerateToken(User user)
     {
       var secretKey = _authOptions.JwtToken;
       if (string.IsNullOrEmpty(secretKey))

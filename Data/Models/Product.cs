@@ -20,6 +20,6 @@ namespace ReymaniWebApi.Data.Models
     public required double Rating { get; set; } // 0 to 5
     public required int CategoryId { get; set; }
     public ProductCategory? Category { get; set; }
-    public required int Capacity { get; set; } // High -> 3, Medium -> 2, Low -> 1
+    public required Capacity Capacity { get; set; } // High -> 3, Medium -> 2, Low -> 1
   }
 }

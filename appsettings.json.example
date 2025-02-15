@@ -1,0 +1,32 @@
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Host=host;Port=5432;Database=db;Username=postgres;Password=postgres",
+  },
+  "AuthOptions": {
+    "JwtToken": "",
+    "SystemAdminEmail": "",
+    "SystemAdminPassword": "",
+    "BusinessAdminEmail": "",
+    "BusinessAdminPassword": "",
+    "CourierEmail": "",
+    "CourierPassword": "",
+    "CustomerEmail": "",
+    "CustomerPassword": ""
+  },
+  "GoogleEmailSender": {
+    "EnableSsl": true,
+    "Host": "",
+    "Password": "",
+    "Port": "",
+    "SenderEmail": "",
+    "SenderName": "",
+    "User": ""
+  },
+  "Minio": {
+    "AccessKey": "",
+    "Bucket": "",
+    "Endpoint": "",
+    "SecretKey": "",
+    "Port": ""
+  }
+}

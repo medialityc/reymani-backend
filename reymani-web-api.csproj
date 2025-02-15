@@ -27,7 +27,31 @@
 
   <ItemGroup>
     <Folder Include="Data\Migrations\" />
-
   </ItemGroup>
+
+  <ItemGroup>
+      <Compile Remove="Tests\**" />
+      <EmbeddedResource Remove="Tests\**" />
+      <Content Remove="Tests\**" />
+      <None Remove="Tests\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Update="appsettings.json.example">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Tests\obj\Tests.csproj.nuget.dgspec.json" />
+      <_ContentIncludedByDefault Remove="Tests\obj\project.assets.json" />
+      <_ContentIncludedByDefault Remove="Tests\obj\project.packagespec.json" />
+    </ItemGroup>
 
 </Project>

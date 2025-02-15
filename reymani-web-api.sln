@@ -5,6 +5,8 @@ VisualStudioVersion = 17.5.002.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "reymani-web-api", "reymani-web-api.csproj", "{5288407D-1B2C-4BAF-BA02-74A3D4BE8096}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{EBCE2183-1CC7-4C70-99AE-5571AC419B53}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{5288407D-1B2C-4BAF-BA02-74A3D4BE8096}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5288407D-1B2C-4BAF-BA02-74A3D4BE8096}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5288407D-1B2C-4BAF-BA02-74A3D4BE8096}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBCE2183-1CC7-4C70-99AE-5571AC419B53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBCE2183-1CC7-4C70-99AE-5571AC419B53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBCE2183-1CC7-4C70-99AE-5571AC419B53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBCE2183-1CC7-4C70-99AE-5571AC419B53}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -23,14 +23,14 @@ bld.Services.AddScoped<TokenGenerator>();
 
 bld.Services
   .AddCors(options =>
+  {
+    options.AddPolicy("AllowAll", builder =>
     {
-      options.AddPolicy("AllowAll", builder =>
-        {
-          builder.AllowAnyOrigin()
-                 .AllowAnyMethod()
-                 .AllowAnyHeader();
-        });
-    })
+      builder.AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader();
+    });
+  })
   .AddAuthenticationJwtBearer(s => s.SigningKey = bld.Configuration["AuthOptions:JwtToken"])
   .AddAuthorization()
   .AddFastEndpoints()
@@ -60,9 +60,16 @@ var app = bld.Build();
 // Apply migrations and seed the database
 using (var scope = app.Services.CreateScope())
 {
-  var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-  dbContext.Database.Migrate();
-  SeedData.Initialize(scope.ServiceProvider);
+  try
+  {
+    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    dbContext.Database.Migrate();
+    SeedData.Initialize(scope.ServiceProvider);
+  }
+  catch
+  {
+    Console.WriteLine("Error during Migrations and Seeds");
+  }
 }
 
 app.UseCors("AllowAll")
@@ -79,3 +86,7 @@ app.MapGet("/", context =>
 });
 
 app.Run();
+
+public partial class Program
+{
+}

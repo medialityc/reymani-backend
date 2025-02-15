@@ -14,28 +14,28 @@ namespace reymani_web_api.Data
     {
     }
 
-    // DbSet properties
-    public DbSet<User> Users { get; set; }
-    public DbSet<Municipality> Municipalities { get; set; }
-    public DbSet<Province> Provinces { get; set; }
-    public DbSet<UserAddress> UserAddresses { get; set; }
-    public DbSet<Business> Businesses { get; set; }
-    public DbSet<ProductCategory> ProductCategories { get; set; }
-    public DbSet<VehicleType> VehicleTypes { get; set; }
-    public DbSet<Vehicle> Vehicles { get; set; }
-    public DbSet<Product> Products { get; set; }
-    public DbSet<ShippingCost> ShippingCosts { get; set; }
-    public DbSet<ShoppingCart> ShoppingCarts { get; set; }
-    public DbSet<ShoppingCartItem> ShoppingCartItems { get; set; }
-    public DbSet<Order> Orders { get; set; }
-    public DbSet<OrderItem> OrderItems { get; set; }
-    public DbSet<ConfirmationNumber> ConfirmationNumbers { get; set; }
-    public DbSet<ForgotPasswordNumber> ForgotPasswordNumbers { get; set; }
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    public AppDbContext()
     {
-      base.OnModelCreating(modelBuilder);
+      
     }
+
+    // DbSet properties
+    public virtual DbSet<User> Users { get; set; }
+    public virtual DbSet<Municipality> Municipalities { get; set; }
+    public virtual DbSet<Province> Provinces { get; set; }
+    public virtual DbSet<UserAddress> UserAddresses { get; set; }
+    public virtual DbSet<Business> Businesses { get; set; }
+    public virtual DbSet<ProductCategory> ProductCategories { get; set; }
+    public virtual DbSet<VehicleType> VehicleTypes { get; set; }
+    public virtual DbSet<Vehicle> Vehicles { get; set; }
+    public virtual DbSet<Product> Products { get; set; }
+    public virtual DbSet<ShippingCost> ShippingCosts { get; set; }
+    public virtual DbSet<ShoppingCart> ShoppingCarts { get; set; }
+    public virtual DbSet<ShoppingCartItem> ShoppingCartItems { get; set; }
+    public virtual DbSet<Order> Orders { get; set; }
+    public virtual DbSet<OrderItem> OrderItems { get; set; }
+    public virtual DbSet<ConfirmationNumber> ConfirmationNumbers { get; set; }
+    public virtual DbSet<ForgotPasswordNumber> ForgotPasswordNumbers { get; set; }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
     {
