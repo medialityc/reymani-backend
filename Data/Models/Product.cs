@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-
 using reymani_web_api.Data.Models;
 
 namespace ReymaniWebApi.Data.Models
@@ -14,12 +11,11 @@ namespace ReymaniWebApi.Data.Models
     public Business? Business { get; set; }
     public required bool IsAvailable { get; set; }
     public required bool IsActive { get; set; }
-    public required List<string>? Images { get; set; } // Optional
+    public required List<string>? Images { get; set; }
     public required decimal Price { get; set; }
     public required decimal? DiscountPrice { get; set; }
-    public required double Rating { get; set; } // 0 to 5
     public required int CategoryId { get; set; }
     public ProductCategory? Category { get; set; }
-    public required int Capacity { get; set; } // High -> 3, Medium -> 2, Low -> 1
+    public required int Capacity { get; set; }
   }
 }
