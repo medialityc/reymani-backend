@@ -76,6 +76,11 @@ public class RegisterTests : IClassFixture<CustomWebApplicationFactory>
     {
       basePath = basePath.Substring(0, binIndex);
     }
+    binIndex = basePath.IndexOf(@"\bin", StringComparison.Ordinal);
+    if (binIndex > 0)
+    {
+      basePath = basePath.Substring(0, binIndex);
+    }
     var imgPath = Path.Combine(basePath, "Files", "img.png");
     var imgContent = new ByteArrayContent(await File.ReadAllBytesAsync(imgPath));
     imgContent.Headers.ContentType = new MediaTypeHeaderValue("image/png");
@@ -178,6 +183,11 @@ public class RegisterTests : IClassFixture<CustomWebApplicationFactory>
     
     var basePath = env.ContentRootPath;
     var binIndex = basePath.IndexOf(@"\bin", StringComparison.Ordinal);
+    if (binIndex > 0)
+    {
+      basePath = basePath.Substring(0, binIndex);
+    }
+    binIndex = basePath.IndexOf(@"\bin", StringComparison.Ordinal);
     if (binIndex > 0)
     {
       basePath = basePath.Substring(0, binIndex);
