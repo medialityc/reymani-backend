@@ -76,7 +76,7 @@ public class RegisterTests : IClassFixture<CustomWebApplicationFactory>
     {
       basePath = basePath.Substring(0, binIndex);
     }
-    binIndex = basePath.IndexOf(@"\bin", StringComparison.Ordinal);
+    binIndex = basePath.IndexOf("/bin", StringComparison.Ordinal);
     if (binIndex > 0)
     {
       basePath = basePath.Substring(0, binIndex);
@@ -187,7 +187,7 @@ public class RegisterTests : IClassFixture<CustomWebApplicationFactory>
     {
       basePath = basePath.Substring(0, binIndex);
     }
-    binIndex = basePath.IndexOf(@"\bin", StringComparison.Ordinal);
+    binIndex = basePath.IndexOf(@"/bin", StringComparison.Ordinal);
     if (binIndex > 0)
     {
       basePath = basePath.Substring(0, binIndex);
