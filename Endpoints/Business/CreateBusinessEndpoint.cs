@@ -40,14 +40,14 @@ namespace reymani_web_api.Endpoints.Business
         return TypedResults.Conflict();
       }
 
-      var user = await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Id == req.UserId, ct);
+      var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Id == req.UserId, ct);
       if (user == null || user.Role != Data.Models.UserRole.BusinessAdmin)
       {
         AddError(req => req.UserId, "Usuario no encontrado o no es un administrador de negocio.");
       }
 
       var municipality = await _dbContext.Municipalities
-                            .Include(x => x.Province).AsNoTracking()
+                            .Include(x => x.Province)
                             .FirstOrDefaultAsync(x => x.Id == req.MunicipalityId, ct);
       if (municipality == null)
       {
