@@ -14,17 +14,18 @@ namespace Tests.Tests.Auth;
 
 public class LoginTests(CustomWebApplicationFactory factory) : IClassFixture<CustomWebApplicationFactory>
 {
+  private readonly HttpClient _client = factory.CreateClient();
+
   [Fact]
     public async Task TestOk_ActiveAndConfirmedUser()
     {
-        var client = factory.CreateClient();
         var loginRequest = new LoginRequest
         {
             Email = "active_confirmed@example.com",
-            Password = "password123"
+            Password = "Password123!"
         };
         
-        var response = await client.PostAsJsonAsync("/auth/login", loginRequest);
+        var response = await _client.PostAsJsonAsync("/auth/login", loginRequest);
         
         response.StatusCode.Should().Be(HttpStatusCode.OK);
 
@@ -38,41 +39,38 @@ public class LoginTests(CustomWebApplicationFactory factory) : IClassFixture<Cus
     [Fact]
     public async Task TestUnauthorized_InactiveUser()
     {
-        var client = factory.CreateClient();
         var loginRequest = new LoginRequest
         {
             Email = "inactive@example.com",
             Password = "password123"
         };
         
-        var response = await client.PostAsJsonAsync("/auth/login", loginRequest);
+        var response = await _client.PostAsJsonAsync("/auth/login", loginRequest);
         response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
     }
 
     [Fact]
     public async Task TestUnauthorized_UnconfirmedUser()
     {
-        var client = factory.CreateClient();
         var loginRequest = new LoginRequest
         {
             Email = "unconfirmed@example.com",
             Password = "password123"
         };
         
-        var response = await client.PostAsJsonAsync("/auth/login", loginRequest);
+        var response = await _client.PostAsJsonAsync("/auth/login", loginRequest);
         response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
     }
 
     [Fact]
     public async Task TestUnauthorized_BadCredentials()
     {
-        var client = factory.CreateClient();
         var loginRequest = new LoginRequest
         {
             Email = "active_confirmed@example.com",
             Password = "wrongpassword"
         };
-        var response = await client.PostAsJsonAsync("/auth/login", loginRequest);
+        var response = await _client.PostAsJsonAsync("/auth/login", loginRequest);
         response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
     }
 }

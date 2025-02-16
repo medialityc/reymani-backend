@@ -2,11 +2,11 @@
 
 namespace Tests.Tests.Users;
 
-public class UpdateUserTests: IClassFixture<CustomWebApplicationFactory>
+public class UpdateMeTests: IClassFixture<CustomWebApplicationFactory>
 {
   private readonly CustomWebApplicationFactory _factory;
 
-  public UpdateUserTests(CustomWebApplicationFactory factory)
+  public UpdateMeTests(CustomWebApplicationFactory factory)
   {
     _factory = factory;
   }

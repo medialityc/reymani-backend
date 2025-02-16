@@ -5,7 +5,6 @@ using reymani_web_api.Data.Models;
 using ReymaniWebApi.Data.Models;
 
 using Boolean = Faker.Boolean;
-using Enum = Faker.Enum;
 
 namespace Tests.Mock;
 
@@ -15,13 +14,12 @@ public static class FakerGenerator
   {
     var currentTime = DateTimeOffset.Now;
 
-    return new List<User>
-    {
+    return
+    [
       new()
       {
-        Id = 1,
         Email = "active_confirmed@example.com",
-        Password = BCrypt.Net.BCrypt.HashPassword("password123"),
+        Password = BCrypt.Net.BCrypt.HashPassword("Password123!"),
         IsActive = true,
         IsConfirmed = true,
         CreatedAt = currentTime,
@@ -32,9 +30,9 @@ public static class FakerGenerator
         LastName = "Doe",
         ProfilePicture = null
       },
+
       new()
       {
-        Id = 2,
         Email = "admin@example.com",
         Password = BCrypt.Net.BCrypt.HashPassword("password123"),
         IsActive = true,
@@ -47,9 +45,9 @@ public static class FakerGenerator
         LastName = "Doe",
         ProfilePicture = null
       },
+
       new()
       {
-        Id = 3,
         Email = "business@example.com",
         Password = BCrypt.Net.BCrypt.HashPassword("password123"),
         IsActive = true,
@@ -62,9 +60,9 @@ public static class FakerGenerator
         LastName = "Doe",
         ProfilePicture = null
       },
+
       new()
       {
-        Id = 1,
         Email = "customer@example.com",
         Password = BCrypt.Net.BCrypt.HashPassword("password123"),
         IsActive = true,
@@ -77,9 +75,9 @@ public static class FakerGenerator
         LastName = "Doe",
         ProfilePicture = null
       },
+
       new()
       {
-        Id = 5,
         Email = "inactive@example.com",
         Password = BCrypt.Net.BCrypt.HashPassword("password123"),
         IsActive = false,
@@ -92,9 +90,9 @@ public static class FakerGenerator
         LastName = "Doe",
         ProfilePicture = null
       },
+
       new()
       {
-        Id = 6,
         Email = "unconfirmed@example.com",
         Password = BCrypt.Net.BCrypt.HashPassword("password123"),
         IsActive = true,
@@ -107,7 +105,7 @@ public static class FakerGenerator
         LastName = "Doe",
         ProfilePicture = null
       }
-    };
+    ];
   }
 
   public static List<ProductCategory> GetFakeProductCategories(
@@ -117,9 +115,8 @@ public static class FakerGenerator
     var currentTime = DateTimeOffset.Now;
 
     return Enumerable.Range(0, amount)
-      .Select(i => new ProductCategory
+      .Select(_ => new ProductCategory
       {
-        Id = i,
         Name = Company.Name(),
         Logo = RandomNumber.Next(2) == 0 ? null : Internet.Url(),
         IsActive = isActive ?? Boolean.Random(),
@@ -139,9 +136,8 @@ public static class FakerGenerator
     var currentTime = DateTimeOffset.Now;
 
     return Enumerable.Range(0, amount)
-      .Select(i => new UserAddress
+      .Select(_ => new UserAddress
       {
-        Id = i,
         Address = Address.StreetAddress(),
         Notes = RandomNumber.Next(2) == 0 ? null : Lorem.Sentence(),
         Name = Company.Name(),
@@ -161,9 +157,8 @@ public static class FakerGenerator
     var currentTime = DateTimeOffset.Now;
 
     return Enumerable.Range(0, amount)
-      .Select(i => new VehicleType
+      .Select(_ => new VehicleType
       {
-        Id = i,
         Name = Company.Name(),
         IsActive = isActive ?? Boolean.Random(),
         CreatedAt = currentTime,
@@ -174,42 +169,25 @@ public static class FakerGenerator
       .ToList();
   }
 
-  public static List<ConfirmationNumber> GetFakeConfirmationNumbers(
-    int amount = 10,
-    int? userId = null,
-    string? number = null)
+  public static List<ConfirmationNumber> GetFakeConfirmationNumbers()
   {
     var currentTime = DateTimeOffset.Now;
 
-    return Enumerable.Range(0, amount)
-      .Select(i => new ConfirmationNumber
-      {
-        Id = i,
-        UserId = userId ?? RandomNumber.Next(10) + 1,
-        Number = number ?? Identification.SocialSecurityNumber(),
-        CreatedAt = currentTime,
-        UpdatedAt = currentTime,
-      })
-      .ToList();
+    return
+    [
+      new() { CreatedAt = currentTime, UpdatedAt = currentTime, UserId = 6, Number = "1234" },
+    ];
   }
 
-  public static List<ForgotPasswordNumber> GetFakeForgotPasswordNumbers(
-    int amount = 10,
-    int? userId = null,
-    string? number = null)
+  public static List<ForgotPasswordNumber> GetFakeForgotPasswordNumbers()
   {
     var currentTime = DateTimeOffset.Now;
 
-    return Enumerable.Range(0, amount)
-      .Select(i => new ForgotPasswordNumber
-      {
-        Id = i,
-        UserId = userId ?? RandomNumber.Next(10) + 1,
-        Number = number ?? Identification.SocialSecurityNumber(),
-        CreatedAt = currentTime,
-        UpdatedAt = currentTime,
-      })
-      .ToList();
+    return
+    [
+      new(){Number = "1234", CreatedAt = currentTime, UpdatedAt = currentTime, UserId = 1},
+      new(){Number = "1234", CreatedAt = currentTime, UpdatedAt = currentTime, UserId = 3},
+    ];
   }
 
   public static List<Province> GetFakeProvinces(
@@ -218,10 +196,7 @@ public static class FakerGenerator
     var currentTime = DateTimeOffset.Now;
 
     return Enumerable.Range(0, amount)
-      .Select(i => new Province
-      {
-        Id = i, Name = Company.Name(), CreatedAt = currentTime, UpdatedAt = currentTime,
-      })
+      .Select(_ => new Province { Name = Company.Name(), CreatedAt = currentTime, UpdatedAt = currentTime, })
       .ToList();
   }
 
@@ -231,9 +206,8 @@ public static class FakerGenerator
   {
     var currentTime = DateTimeOffset.Now;
     return Enumerable.Range(0, amount)
-      .Select(i => new Municipality
+      .Select(_ => new Municipality
       {
-        Id = i,
         Name = Company.Name(),
         ProvinceId = provinceId ?? RandomNumber.Next(10),
         CreatedAt = currentTime,
@@ -252,9 +226,8 @@ public static class FakerGenerator
     var currentTime = DateTimeOffset.Now;
 
     return Enumerable.Range(0, amount)
-      .Select(i => new Vehicle
+      .Select(_ => new Vehicle
       {
-        Id = i,
         Name = Company.Name(),
         Description = RandomNumber.Next(2) == 0 ? null : Lorem.Sentence(),
         CreatedAt = currentTime,
@@ -278,9 +251,8 @@ public static class FakerGenerator
   {
     var currentTime = DateTimeOffset.Now;
     return Enumerable.Range(0, amount)
-      .Select(i => new Business
+      .Select(_ => new Business
       {
-        Id = i,
         Name = Company.Name(),
         Address = Address.StreetAddress(),
         Banner = RandomNumber.Next(2) == 0 ? null : Internet.Url(),
@@ -304,9 +276,8 @@ public static class FakerGenerator
   {
     var currentTime = DateTimeOffset.Now;
     return Enumerable.Range(0, amount)
-      .Select(i => new ShippingCost
+      .Select(_ => new ShippingCost
       {
-        Id = i,
         Cost = cost ?? Finance.Coupon(),
         CreatedAt = currentTime,
         UpdatedAt = currentTime,

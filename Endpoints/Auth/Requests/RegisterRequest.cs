@@ -9,7 +9,7 @@ public class RegisterRequest
   public required string FirstName { get; set; }
   public required string LastName { get; set; }
   public required string Phone { get; set; }
-  public required IFormFile? ProfilePicture { get; set; }
+  public IFormFile? ProfilePicture { get; set; }
 
 }
 

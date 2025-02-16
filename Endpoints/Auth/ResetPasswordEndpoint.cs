@@ -38,17 +38,18 @@ namespace reymani_web_api.Endpoints.Auth
 
     public override async Task<Results<Ok<string>, NotFound>> ExecuteAsync(ResetPasswordRequest request, CancellationToken ct)
     {
-      // Buscar el registro de ForgotPasswordNumber por el código
-      var confirmation = await _dbContext
-        .Set<ForgotPasswordNumber>()
-        .FirstOrDefaultAsync(c => c.Number == request.ConfirmationCode, ct);
-      if (confirmation == null)
-        return TypedResults.NotFound();
-
-      // Obtener el usuario mediante el Id guardado en el confirmation record
-      var user = await _dbContext.Users.FindAsync(new object[] { confirmation.UserId }, ct);
+      var oneDayAgo = DateTimeOffset.UtcNow.AddDays(-1);
+      
+      var user = await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Email == request.Email , ct);
       if (user == null)
         return TypedResults.NotFound();
+      
+      var confirmation = await _dbContext
+        .ForgotPasswordNumbers
+        .AsNoTracking()
+        .FirstOrDefaultAsync(c => c.UserId == user.Id && c.Number == request.ConfirmationCode && c.UpdatedAt >= oneDayAgo, ct);
+      if (confirmation == null)
+          return TypedResults.NotFound();
 
       // Actualizar la contraseña
       user.Password = BCrypt.Net.BCrypt.HashPassword(request.Password);

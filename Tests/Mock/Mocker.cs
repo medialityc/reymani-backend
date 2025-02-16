@@ -3,6 +3,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 
 using MockQueryable.Moq;
@@ -21,32 +22,40 @@ public static class Mocker
 {
   public static AppDbContext BuildMockAppDbContext()
   {
-    var users = FakerGenerator.GetFakeUsers().AsQueryable().BuildMockDbSet().Object;
-    var productCategories = FakerGenerator.GetFakeProductCategories().AsQueryable().BuildMockDbSet().Object;
-    var userAdresses = FakerGenerator.GetFakeUserAddresses().AsQueryable().BuildMockDbSet().Object;
-    var vehicleTypes = FakerGenerator.GetFakeVehicleTypes().AsQueryable().BuildMockDbSet().Object;
-    var forgotPasswordNumbers = FakerGenerator.GetFakeForgotPasswordNumbers().AsQueryable().BuildMockDbSet().Object;
-    var confirmationNumbers = FakerGenerator.GetFakeConfirmationNumbers().AsQueryable().BuildMockDbSet().Object;
-    var provinces = FakerGenerator.GetFakeProvinces().AsQueryable().BuildMockDbSet().Object;
-    var municipalities = FakerGenerator.GetFakeMunicipalities().AsQueryable().BuildMockDbSet().Object;
-    var vehicles = FakerGenerator.GetFakeVehicles().AsQueryable().BuildMockDbSet().Object;
-    var businesses = FakerGenerator.GetFakeBusinesses().AsQueryable().BuildMockDbSet().Object;
-    var shippingCosts = FakerGenerator.GetFakeShippingCosts().AsQueryable().BuildMockDbSet().Object;
+    var options = new DbContextOptionsBuilder<AppDbContext>()
+      .UseInMemoryDatabase(databaseName: "TestDatabase")
+      .Options;
     
-    var dbContextMock = new Mock<AppDbContext>();
-    dbContextMock.Setup(m => m.Users).Returns(users);
-    dbContextMock.Setup(m => m.ProductCategories).Returns(productCategories);
-    dbContextMock.Setup(m => m.UserAddresses).Returns(userAdresses);
-    dbContextMock.Setup(m => m.VehicleTypes).Returns(vehicleTypes);
-    dbContextMock.Setup(m => m.ForgotPasswordNumbers).Returns(forgotPasswordNumbers);
-    dbContextMock.Setup(m => m.ConfirmationNumbers).Returns(confirmationNumbers);
-    dbContextMock.Setup(m => m.Provinces).Returns(provinces);
-    dbContextMock.Setup(m => m.Municipalities).Returns(municipalities);
-    dbContextMock.Setup(m => m.Vehicles).Returns(vehicles);
-    dbContextMock.Setup(m => m.Businesses).Returns(businesses);
-    dbContextMock.Setup(m => m.ShippingCosts).Returns(shippingCosts);
+    var context = new AppDbContext(options);
+    context.Database.EnsureCreated();
+    
+    var users = FakerGenerator.GetFakeUsers();
+    var productCategories = FakerGenerator.GetFakeProductCategories();
+    var userAdresses = FakerGenerator.GetFakeUserAddresses();
+    var vehicleTypes = FakerGenerator.GetFakeVehicleTypes();
+    var forgotPasswordNumbers = FakerGenerator.GetFakeForgotPasswordNumbers();
+    var confirmationNumbers = FakerGenerator.GetFakeConfirmationNumbers();
+    var provinces = FakerGenerator.GetFakeProvinces();
+    var municipalities = FakerGenerator.GetFakeMunicipalities();
+    var vehicles = FakerGenerator.GetFakeVehicles();
+    var businesses = FakerGenerator.GetFakeBusinesses();
+    var shippingCosts = FakerGenerator.GetFakeShippingCosts();
+    
+    context.Users.AddRange(users);
+    context.ProductCategories.AddRange(productCategories);
+    context.UserAddresses.AddRange(userAdresses);
+    context.VehicleTypes.AddRange(vehicleTypes);
+    context.ForgotPasswordNumbers.AddRange(forgotPasswordNumbers);
+    context.ConfirmationNumbers.AddRange(confirmationNumbers);
+    context.Provinces.AddRange(provinces);
+    context.Municipalities.AddRange(municipalities);
+    context.Vehicles.AddRange(vehicles);
+    context.Businesses.AddRange(businesses);
+    context.ShippingCosts.AddRange(shippingCosts);
+    
+    context.SaveChanges();
 
-    return dbContextMock.Object;
+    return context;
   }
 
   public static IBlobService BuildMockIBlobService()
@@ -81,17 +90,17 @@ public static class Mocker
     var emailTemplateServiceMock = new Mock<IEmailTemplateService>();
 
     emailTemplateServiceMock.Setup(x => x.GetTemplateAsync(It.IsAny<string>(), It.IsAny<object>()))
-      .Returns(Task.FromResult(Identification.MedicareBeneficiaryIdentifier()));
+      .Returns(Task.FromResult("Email Template Body Test"));
     
     return emailTemplateServiceMock.Object;
   }
 
-  public static TokenGenerator BuildMockTokenGenerator()
+  public static TokenGenerator BuildMockTokenGenerator(IConfiguration configuration)
   {
     var authOptionsMock = new Mock<IOptions<AuthOptions>>();
     authOptionsMock.Setup(x => x.Value).Returns(new AuthOptions
     {
-      JwtToken = "12345678",
+      JwtToken = configuration["AuthOptions:JwtToken"] ?? string.Empty,
       SystemAdminEmail = "",
       SystemAdminPassword = "",
       BusinessAdminEmail = "",
@@ -102,10 +111,6 @@ public static class Mocker
       CustomerPassword = ""
     });
     
-    var tokenGeneratorMock = new Mock<TokenGenerator>(authOptionsMock.Object);
-
-    tokenGeneratorMock.Setup(x => x.GenerateToken(It.IsAny<User>())).Returns(Internet.UserName);
-    
-    return tokenGeneratorMock.Object;
+    return new TokenGenerator(authOptionsMock.Object);
   }
 }

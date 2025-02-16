@@ -1,12 +1,12 @@
 ﻿using Tests.Mock;
 
-namespace Tests.Tests.Users;
+namespace Tests.Tests.ProductCategories;
 
-public class GetAllUsersTests: IClassFixture<CustomWebApplicationFactory>
+public class DeleteTests: IClassFixture<CustomWebApplicationFactory>
 {
   private readonly CustomWebApplicationFactory _factory;
 
-  public GetAllUsersTests(CustomWebApplicationFactory factory)
+  public DeleteTests(CustomWebApplicationFactory factory)
   {
     _factory = factory;
   }

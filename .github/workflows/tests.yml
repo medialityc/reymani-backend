@@ -5,10 +5,12 @@ on:
     branches:
       - main
       - dev
+      - eduardo
   pull_request:
     branches:
       - main
       - dev
+      - eduardo
   workflow_dispatch:
 
 jobs:
@@ -17,6 +19,7 @@ jobs:
     env:
       BUILD_CONFIG: "Release"
       SOLUTION: "reymani-web-api.sln"
+      AuthOptions__JwtToken: "abcdefghijklmnopqrstuvwxyz1234567890"
     runs-on: ubuntu-latest
     permissions:
       id-token: write

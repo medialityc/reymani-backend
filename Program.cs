@@ -17,7 +17,6 @@ using reymani_web_api.Utils.Tokens;
 
 var bld = WebApplication.CreateBuilder();
 
-// Registrar AuthOptions
 bld.Services.Configure<AuthOptions>(bld.Configuration.GetSection("AuthOptions"));
 bld.Services.AddScoped<TokenGenerator>();
 
@@ -34,7 +33,7 @@ bld.Services
   .AddAuthenticationJwtBearer(s => s.SigningKey = bld.Configuration["AuthOptions:JwtToken"])
   .AddAuthorization()
   .AddFastEndpoints()
-  .SwaggerDocument(); //define a swagger document
+  .SwaggerDocument();
 
 bld.Services.AddDbContextFactory<AppDbContext>(options =>
   options.UseNpgsql(
@@ -68,7 +67,7 @@ using (var scope = app.Services.CreateScope())
   }
   catch
   {
-    Console.WriteLine("Error during Migrations and Seeds");
+    Console.WriteLine("Error during Migrations and Seeders");
   }
 }
 
@@ -77,7 +76,7 @@ app.UseCors("AllowAll")
   .UseAuthentication()
   .UseAuthorization()
   .UseFastEndpoints()
-  .UseSwaggerGen(); //add this
+  .UseSwaggerGen();
 
 app.MapGet("/", context =>
 {
@@ -87,6 +86,4 @@ app.MapGet("/", context =>
 
 app.Run();
 
-public partial class Program
-{
-}
+public abstract partial class Program;

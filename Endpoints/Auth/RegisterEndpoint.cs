@@ -44,7 +44,7 @@ namespace reymani_web_api.Endpoints.Auth
 
     public override async Task<Results<Ok<string>, Conflict>> ExecuteAsync(RegisterRequest request, CancellationToken ct)
     {
-      var user = await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Email == request.Email);
+      var user = await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Email == request.Email, ct);
       if (user != null)
         return TypedResults.Conflict();
 
@@ -69,7 +69,7 @@ namespace reymani_web_api.Endpoints.Auth
       };
 
       _dbContext.Users.Add(user);
-      await _dbContext.SaveChangesAsync();
+      await _dbContext.SaveChangesAsync(ct);
 
       // Generar código de confirmación de 4 dígitos
       var rnd = new Random();
@@ -81,8 +81,8 @@ namespace reymani_web_api.Endpoints.Auth
         UserId = user.Id,
         Number = confirmationCode.ToString()
       };
-      _dbContext.Set<ConfirmationNumber>().Add(confirmation);
-      await _dbContext.SaveChangesAsync();
+      _dbContext.ConfirmationNumbers.Add(confirmation);
+      await _dbContext.SaveChangesAsync(ct);
 
       var emailBody = await _emailTemplateService.GetTemplateAsync("ConfirmationEmail", new
       {

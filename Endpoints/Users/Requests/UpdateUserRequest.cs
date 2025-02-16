@@ -7,7 +7,7 @@ namespace reymani_web_api.Endpoints.Users.Requests;
 public class UpdateUserRequest
 {
   public required int Id { get; set; }
-  public required IFormFile ProfilePicture { get; set; }
+  public IFormFile? ProfilePicture { get; set; }
   public required string FirstName { get; set; }
   public required string LastName { get; set; }
   public required string Password { get; set; }

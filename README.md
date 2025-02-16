@@ -1,5 +1,7 @@
 # Reymani Backend
 
+[![Tests](https://github.com/medialityc/reymani-backend/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/medialityc/reymani-backend/actions/workflows/tests.yml)
+
 ## Requisitos
 
 - .NET 8.0 SDK

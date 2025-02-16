@@ -2,11 +2,11 @@
 
 namespace Tests.Tests.ProductCategories;
 
-public class SearchProductCategoriesSystemAdminTests: IClassFixture<CustomWebApplicationFactory>
+public class CreateTests: IClassFixture<CustomWebApplicationFactory>
 {
   private readonly CustomWebApplicationFactory _factory;
 
-  public SearchProductCategoriesSystemAdminTests(CustomWebApplicationFactory factory)
+  public CreateTests(CustomWebApplicationFactory factory)
   {
     _factory = factory;
   }

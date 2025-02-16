@@ -2,11 +2,11 @@
 
 namespace Tests.Tests.Users;
 
-public class GetUserByIdTests: IClassFixture<CustomWebApplicationFactory>
+public class GetAllTests: IClassFixture<CustomWebApplicationFactory>
 {
   private readonly CustomWebApplicationFactory _factory;
 
-  public GetUserByIdTests(CustomWebApplicationFactory factory)
+  public GetAllTests(CustomWebApplicationFactory factory)
   {
     _factory = factory;
   }

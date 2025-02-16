@@ -2,11 +2,11 @@
 
 namespace Tests.Tests.ProductCategories;
 
-public class GetProductCategoryByIdSystemAdminTests: IClassFixture<CustomWebApplicationFactory>
+public class GetAllSystemAdminTests: IClassFixture<CustomWebApplicationFactory>
 {
   private readonly CustomWebApplicationFactory _factory;
 
-  public GetProductCategoryByIdSystemAdminTests(CustomWebApplicationFactory factory)
+  public GetAllSystemAdminTests(CustomWebApplicationFactory factory)
   {
     _factory = factory;
   }

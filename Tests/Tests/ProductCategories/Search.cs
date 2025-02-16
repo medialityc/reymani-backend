@@ -2,11 +2,11 @@
 
 namespace Tests.Tests.ProductCategories;
 
-public class DeleteProductCategoryTests: IClassFixture<CustomWebApplicationFactory>
+public class Search: IClassFixture<CustomWebApplicationFactory>
 {
   private readonly CustomWebApplicationFactory _factory;
 
-  public DeleteProductCategoryTests(CustomWebApplicationFactory factory)
+  public Search(CustomWebApplicationFactory factory)
   {
     _factory = factory;
   }
