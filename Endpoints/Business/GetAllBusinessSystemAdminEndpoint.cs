@@ -41,6 +41,7 @@ public class GetAllBusinessSystemAdminEndpoint : EndpointWithoutRequest<Results<
       .ThenInclude(m => m!.Province)
       .Include(b => b.User)
       .OrderBy(b => b.Id)
+      .AsNoTracking()
       .AsEnumerable();
 
     var mapper = new BusinessMapper();

@@ -40,6 +40,7 @@ namespace reymani_web_api.Endpoints.Business
         .ThenInclude(m => m!.Province)
         .Where(b => b.IsActive)
         .OrderBy(b => b.Id)
+        .AsNoTracking()
         .AsEnumerable();
 
       var mapper = new BusinessMapper();
