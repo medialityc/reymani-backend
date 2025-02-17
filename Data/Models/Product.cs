@@ -16,6 +16,6 @@ namespace ReymaniWebApi.Data.Models
     public required decimal? DiscountPrice { get; set; }
     public required int CategoryId { get; set; }
     public ProductCategory? Category { get; set; }
-    public required int Capacity { get; set; }
+    public required Capacity Capacity { get; set; }
   }
 }

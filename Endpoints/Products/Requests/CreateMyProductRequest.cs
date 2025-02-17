@@ -1,5 +1,7 @@
 using System;
 
+using reymani_web_api.Data.Models;
+
 namespace reymani_web_api.Endpoints.Products.Requests;
 
 public class CreateMyProductRequest
@@ -12,5 +14,5 @@ public class CreateMyProductRequest
   public required decimal Price { get; set; }
   public required decimal? DiscountPrice { get; set; }
   public required int CategoryId { get; set; }
-  public required int Capacity { get; set; }
+  public required Capacity Capacity { get; set; }
 }

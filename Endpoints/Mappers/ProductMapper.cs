@@ -60,7 +60,7 @@ namespace reymani_web_api.Endpoints.Mappers
         DiscountPrice = product.DiscountPrice,
         CategoryId = product.CategoryId,
         CategoryName = categoryName,
-        Capacity = product.Capacity,
+        Capacity = (int)product.Capacity,
         Images = responseImages,
         NumberOfRatings = numberOfRatings,
         AverageRating = averageRating
@@ -79,7 +79,7 @@ namespace reymani_web_api.Endpoints.Mappers
         Images = images,
         Price = product.Price,
         DiscountPrice = product.DiscountPrice,
-        Capacity = product.Capacity,
+        Capacity = (int)product.Capacity,
         NumberOfRatings = numberOfRatings,
         AverageRating = averageRating
       };

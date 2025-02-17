@@ -17,7 +17,7 @@ public class CreateMyProductRequestValidator : Validator<CreateMyProductRequest>
     RuleFor(x => x.IsActive).NotNull();
     RuleFor(x => x.Price).NotEmpty().GreaterThan(0);
     RuleFor(x => x.CategoryId).NotEmpty().GreaterThan(0);
-    RuleFor(x => x.Capacity).NotEmpty().GreaterThan(0);
+    RuleFor(x => x.Capacity).NotEmpty();
 
     RuleFor(x => x.DiscountPrice)
         .LessThan(x => x.Price)
