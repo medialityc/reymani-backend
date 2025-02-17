@@ -2,6 +2,7 @@ using FastEndpoints;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using reymani_web_api.Data;
+using reymani_web_api.Data.Models;
 using reymani_web_api.Endpoints.Mappers;
 using reymani_web_api.Endpoints.Products.Responses;
 using reymani_web_api.Services.BlobServices;
@@ -37,8 +38,17 @@ public class GetAllProductsSystemAdminEndpoint : EndpointWithoutRequest<Results<
       .AsNoTracking()
       .ToListAsync(ct);
 
+    var productIds = products.Select(p => p.Id).ToList();
+    var ratingsList = await _dbContext.ProductRatings
+      .Where(r => productIds.Contains(r.ProductId))
+      .AsNoTracking()
+      .ToListAsync(ct);
+    var ratingsByProduct = ratingsList.GroupBy(r => r.ProductId)
+      .ToDictionary(g => g.Key, g => g.ToList());
+
     var mapper = new ProductMapper();
-    var response = await Task.WhenAll(products.Select(async p =>
+    var responses = new List<SimpleProductResponse>();
+    foreach(var p in products)
     {
       var imageUrls = new List<string>();
       if(p.Images != null && p.Images.Any())
@@ -47,15 +57,14 @@ public class GetAllProductsSystemAdminEndpoint : EndpointWithoutRequest<Results<
           imageUrls.Add(await _blobService.PresignedGetUrl(img, ct));
       }
 
-      var ratings = await _dbContext.ProductRatings
-        .Where(r => r.ProductId == p.Id)
-        .ToListAsync(ct);
+      ratingsByProduct.TryGetValue(p.Id, out var ratings);
+      ratings ??= new List<ProductRating>();
       var totalRatings = ratings.Count;
-      var averageRating = totalRatings > 0 ? ratings.Average(r => (int)r.Rating) : 0;
+      var averageRating = totalRatings > 0 ? (decimal)ratings.Average(r => (int)r.Rating) : 0;
 
-      return mapper.ToSimpleProductResponse(p, imageUrls, totalRatings, (decimal)averageRating);
-    }));
+      responses.Add(mapper.ToSimpleProductResponse(p, imageUrls, totalRatings, averageRating));
+    }
 
-    return TypedResults.Ok(response.AsEnumerable());
+    return TypedResults.Ok(responses.AsEnumerable());
   }
 }

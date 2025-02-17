@@ -44,6 +44,20 @@ namespace reymani_web_api.Endpoints.Mappers
       };
     }
 
+    // Mapea las propiedades del UpdateProductRequest a la entidad Product.
+    public Product UpdateEntity(UpdateProductRequest req, Product product)
+    {
+      product.Name = req.Name;
+      product.Description = req.Description;
+      product.IsAvailable = req.IsAvailable;
+      product.IsActive = req.IsActive;
+      product.Price = req.Price;
+      product.DiscountPrice = req.DiscountPrice;
+      product.CategoryId = req.CategoryId;
+      product.Capacity = req.Capacity;
+      return product;
+    }
+
     // Mapea la entidad Product a la respuesta, incluyendo nombres de negocio y categoría, y las imagenes presignadas.
     public ProductResponse ToResponse(Product product, string businessName, string categoryName, List<string> responseImages, int numberOfRatings, decimal averageRating)
     {
