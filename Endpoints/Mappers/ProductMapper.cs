@@ -66,5 +66,23 @@ namespace reymani_web_api.Endpoints.Mappers
         AverageRating = averageRating
       };
     }
+
+    // Mapea la entidad Product a una respuesta simple.
+    public SimpleProductResponse ToSimpleProductResponse(Product product, List<string> images, int numberOfRatings, decimal averageRating)
+    {
+      return new SimpleProductResponse
+      {
+        Id = product.Id,
+        Name = product.Name,
+        Description = product.Description,
+        IsAvailable = product.IsAvailable,
+        Images = images,
+        Price = product.Price,
+        DiscountPrice = product.DiscountPrice,
+        Capacity = product.Capacity,
+        NumberOfRatings = numberOfRatings,
+        AverageRating = averageRating
+      };
+    }
   }
 }
