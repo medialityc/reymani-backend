@@ -45,7 +45,7 @@ namespace reymani_web_api.Endpoints.Products
       }
 
       // Utilizar el id obtenido de claims
-      var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Id == userId, ct);
+      var user = await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Id == userId, ct);
       if (user == null || user.Role != Data.Models.UserRole.BusinessAdmin)
       {
         AddError("Usuario no encontrado o no es un administrador de negocio.");
@@ -93,6 +93,7 @@ namespace reymani_web_api.Endpoints.Products
       }
 
       _dbContext.Products.Add(product);
+      business.Products!.Add(product);
       await _dbContext.SaveChangesAsync(ct);
 
       // Convertir rutas de imágenes a URLs presignadas para la respuesta

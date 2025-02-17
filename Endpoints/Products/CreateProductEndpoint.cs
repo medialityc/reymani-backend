@@ -37,7 +37,7 @@ namespace reymani_web_api.Endpoints.Products
     public override async Task<Results<Created<ProductResponse>, Conflict, ProblemDetails>> ExecuteAsync(CreateProductRequest req, CancellationToken ct)
     {
       // Validar usuario y rol
-      var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Id == req.UserId, ct);
+      var user = await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Id == req.UserId, ct);
       if (user == null || user.Role != Data.Models.UserRole.BusinessAdmin)
       {
         AddError(req => req.UserId, "Usuario no encontrado o no es un administrador de negocio.");
@@ -85,6 +85,7 @@ namespace reymani_web_api.Endpoints.Products
       }
 
       _dbContext.Products.Add(product);
+      business.Products!.Add(product);
       await _dbContext.SaveChangesAsync(ct);
 
       // Preparar respuesta convirtiendo las rutas de las imágenes a URLs presignadas
