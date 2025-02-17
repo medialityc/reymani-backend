@@ -37,7 +37,7 @@ namespace reymani_web_api.Endpoints.Users
 
     public override async Task<Results<Created<UserResponse>, Conflict, ProblemDetails>> ExecuteAsync(CreateUserRequest req, CancellationToken ct)
     {
-      var existingUser = await _dbContext.Users.FirstOrDefaultAsync(x => x.Email == req.Email, ct);
+      var existingUser = await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Email == req.Email, ct);
       if (existingUser != null)
       {
         return TypedResults.Conflict();

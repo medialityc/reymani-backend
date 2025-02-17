@@ -41,6 +41,7 @@ namespace reymani_web_api.Endpoints.Business
         .Include(b => b.Municipality)
         .ThenInclude(m => m!.Province)
         .Include(b => b.User)
+        .AsNoTracking()
         .FirstOrDefaultAsync(b => b.Id == req.Id, ct);
 
       if (business is null)
