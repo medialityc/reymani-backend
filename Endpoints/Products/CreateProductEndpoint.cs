@@ -36,18 +36,11 @@ namespace reymani_web_api.Endpoints.Products
 
     public override async Task<Results<Created<ProductResponse>, Conflict, ProblemDetails>> ExecuteAsync(CreateProductRequest req, CancellationToken ct)
     {
-      // Validar usuario y rol
-      var user = await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Id == req.UserId, ct);
-      if (user == null || user.Role != Data.Models.UserRole.BusinessAdmin)
-      {
-        AddError(req => req.UserId, "Usuario no encontrado o no es un administrador de negocio.");
-      }
-
-      // Obtener negocio asociado al usuario
-      var business = await _dbContext.Businesses.FirstOrDefaultAsync(x => x.UserId == req.UserId, ct);
+      // Obtener negocio 
+      var business = await _dbContext.Businesses.FirstOrDefaultAsync(x => x.Id == req.BusinessId, ct);
       if (business == null)
       {
-        AddError(req => req.UserId, "Negocio no encontrado para el administrador.");
+        AddError(req => req.BusinessId, "Negocio no encontrado.");
       }
 
       // Validar categoría

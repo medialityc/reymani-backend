@@ -13,7 +13,7 @@ public class CreateProductRequestValidator : Validator<CreateProductRequest>
   public CreateProductRequestValidator()
   {
     RuleFor(x => x.Name).NotEmpty();
-    RuleFor(x => x.UserId).NotEmpty().GreaterThan(0);
+    RuleFor(x => x.BusinessId).NotEmpty().GreaterThan(0);
     RuleFor(x => x.IsAvailable).NotNull();
     RuleFor(x => x.IsActive).NotNull();
     RuleFor(x => x.Price).NotEmpty().GreaterThan(0);

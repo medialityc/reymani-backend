@@ -35,7 +35,7 @@ namespace reymani_web_api.Endpoints.Mappers
         Description = req.Description,
         BusinessId = businessId,
         IsAvailable = req.IsAvailable,
-        IsActive = req.IsActive,
+        IsActive = true,
         Price = req.Price,
         DiscountPrice = req.DiscountPrice,
         CategoryId = req.CategoryId,

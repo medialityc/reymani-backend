@@ -14,7 +14,7 @@ namespace reymani_web_api.Endpoints.Products.Requests
     public decimal? PriceMin { get; set; }
     public decimal? PriceMax { get; set; }
     public bool? HasDiscount { get; set; }
-    public decimal? RatingMin { get; set; }
+    public RatingPunctuation? RatingMin { get; set; }
     public int? CategoryId { get; set; }  // Filtrar por categoría dada
     public int? BusinessId { get; set; }  // Filtrar por negocio dado
     public Capacity? Capacity { get; set; }    // Filtrar por capacidad mínima
