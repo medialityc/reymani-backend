@@ -107,7 +107,7 @@ namespace reymani_web_api.Endpoints.Products
         }
       }
 
-      var response = mapper.ToResponse(product, business.Name, category!.Name, responseImages);
+      var response = mapper.ToResponse(product, business.Name, category!.Name, responseImages, 0, 0);
 
       return TypedResults.Created($"/products/{product.Id}", response);
     }

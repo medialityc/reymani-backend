@@ -18,4 +18,6 @@ public class ProductResponse
   public required int CategoryId { get; set; }
   public required string CategoryName { get; set; }
   public required int Capacity { get; set; }
+  public required int NumberOfRatings { get; set; }
+  public required decimal AverageRating { get; set; }
 }

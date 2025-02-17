@@ -47,6 +47,13 @@ namespace reymani_web_api.Endpoints.Products
       if (product is null)
         return TypedResults.NotFound();
 
+      // Obtener valoraciones del producto
+      var ratings = await _dbContext.ProductRatings
+        .Where(r => r.ProductId == req.Id)
+        .ToListAsync(ct);
+      var totalRatings = ratings.Count;
+      var averageRating = totalRatings > 0 ? ratings.Average(r => (int)r.Rating) : 0;
+
       var mapper = new ProductMapper();
       var responseImages = new List<string>();
       if (product.Images is not null && product.Images.Any())
@@ -56,7 +63,7 @@ namespace reymani_web_api.Endpoints.Products
           responseImages.Add(await _blobService.PresignedGetUrl(img, ct));
         }
       }
-      var response = mapper.ToResponse(product, product.Business!.Name, product.Category!.Name, responseImages);
+      var response = mapper.ToResponse(product, product.Business!.Name, product.Category!.Name, responseImages, totalRatings, (decimal)averageRating);
 
       return TypedResults.Ok(response);
     }

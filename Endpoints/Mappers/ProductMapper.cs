@@ -45,7 +45,7 @@ namespace reymani_web_api.Endpoints.Mappers
     }
 
     // Mapea la entidad Product a la respuesta, incluyendo nombres de negocio y categoría, y las imagenes presignadas.
-    public ProductResponse ToResponse(Product product, string businessName, string categoryName, List<string> responseImages)
+    public ProductResponse ToResponse(Product product, string businessName, string categoryName, List<string> responseImages, int numberOfRatings, decimal averageRating)
     {
       return new ProductResponse
       {
@@ -61,7 +61,9 @@ namespace reymani_web_api.Endpoints.Mappers
         CategoryId = product.CategoryId,
         CategoryName = categoryName,
         Capacity = product.Capacity,
-        Images = responseImages
+        Images = responseImages,
+        NumberOfRatings = numberOfRatings,
+        AverageRating = averageRating
       };
     }
   }
