@@ -1,7 +1,10 @@
 using System;
+
 using FastEndpoints;
+
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
+
 using reymani_web_api.Data;
 using reymani_web_api.Data.Models;
 using reymani_web_api.Endpoints.Mappers;
@@ -53,12 +56,12 @@ namespace reymani_web_api.Endpoints.Products
 
       var mapper = new ProductMapper();
       var responses = new List<SimpleProductResponse>();
-      foreach(var p in products)
+      foreach (var p in products)
       {
         var imageUrls = new List<string>();
-        if(p.Images != null && p.Images.Any())
+        if (p.Images != null && p.Images.Any())
         {
-          foreach(var img in p.Images)
+          foreach (var img in p.Images)
             imageUrls.Add(await _blobService.PresignedGetUrl(img, ct));
         }
 
