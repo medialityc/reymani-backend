@@ -1,4 +1,6 @@
 ﻿
+using System.Xml.Linq;
+
 using reymani_web_api.Endpoints.Municipalities.Responses;
 using reymani_web_api.Endpoints.Provinces.Requests;
 using reymani_web_api.Endpoints.Provinces.Responses;
@@ -8,8 +10,6 @@ namespace reymani_web_api.Endpoints.Mappers;
 
 public class ProvinceMapper
 {
-
-
   public ProvinceResponse FromEntity(Province e)
   {
     return new ProvinceResponse
@@ -19,7 +19,9 @@ public class ProvinceMapper
       Municipalities = e.Municipalities?.Select(m => new MunicipalityResponse
       {
         Id = m.Id,
-        Name = m.Name
+        Name = m.Name,
+        ProvinceName = e.Name,
+        ProvindeId = m.Id,
       }).ToList()
     };
   }
