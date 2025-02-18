@@ -1,7 +1,10 @@
 using FastEndpoints.Security;
-using ReymaniWebApi.Data.Models;
-using reymani_web_api.Utils.Options;
+
 using Microsoft.Extensions.Options;
+
+using reymani_web_api.Utils.Options;
+
+using ReymaniWebApi.Data.Models;
 
 namespace reymani_web_api.Utils.Tokens
 {

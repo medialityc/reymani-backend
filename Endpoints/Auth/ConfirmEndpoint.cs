@@ -34,7 +34,7 @@ namespace reymani_web_api.Endpoints.Auth
       if (user == null)
         return TypedResults.NotFound();
 
-      var confirmation = await _dbContext.ConfirmationNumbers.FirstOrDefaultAsync(c => c.UserId == user.Id, ct);
+      var confirmation = await _dbContext.ConfirmationNumbers.AsNoTracking().FirstOrDefaultAsync(c => c.UserId == user.Id, ct);
       if (confirmation == null)
         return TypedResults.NotFound();
 

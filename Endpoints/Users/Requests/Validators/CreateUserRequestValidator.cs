@@ -1,7 +1,9 @@
 using FastEndpoints;
+
 using FluentValidation;
-using reymani_web_api.Utils.Validations;
+
 using reymani_web_api.Endpoints.Users.Requests;
+using reymani_web_api.Utils.Validations;
 
 namespace reymani_web_api.Endpoints.Users.Requests.Validators
 {

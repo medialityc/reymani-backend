@@ -1,6 +1,8 @@
 using FastEndpoints;
+
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
+
 using reymani_web_api.Data;
 using reymani_web_api.Data.Models;
 using reymani_web_api.Endpoints.Products.Requests;
@@ -34,14 +36,14 @@ namespace reymani_web_api.Endpoints.Products
 
       // Obtener el usuario
       var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId, ct);
-      if(user == null)
+      if (user == null)
         return TypedResults.Unauthorized();
 
       // Obtener el producto con su negocio incluido
       var product = await _dbContext.Products
         .Include(p => p.Business)
         .FirstOrDefaultAsync(p => p.Id == req.ProductId, ct);
-      if(product == null)
+      if (product == null)
         return TypedResults.NotFound();
 
       // Verificar si ya existe una valoración para este usuario y producto
@@ -51,9 +53,9 @@ namespace reymani_web_api.Endpoints.Products
       if (existingRating != null)
       {
         existingRating.Rating = req.Rating;
-        if(existingRating.User == null)
+        if (existingRating.User == null)
           existingRating.User = user;
-        if(existingRating.Product == null)
+        if (existingRating.Product == null)
           existingRating.Product = product;
       }
       else
