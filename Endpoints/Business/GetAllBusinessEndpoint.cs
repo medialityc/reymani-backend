@@ -1,13 +1,12 @@
 using FastEndpoints;
 
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
 
 using reymani_web_api.Data;
 using reymani_web_api.Endpoints.Business.Responses;
 using reymani_web_api.Endpoints.Mappers;
 using reymani_web_api.Services.BlobServices;
-
-using Microsoft.EntityFrameworkCore;
 
 namespace reymani_web_api.Endpoints.Business
 {

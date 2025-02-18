@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
+
 using reymani_web_api.Endpoints.Products.Requests;
 using reymani_web_api.Endpoints.Products.Responses;
+
 using ReymaniWebApi.Data.Models;
-using System.Collections.Generic;
 
 namespace reymani_web_api.Endpoints.Mappers
 {

@@ -1,10 +1,12 @@
+using FastEndpoints;
+
 using FluentValidation;
 
 using reymani_web_api.Endpoints.Auth.Requests;
 
 namespace reymani_web_api.Endpoints.Auth.Requests.Validators
 {
-  public class ResetPasswordRequestValidator : AbstractValidator<ResetPasswordRequest>
+  public class ResetPasswordRequestValidator : Validator<ResetPasswordRequest>
   {
     public ResetPasswordRequestValidator()
     {
@@ -13,6 +15,9 @@ namespace reymani_web_api.Endpoints.Auth.Requests.Validators
         .NotEmpty().WithMessage("Confirmation code is required.")
         .Matches(@"^\d{4}$").WithMessage("Confirmation code must be 4 digits.");
 
+      RuleFor(x => x.Email)
+        .NotEmpty()
+        .EmailAddress();
 
       RuleFor(x => x.Password)
         .NotEmpty()

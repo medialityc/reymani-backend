@@ -1,12 +1,15 @@
 using FastEndpoints;
+
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
+
 using reymani_web_api.Data;
+using reymani_web_api.Endpoints.Commons.Responses;
+using reymani_web_api.Endpoints.Mappers;
 using reymani_web_api.Endpoints.Products.Requests;
 using reymani_web_api.Endpoints.Products.Responses;
 using reymani_web_api.Services.BlobServices;
-using reymani_web_api.Endpoints.Mappers;
-using reymani_web_api.Endpoints.Commons.Responses;
+
 using ReymaniWebApi.Data.Models;
 
 namespace reymani_web_api.Endpoints.Products
