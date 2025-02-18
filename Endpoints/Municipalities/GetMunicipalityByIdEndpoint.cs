@@ -13,7 +13,7 @@ using reymani_web_api.Services.BlobServices;
 
 namespace reymani_web_api.Endpoints.Municipalities;
 
-public class GetMunicipalityByIdEndpoint : Endpoint<GetMunicipalitieByIdRequest, Results<Ok<MunicipalitieResponse>, NotFound, ProblemDetails>>
+public class GetMunicipalityByIdEndpoint : Endpoint<GetMunicipalityByIdRequest, Results<Ok<MunicipalityResponse>, NotFound, ProblemDetails>>
 {
   private readonly AppDbContext _dbContext;
   private readonly IBlobService _blobService;
@@ -35,7 +35,7 @@ public class GetMunicipalityByIdEndpoint : Endpoint<GetMunicipalitieByIdRequest,
     AllowAnonymous();
   }
 
-  public override async Task<Results<Ok<MunicipalitieResponse>, NotFound, ProblemDetails>> ExecuteAsync(GetMunicipalitieByIdRequest req, CancellationToken ct)
+  public override async Task<Results<Ok<MunicipalityResponse>, NotFound, ProblemDetails>> ExecuteAsync(GetMunicipalityByIdRequest req, CancellationToken ct)
   {
     var municipality = await _dbContext.Municipalities
         .FirstOrDefaultAsync(p => p.Id == req.Id, ct);
