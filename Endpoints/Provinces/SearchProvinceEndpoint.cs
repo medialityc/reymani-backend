@@ -51,9 +51,10 @@ public class SearchProvincesEndpoint : Endpoint<SearchProvincesRequest, Results<
       query = query.Where(p => p.Id == req.Id.Value);
     }
 
-    if (!string.IsNullOrEmpty(req.NameMunicipalitie))
+    if (req.Search is not null)
     {
-      query = query.Where(p => p.Municipalities.Any(m => m.Name.ToLower().Contains(req.NameMunicipalitie.ToLower())));
+      var search = req.Search.ToLower().Trim();
+      query = query.Where(p => p.Name.ToLower().Contains(search));
     }
 
 
