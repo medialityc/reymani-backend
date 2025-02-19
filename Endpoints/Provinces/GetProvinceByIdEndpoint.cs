@@ -36,6 +36,7 @@ public class GetProvinceByIdEndpoint : Endpoint<GetProvinceByIdRequest, Results<
   {
     var province = await _dbContext.Provinces
         .Include(p => p.Municipalities)
+        .AsNoTracking()
         .FirstOrDefaultAsync(p => p.Id == req.Id, ct);
 
     if (province is null)

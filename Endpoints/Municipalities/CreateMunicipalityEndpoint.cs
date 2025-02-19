@@ -12,7 +12,7 @@ using reymani_web_api.Services.BlobServices;
 
 namespace reymani_web_api.Endpoints.Municipalities;
 
-public class CreateMunicipalityEndpoint : Endpoint<CreateMunicipalityRequest, Results<Created<MunicipalityResponse>, Conflict, UnauthorizedHttpResult, ForbidHttpResult, NotFound, ProblemDetails>>
+public class CreateMunicipalityEndpoint : Endpoint<CreateMunicipalityRequest, Results<Created<MunicipalityWithNameProvinceResponse>, Conflict, UnauthorizedHttpResult, ForbidHttpResult, NotFound, ProblemDetails>>
 {
   private readonly AppDbContext _dbContext;
   private readonly IBlobService _blobService;
@@ -35,7 +35,7 @@ public class CreateMunicipalityEndpoint : Endpoint<CreateMunicipalityRequest, Re
     AllowAnonymous();
   }
 
-  public override async Task<Results<Created<MunicipalityResponse>, Conflict, UnauthorizedHttpResult, ForbidHttpResult, NotFound, ProblemDetails>> ExecuteAsync(CreateMunicipalityRequest req, CancellationToken ct)
+  public override async Task<Results<Created<MunicipalityWithNameProvinceResponse>, Conflict, UnauthorizedHttpResult, ForbidHttpResult, NotFound, ProblemDetails>> ExecuteAsync(CreateMunicipalityRequest req, CancellationToken ct)
   {
     var existingMunicipality = await _dbContext.Municipalities.FirstOrDefaultAsync(x => x.Name.ToLower().Equals(req.Name.ToLower()), ct);
     if (existingMunicipality != null)

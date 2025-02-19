@@ -37,26 +37,25 @@ public class SearchProvincesEndpoint : Endpoint<SearchProvincesRequest, Results<
   public override async Task<Results<Ok<PaginatedResponse<ProvinceResponse>>, ProblemDetails>> ExecuteAsync(SearchProvincesRequest req, CancellationToken ct)
   {
     var query = _dbContext.Provinces
+      .AsNoTracking()
       .Include(p=> p.Municipalities)
       .AsQueryable();
 
-    // Filtrado
-    if (!string.IsNullOrEmpty(req.Name))
-    {
-      query = query.Where(p => p.Name.ToLower().Contains(req.Name.ToLower()));
-    }
+    //Filtrado
+    if (req.Ids?.Any() ?? false)
+      query = query.Where(pc => req.Ids.Contains(pc.Id));
 
-    if (req.Id.HasValue)
-    {
-      query = query.Where(p => p.Id == req.Id.Value);
-    }
+    if (req.Names?.Any() ?? false)
+      query = query.Where(pc => req.Names.Any(n => pc.Name.ToLower().Contains(n.ToLower().Trim())));
 
     if (req.Search is not null)
     {
       var search = req.Search.ToLower().Trim();
-      query = query.Where(p => p.Name.ToLower().Contains(search));
+      query = query.Where(pc => pc.Name.ToLower().Contains(search));
     }
 
+    // Ejecución de la consulta
+    var categories = (await query.ToListAsync(ct)).AsEnumerable();
 
     // Ordenamiento
     if (!string.IsNullOrEmpty(req.SortBy))

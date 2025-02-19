@@ -20,8 +20,6 @@ public class ProvinceMapper
       {
         Id = m.Id,
         Name = m.Name,
-        ProvinceName = e.Name,
-        ProvindeId = m.Id,
       }).ToList()
     };
   }
@@ -31,8 +29,6 @@ public class ProvinceMapper
     return new Province
     {
       Name = req.Name,
-      CreatedAt = DateTime.UtcNow,
-      UpdatedAt = DateTime.UtcNow
     };
   }
 }

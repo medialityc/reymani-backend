@@ -1,6 +1,6 @@
-﻿namespace reymani_web_api.Endpoints.Provinces.Requests;
+﻿namespace reymani_web_api.Endpoints.Municipalities.Requests;
 
-public class SearchProvincesRequest
+public class SearchMunicipalityRequest
 {
   public int[]? Ids { get; set; }
   public string[]? Names { get; set; }

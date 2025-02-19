@@ -39,6 +39,7 @@ public class GetAllProvincesEndpoint : EndpointWithoutRequest<Results<Ok<IEnumer
     
     var provinces = await _dbContext.Provinces
         .Include(p => p.Municipalities)
+        .AsNoTracking()
         .OrderBy(u => u.Id)
         .ToListAsync(ct);
 

@@ -10,7 +10,7 @@ using reymani_web_api.Services.BlobServices;
 
 namespace reymani_web_api.Endpoints.Municipalities;
 
-public class GetAllMunicipalitiesEndpoint : EndpointWithoutRequest<Results<Ok<IEnumerable<MunicipalityResponse>>, ProblemDetails>>
+public class GetAllMunicipalitiesEndpoint : EndpointWithoutRequest<Results<Ok<IEnumerable<MunicipalityWithNameProvinceResponse>>, ProblemDetails>>
 {
   private readonly AppDbContext _dbContext;
   private readonly IBlobService _blobService;
@@ -32,12 +32,14 @@ public class GetAllMunicipalitiesEndpoint : EndpointWithoutRequest<Results<Ok<IE
     AllowAnonymous();
   }
 
-  public override async Task<Results<Ok<IEnumerable<MunicipalityResponse>>, ProblemDetails>> ExecuteAsync(CancellationToken ct)
+  public override async Task<Results<Ok<IEnumerable<MunicipalityWithNameProvinceResponse>>, ProblemDetails>> ExecuteAsync(CancellationToken ct)
   {
     var mapper = new MunicipalitiesMapper();
 
 
     var municipalities = await _dbContext.Municipalities
+        .Include(p=>p.Province)
+        .AsNoTracking()
         .OrderBy(u => u.Id)
         .ToListAsync(ct);
 
