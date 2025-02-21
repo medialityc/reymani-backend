@@ -6,4 +6,3 @@ public class GetUserByIdRequest
 {
   public required int Id { get; set; }
 }
-

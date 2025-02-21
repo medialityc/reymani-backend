@@ -220,8 +220,8 @@ namespace reymani_web_api.Data.Migrations
                     b.Property<int>("BusinessId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("Capacity")
-                        .HasColumnType("integer");
+                    b.Property<short>("Capacity")
+                        .HasColumnType("smallint");
 
                     b.Property<int>("CategoryId")
                         .HasColumnType("integer");
@@ -250,9 +250,6 @@ namespace reymani_web_api.Data.Migrations
 
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric");
-
-                    b.Property<double>("Rating")
-                        .HasColumnType("double precision");
 
                     b.Property<DateTimeOffset>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -610,6 +607,38 @@ namespace reymani_web_api.Data.Migrations
                     b.ToTable("ForgotPasswordNumbers");
                 });
 
+            modelBuilder.Entity("reymani_web_api.Data.Models.ProductRating", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTimeOffset>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ProductRatings");
+                });
+
             modelBuilder.Entity("ReymaniWebApi.Data.Models.Business", b =>
                 {
                     b.HasOne("ReymaniWebApi.Data.Models.Municipality", "Municipality")
@@ -818,6 +847,25 @@ namespace reymani_web_api.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("reymani_web_api.Data.Models.ProductRating", b =>
+                {
+                    b.HasOne("ReymaniWebApi.Data.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ReymaniWebApi.Data.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
 
                     b.Navigation("User");
                 });

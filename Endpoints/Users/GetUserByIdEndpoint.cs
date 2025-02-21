@@ -1,10 +1,13 @@
-using reymani_web_api.Endpoints.Users.Responses;
-using reymani_web_api.Data;
 using FastEndpoints;
-using reymani_web_api.Endpoints.Users.Requests;
+
 using Microsoft.AspNetCore.Http.HttpResults;
-using reymani_web_api.Services.BlobServices;
+using Microsoft.EntityFrameworkCore;
+
+using reymani_web_api.Data;
 using reymani_web_api.Endpoints.Mappers;
+using reymani_web_api.Endpoints.Users.Requests;
+using reymani_web_api.Endpoints.Users.Responses;
+using reymani_web_api.Services.BlobServices;
 
 namespace reymani_web_api.Endpoints.Users;
 
@@ -32,7 +35,9 @@ public class GetUserByIdEndpoint : Endpoint<GetUserByIdRequest, Results<Ok<UserR
 
   public override async Task<Results<Ok<UserResponse>, NotFound, ProblemDetails>> ExecuteAsync(GetUserByIdRequest req, CancellationToken ct)
   {
-    var user = await _dbContext.Users.FindAsync(req.Id, ct);
+    var user = await _dbContext.Users
+      .AsNoTracking()
+      .FirstOrDefaultAsync(u => u.Id == req.Id, ct);
 
     if (user is null)
       return TypedResults.NotFound();
