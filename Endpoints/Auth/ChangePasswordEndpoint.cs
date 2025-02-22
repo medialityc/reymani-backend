@@ -36,7 +36,7 @@ namespace reymani_web_api.Endpoints.Auth
       if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out int userId))
         return TypedResults.Unauthorized();
 
-      var user = await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == userId, ct);
+      var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId, ct);
       if (user is null)
         return TypedResults.NotFound();
 
