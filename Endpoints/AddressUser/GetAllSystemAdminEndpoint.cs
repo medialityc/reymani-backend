@@ -5,19 +5,16 @@ using Microsoft.EntityFrameworkCore;
 using reymani_web_api.Data;
 using reymani_web_api.Endpoints.AddressUser.Responses;
 using reymani_web_api.Endpoints.Mappers;
-using reymani_web_api.Endpoints.Provinces.Responses;
 using reymani_web_api.Services.BlobServices;
-
-using static FastEndpoints.Ep;
 
 namespace reymani_web_api.Endpoints.AddressUser;
 
-public class GetAllCustomers : EndpointWithoutRequest<Results<Ok<IEnumerable<UserAddressResponse>>, ProblemDetails>>
+public class GetAllSystemAdminEndpoint : EndpointWithoutRequest<Results<Ok<IEnumerable<UserAddressResponse>>, ProblemDetails>>
 {
   private readonly AppDbContext _dbContext;
   private readonly IBlobService _blobService;
 
-  public GetAllCustomers(AppDbContext dbContext, IBlobService blobService)
+  public GetAllSystemAdminEndpoint(AppDbContext dbContext, IBlobService blobService)
   {
     _dbContext = dbContext;
     _blobService = blobService;
@@ -25,13 +22,13 @@ public class GetAllCustomers : EndpointWithoutRequest<Results<Ok<IEnumerable<Use
 
   public override void Configure()
   {
-    Get("/userAddress");
+    Get("/userAddress/admin");
     Summary(s =>
     {
       s.Summary = "Get all customers";
       s.Description = "Retrieves a list of all customers.";
     });
-    Roles("Customer");
+    Roles("SystemAdmin");
   }
 
   public override async Task<Results<Ok<IEnumerable<UserAddressResponse>>, ProblemDetails>> ExecuteAsync(CancellationToken ct)
@@ -39,7 +36,6 @@ public class GetAllCustomers : EndpointWithoutRequest<Results<Ok<IEnumerable<Use
     var mapper = new UserAddressMapper();
 
     var users = await _dbContext.UserAddresses
-     .Where(p => p.IsActive == true)
       .AsNoTracking()
       .Include(p => p.Municipality)
       .Include(p => p.Municipality.Province)
