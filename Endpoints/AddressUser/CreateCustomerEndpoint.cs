@@ -34,7 +34,7 @@ public class CreateCustomerEndpoint : Endpoint<CreateCustomerRequest, Results<Cr
 
   public override async Task<Results<Created<UserAddressResponse>, Conflict, UnauthorizedHttpResult, ForbidHttpResult, ProblemDetails>> ExecuteAsync(CreateCustomerRequest req, CancellationToken ct)
   {
-    var existingAddressName = await _dbContext.Provinces.FirstOrDefaultAsync(x => x.Name.ToLower().Equals(req.Name.ToLower()), ct);
+    var existingAddressName = await _dbContext.UserAddresses.FirstOrDefaultAsync(x => x.Name.ToLower().Equals(req.Name.ToLower()) && x.IsActive, ct);
     if (existingAddressName != null)
     {
       return TypedResults.Conflict();

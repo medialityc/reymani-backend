@@ -35,7 +35,7 @@ public class SearchCustomerEndpoint : Endpoint<SearchCustomerRequest, Results<Ok
   public override async Task<Results<Ok<PaginatedResponse<UserAddressResponse>>, ProblemDetails>> ExecuteAsync(SearchCustomerRequest req, CancellationToken ct)
   {
     var query = _dbContext.UserAddresses
-      .Where(p=> p.IsActive==false)
+      .Where(p=> p.IsActive==true)
       .AsNoTracking()
       .Include(p => p.Municipality)
       .Include(p => p.Municipality.Province)
@@ -54,17 +54,14 @@ public class SearchCustomerEndpoint : Endpoint<SearchCustomerRequest, Results<Ok
     if (req.Address?.Any() ?? false)
       query = query.Where(pc => req.Address.Contains(pc.Address));
 
-    if (req.NameMunicipality?.Any() ?? false)
-      query = query.Where(pc => req.NameMunicipality.Contains(pc.Municipality.Name));
-
-    if (req.NameProvince?.Any() ?? false)
-      query = query.Where(pc => req.NameProvince.Contains(pc.Municipality.Province.Name));
+    if(req.IdMunicipalities?.Any() ?? false)
+      query = query.Where(pc => req.IdMunicipalities.Contains(pc.MunicipalityId));
 
 
     if (req.Search is not null)
     {
       var search = req.Search.ToLower().Trim();
-      query = query.Where(pc => pc.Name.ToLower().Contains(search));
+      query = query.Where(pc => pc.Name.ToLower().Contains(search) || pc.Address.ToLower().Contains(search) || pc.Notes.ToLower().Contains(search));
     }
 
     // Ejecución de la consulta

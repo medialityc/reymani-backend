@@ -19,7 +19,7 @@ public class UserAddressMapper
       Address = e.Address,
       Name = e.Name,
       ProvinceId = e.Municipality.Province.Id,
-      ProvinceName =e.Municipality.Province.Name,
+      ProvinceName =e.Municipality.Province.Name ?? "",
       MunicipalityId = e.MunicipalityId,
       MunicipalityName = e.Municipality?.Name ?? ""
     };

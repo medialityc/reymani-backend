@@ -12,7 +12,6 @@ namespace reymani_web_api.Endpoints.AddressUser.Requests.Validator
     {
       RuleFor(x => x.Name).NotEmpty();
       RuleFor(x => x.Address).NotEmpty();
-      RuleFor(x => x.Note).NotEmpty();
       RuleFor(x => x.IsActive).NotEmpty();
 
       RuleFor(e => e.Id)
