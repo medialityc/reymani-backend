@@ -32,7 +32,7 @@ public class UpdateCustomerEndpoint : Endpoint<UpdateCustomerRequest, Results<Ok
 
   public override async Task<Results<Ok, NotFound, Conflict, UnauthorizedHttpResult, ForbidHttpResult, ProblemDetails>> ExecuteAsync(UpdateCustomerRequest req, CancellationToken ct)
   {
-    // Validar la solicitud
+    // Validar que el nombre no este en uso
     var nameInUse = await BeUniqueName(req.Name, ct);
     if (!nameInUse)
       return TypedResults.Conflict();
@@ -57,7 +57,7 @@ public class UpdateCustomerEndpoint : Endpoint<UpdateCustomerRequest, Results<Ok
 
   private async Task<bool> BeUniqueName(string name, CancellationToken cancellationToken)
   {
-    // Verifica si ya existe una direccion con el mismo nombre, excluyendo la provincia que se está actualizando
+    // Verifica si ya existe una direccion con el mismo nombre, excluyendo la direccion que se está actualizando
     return !await _dbContext.UserAddresses
         .AnyAsync(p => p.Name.ToLower() == name.ToLower(), cancellationToken);
   }

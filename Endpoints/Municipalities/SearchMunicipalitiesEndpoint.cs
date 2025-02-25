@@ -28,8 +28,8 @@ public class SearchMunicipalitiesEndpoint : Endpoint<SearchMunicipalityRequest, 
     Get("/municipalities/search");
     Summary(s =>
     {
-      s.Summary = "Search provinces";
-      s.Description = "Search for provinces by name or ID with filtering, sorting, and pagination.";
+      s.Summary = "Search municipalities";
+      s.Description = "Search for municipalities by name or ID with filtering, sorting, and pagination.";
     });
     AllowAnonymous();
   }
