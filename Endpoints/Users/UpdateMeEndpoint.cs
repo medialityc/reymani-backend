@@ -51,6 +51,8 @@ namespace reymani_web_api.Endpoints.Users
         return TypedResults.NotFound();
 
       // Actualizar la imagen si se provee nueva
+      if (!string.IsNullOrEmpty(user.ProfilePicture))
+        await _blobService.DeleteObject(user.ProfilePicture, ct);
       if (req.ProfilePicture != null)
       {
         string fileCode = Guid.NewGuid().ToString();
