@@ -31,8 +31,7 @@ public class CreateMunicipalityEndpoint : Endpoint<CreateMunicipalityRequest, Re
       s.Summary = "Create municipality";
       s.Description = "Creates a new municipality.";
     });
-    //Roles("SystemAdmin");
-    AllowAnonymous();
+    Roles("SystemAdmin");
   }
 
   public override async Task<Results<Created<MunicipalityWithNameProvinceResponse>, Conflict, UnauthorizedHttpResult, ForbidHttpResult, NotFound, ProblemDetails>> ExecuteAsync(CreateMunicipalityRequest req, CancellationToken ct)

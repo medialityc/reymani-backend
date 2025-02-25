@@ -1,9 +1,12 @@
-﻿namespace reymani_web_api.Endpoints.Municipalities.Requests;
+﻿namespace reymani_web_api.Endpoints.AddressUser.Requests;
 
-public class SearchMunicipalityRequest
+public class SearchCustomerRequest
 {
   public int[]? Ids { get; set; }
   public string[]? Names { get; set; }
+  public string[]? Notes { get; set; }
+  public string[]? Address { get; set; }
+  public int[]? IdMunicipalities { get; set; }
   public string? Search { get; set; }
 
   // Ordenamiento y paginación

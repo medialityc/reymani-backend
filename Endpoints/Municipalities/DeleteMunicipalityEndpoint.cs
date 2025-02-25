@@ -26,11 +26,10 @@ public class DeleteMunicipalityEndpoint : Endpoint<DeleteMunicipalityRequest, Re
     Delete("/municipalities/{id}");
     Summary(s =>
     {
-      s.Summary = "Delete province";
+      s.Summary = "Delete municipality";
       s.Description = "Deletes a municipality if it is not in use by any entity.";
     });
-    AllowAnonymous();
-    //Roles("SystemAdmin");
+    Roles("SystemAdmin");
   }
 
   public override async Task<Results<Ok, NotFound, Conflict, UnauthorizedHttpResult, ForbidHttpResult, ProblemDetails>> ExecuteAsync(DeleteMunicipalityRequest req, CancellationToken ct)
