@@ -59,6 +59,10 @@ namespace reymani_web_api.Endpoints.Users
         string objectPath = await _blobService.UploadObject(req.ProfilePicture, fileCode, ct);
         user.ProfilePicture = objectPath;
       }
+      else
+      {
+        user.ProfilePicture = null;
+      }
 
       // Actualizar el resto de propiedades usando el mapper
       new UserMapper().ToEntity(req, user);
