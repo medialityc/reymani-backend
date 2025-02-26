@@ -4,16 +4,19 @@ using Microsoft.AspNetCore.Http.HttpResults;
 
 using reymani_web_api.Data;
 using reymani_web_api.Endpoints.Users.Requests;
+using reymani_web_api.Services.BlobServices;
 
 namespace reymani_web_api.Endpoints.Users
 {
   public class DeleteUserEndpoint : Endpoint<GetUserByIdRequest, Results<Ok, NotFound, ProblemDetails>>
   {
-    private readonly AppDbContext dbContext;
+    private readonly AppDbContext _dbContext;
+    private readonly IBlobService _blobService;
 
-    public DeleteUserEndpoint(AppDbContext dbContext)
+    public DeleteUserEndpoint(AppDbContext dbContext, IBlobService blobService)
     {
-      this.dbContext = dbContext;
+      _dbContext = dbContext;
+      _blobService = blobService;
     }
 
     public override void Configure()
@@ -29,13 +32,16 @@ namespace reymani_web_api.Endpoints.Users
 
     public override async Task<Results<Ok, NotFound, ProblemDetails>> ExecuteAsync(GetUserByIdRequest req, CancellationToken ct)
     {
-      var user = await dbContext.Users.FindAsync(req.Id, ct);
+      var user = await _dbContext.Users.FindAsync(req.Id, ct);
 
       if (user is null)
         return TypedResults.NotFound();
 
-      dbContext.Users.Remove(user);
-      await dbContext.SaveChangesAsync(ct);
+      _dbContext.Users.Remove(user);
+      await _dbContext.SaveChangesAsync(ct);
+
+      if (!string.IsNullOrEmpty(user.ProfilePicture))
+        await _blobService.DeleteObject(user.ProfilePicture, ct);
 
       return TypedResults.Ok();
     }

@@ -47,12 +47,21 @@ namespace reymani_web_api.Endpoints.Users
       if (user is null)
         return TypedResults.NotFound();
 
+      System.Console.WriteLine(req.ProfilePicture);
+
       // Si se actualiza la imagen, almacenarla en Minio y actualizar la ruta
+      if (!string.IsNullOrEmpty(user.ProfilePicture))
+        await _blobService.DeleteObject(user.ProfilePicture, ct);
+
       if (req.ProfilePicture != null)
       {
         string fileCode = Guid.NewGuid().ToString();
         string objectPath = await _blobService.UploadObject(req.ProfilePicture, fileCode, ct);
         user.ProfilePicture = objectPath;
+      }
+      else
+      {
+        user.ProfilePicture = null;
       }
 
       // Actualizar el resto de propiedades usando el mapper

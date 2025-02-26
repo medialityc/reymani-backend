@@ -56,7 +56,16 @@ namespace reymani_web_api.Endpoints.Products
       product = mapper.UpdateEntity(req, product);
 
       // Siempre borrar las imágenes existentes.
+      if (product.Images != null)
+      {
+        foreach (var image in product.Images)
+        {
+          if (!string.IsNullOrEmpty(image))
+            await _blobService.DeleteObject(image, ct);
+        }
+      }
       product.Images!.Clear();
+
       // Agregar únicamente si se envía alguna imagen.
       if (req.Images != null && req.Images.Any())
       {

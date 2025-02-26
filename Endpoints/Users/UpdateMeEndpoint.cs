@@ -51,11 +51,17 @@ namespace reymani_web_api.Endpoints.Users
         return TypedResults.NotFound();
 
       // Actualizar la imagen si se provee nueva
+      if (!string.IsNullOrEmpty(user.ProfilePicture))
+        await _blobService.DeleteObject(user.ProfilePicture, ct);
       if (req.ProfilePicture != null)
       {
         string fileCode = Guid.NewGuid().ToString();
         string objectPath = await _blobService.UploadObject(req.ProfilePicture, fileCode, ct);
         user.ProfilePicture = objectPath;
+      }
+      else
+      {
+        user.ProfilePicture = null;
       }
 
       // Actualizar el resto de propiedades usando el mapper

@@ -43,6 +43,10 @@ namespace reymani_web_api.Endpoints.Users
       if (req.IsConfirmed is not null)
         query = query.Where(u => u.IsConfirmed == req.IsConfirmed);
 
+      // Nuevo filtro por rol
+      if (req.Roles?.Any() ?? false)
+        query = query.Where(u => req.Roles.Contains(u.Role));
+
       if (req.FirstNames?.Any() ?? false)
         query = query.Where(u => req.FirstNames.Any(n => u.FirstName.ToLower().Contains(n.ToLower().Trim())));
 

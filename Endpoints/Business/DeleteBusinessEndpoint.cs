@@ -5,16 +5,19 @@ using Microsoft.EntityFrameworkCore;
 
 using reymani_web_api.Data;
 using reymani_web_api.Endpoints.Business.Requests;
+using reymani_web_api.Services.BlobServices;
 
 namespace reymani_web_api.Endpoints.Business
 {
   public class DeleteBusinessEndpoint : Endpoint<GetBusinessByIdRequest, Results<Ok, NotFound, Conflict, ProblemDetails>>
   {
-    private readonly AppDbContext dbContext;
+    private readonly AppDbContext _dbContext;
+    private readonly IBlobService _blobService;
 
-    public DeleteBusinessEndpoint(AppDbContext dbContext)
+    public DeleteBusinessEndpoint(AppDbContext dbContext, IBlobService blobService)
     {
-      this.dbContext = dbContext;
+      _dbContext = dbContext;
+      _blobService = blobService;
     }
 
     public override void Configure()
@@ -30,7 +33,7 @@ namespace reymani_web_api.Endpoints.Business
 
     public override async Task<Results<Ok, NotFound, Conflict, ProblemDetails>> ExecuteAsync(GetBusinessByIdRequest req, CancellationToken ct)
     {
-      var business = await dbContext.Businesses
+      var business = await _dbContext.Businesses
         .Include(b => b.Products)
         .FirstOrDefaultAsync(b => b.Id == req.Id, ct);
 
@@ -40,8 +43,14 @@ namespace reymani_web_api.Endpoints.Business
       if (business.Products?.Any() == true)
         return TypedResults.Conflict();
 
-      dbContext.Businesses.Remove(business);
-      await dbContext.SaveChangesAsync(ct);
+      _dbContext.Businesses.Remove(business);
+      await _dbContext.SaveChangesAsync(ct);
+
+      if (!string.IsNullOrEmpty(business.Banner))
+        await _blobService.DeleteObject(business.Banner, ct);
+
+      if (!string.IsNullOrEmpty(business.Logo))
+        await _blobService.DeleteObject(business.Logo, ct);
 
       return TypedResults.Ok();
     }

@@ -1,6 +1,7 @@
 using System;
 
 namespace reymani_web_api.Endpoints.Users.Requests;
+using reymani_web_api.Data.Models;
 
 public class SearchUsersRequest
 {
@@ -12,6 +13,8 @@ public class SearchUsersRequest
   public bool? IsActive { get; set; }
   public bool? IsConfirmed { get; set; }
   public string? Search { get; set; }
+  // Nuevo filtro por rol
+  public UserRole[]? Roles { get; set; }
   // Ordenamiento y paginación
   public string? SortBy { get; set; } = "FirstName";
   public bool? IsDescending { get; set; } = false;

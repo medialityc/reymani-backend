@@ -65,19 +65,33 @@ namespace reymani_web_api.Endpoints.Business
       ThrowIfAnyErrors();
 
       // Si se actualiza la imagen del Logo, almacenarla
+      if (!string.IsNullOrEmpty(business.Logo))
+        await _blobService.DeleteObject(business.Logo, ct);
+
       if (req.Logo != null)
       {
         string logoCode = Guid.NewGuid().ToString();
         string logoPath = await _blobService.UploadObject(req.Logo, logoCode, ct);
         business.Logo = logoPath;
       }
+      else
+      {
+        business.Logo = null;
+      }
 
       // Si se actualiza la imagen del Banner, almacenarla
+      if (!string.IsNullOrEmpty(business.Banner))
+        await _blobService.DeleteObject(business.Banner, ct);
+
       if (req.Banner != null)
       {
         string bannerCode = Guid.NewGuid().ToString();
         string bannerPath = await _blobService.UploadObject(req.Banner, bannerCode, ct);
         business.Banner = bannerPath;
+      }
+      else
+      {
+        business.Banner = null;
       }
 
       // Actualizar el resto de propiedades usando el mapper

@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 using reymani_web_api.Data;
 using reymani_web_api.Endpoints.Products.Requests;
+using reymani_web_api.Services.BlobServices;
 
 using ReymaniWebApi.Data.Models;
 
@@ -12,11 +13,13 @@ namespace reymani_web_api.Endpoints.Products
 {
   public class DeleteProductEndpoint : Endpoint<GetProductByIdRequest, Results<Ok, NotFound, Conflict, ProblemDetails>>
   {
-    private readonly AppDbContext dbContext;
+    private readonly AppDbContext _dbContext;
+    private readonly IBlobService _blobService;
 
-    public DeleteProductEndpoint(AppDbContext dbContext)
+    public DeleteProductEndpoint(AppDbContext _dbContext, IBlobService _blobService)
     {
-      this.dbContext = dbContext;
+      this._dbContext = _dbContext;
+      this._blobService = _blobService;
     }
 
     public override void Configure()
@@ -32,18 +35,27 @@ namespace reymani_web_api.Endpoints.Products
 
     public override async Task<Results<Ok, NotFound, Conflict, ProblemDetails>> ExecuteAsync(GetProductByIdRequest req, CancellationToken ct)
     {
-      var product = await dbContext.Products.FirstOrDefaultAsync(p => p.Id == req.Id, ct);
+      var product = await _dbContext.Products.FirstOrDefaultAsync(p => p.Id == req.Id, ct);
       if (product is null)
         return TypedResults.NotFound();
 
-      var hasOrderItem = await dbContext.Set<OrderItem>().AsNoTracking().AnyAsync(oi => oi.ProductId == product.Id, ct);
-      var hasShoppingCartItem = await dbContext.Set<ShoppingCartItem>().AsNoTracking().AnyAsync(sci => sci.ProductId == product.Id, ct);
+      var hasOrderItem = await _dbContext.Set<OrderItem>().AsNoTracking().AnyAsync(oi => oi.ProductId == product.Id, ct);
+      var hasShoppingCartItem = await _dbContext.Set<ShoppingCartItem>().AsNoTracking().AnyAsync(sci => sci.ProductId == product.Id, ct);
 
       if (hasOrderItem || hasShoppingCartItem)
         return TypedResults.Conflict();
 
-      dbContext.Products.Remove(product);
-      await dbContext.SaveChangesAsync(ct);
+      _dbContext.Products.Remove(product);
+      await _dbContext.SaveChangesAsync(ct);
+
+      if (product.Images != null)
+      {
+        foreach (var image in product.Images)
+        {
+          await _blobService.DeleteObject(image, ct);
+        }
+      }
+
       return TypedResults.Ok();
     }
   }
