@@ -33,7 +33,7 @@ namespace reymani_web_api.Endpoints.Business
     public override async Task<Results<Ok<PaginatedResponse<BusinessSystemAdminResponse>>, ProblemDetails>>
         ExecuteAsync(SearchBusinessSystemAdminRequest req, CancellationToken ct)
     {
-      var query = dbContext.Businesses.AsNoTracking().AsQueryable();
+      var query = dbContext.Businesses.AsNoTracking().Include(b => b.Municipality).ThenInclude(m => m!.Province).Include(b => b.User).AsQueryable();
 
       // Filtrado
       if (req.Ids?.Any() ?? false)

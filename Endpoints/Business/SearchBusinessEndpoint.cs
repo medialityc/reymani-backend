@@ -33,7 +33,7 @@ namespace reymani_web_api.Endpoints.Business
     public override async Task<Results<Ok<PaginatedResponse<BusinessResponse>>, ProblemDetails>>
         ExecuteAsync(SearchBusinessRequest req, CancellationToken ct)
     {
-      var query = dbContext.Businesses.AsNoTracking().AsQueryable();
+      var query = dbContext.Businesses.AsNoTracking().Include(b => b.Municipality).ThenInclude(m => m!.Province).AsQueryable();
 
       // Nuevo: Filtrado para negocios activos
       query = query.Where(b => b.IsActive);
