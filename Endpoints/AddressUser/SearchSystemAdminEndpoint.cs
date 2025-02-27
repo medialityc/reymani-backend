@@ -69,7 +69,7 @@ public class SearchSystemAdminEndpoint : Endpoint<SearchCustomerRequest, Results
     // Ordenamiento
     if (!string.IsNullOrEmpty(req.SortBy))
     {
-      var propertyInfo = typeof(Province).GetProperty(req.SortBy);
+      var propertyInfo = typeof(UserAddress).GetProperty(req.SortBy);
       if (propertyInfo != null)
       {
         query = req.IsDescending ?? false
