@@ -7,8 +7,6 @@ using reymani_web_api.Data;
 using reymani_web_api.Endpoints.Provinces.Requests;
 using reymani_web_api.Services.BlobServices;
 
-using static FastEndpoints.Ep;
-
 
 
 namespace reymani_web_api.Endpoints.Provinces;
