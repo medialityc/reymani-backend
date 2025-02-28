@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 using reymani_web_api.Data;
 using reymani_web_api.Endpoints.Products.Requests;
+using reymani_web_api.Services.BlobServices;
 
 using ReymaniWebApi.Data.Models;
 
@@ -15,11 +16,13 @@ namespace reymani_web_api.Endpoints.Products;
 
 public class DeleteMyProductEndpoint : Endpoint<GetProductByIdRequest, Results<Ok, NotFound, Conflict, ProblemDetails, UnauthorizedHttpResult>>
 {
-  private readonly AppDbContext dbContext;
+  private readonly AppDbContext _dbContext;
+  private readonly IBlobService _blobService;
 
-  public DeleteMyProductEndpoint(AppDbContext dbContext)
+  public DeleteMyProductEndpoint(AppDbContext dbContext, IBlobService blobService)
   {
-    this.dbContext = dbContext;
+    _dbContext = dbContext;
+    _blobService = blobService;
   }
 
   public override void Configure()
@@ -41,34 +44,43 @@ public class DeleteMyProductEndpoint : Endpoint<GetProductByIdRequest, Results<O
       return TypedResults.Unauthorized();
     }
 
-    var user = await dbContext.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Id == userId, ct);
+    var user = await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Id == userId, ct);
     if (user == null || user.Role != Data.Models.UserRole.BusinessAdmin)
     {
       return TypedResults.Unauthorized();
     }
 
-    var business = await dbContext.Businesses.FirstOrDefaultAsync(x => x.UserId == userId, ct);
+    var business = await _dbContext.Businesses.FirstOrDefaultAsync(x => x.UserId == userId, ct);
     if (business == null)
     {
       return TypedResults.Unauthorized();
     }
 
-    var product = await dbContext.Products.FirstOrDefaultAsync(p => p.Id == req.Id, ct);
+    var product = await _dbContext.Products.FirstOrDefaultAsync(p => p.Id == req.Id, ct);
     if (product is null || product.BusinessId != business.Id)
     {
       return TypedResults.NotFound();
     }
 
-    var hasOrderItem = await dbContext.Set<OrderItem>().AsNoTracking().AnyAsync(oi => oi.ProductId == product.Id, ct);
-    var hasShoppingCartItem = await dbContext.Set<ShoppingCartItem>().AsNoTracking().AnyAsync(sci => sci.ProductId == product.Id, ct);
+    var hasOrderItem = await _dbContext.Set<OrderItem>().AsNoTracking().AnyAsync(oi => oi.ProductId == product.Id, ct);
+    var hasShoppingCartItem = await _dbContext.Set<ShoppingCartItem>().AsNoTracking().AnyAsync(sci => sci.ProductId == product.Id, ct);
 
     if (hasOrderItem || hasShoppingCartItem)
     {
       return TypedResults.Conflict();
     }
 
-    dbContext.Products.Remove(product);
-    await dbContext.SaveChangesAsync(ct);
+    _dbContext.Products.Remove(product);
+    await _dbContext.SaveChangesAsync(ct);
+
+    if (product.Images != null)
+    {
+      foreach (var image in product.Images)
+      {
+        await _blobService.DeleteObject(image, ct);
+      }
+    }
+
     return TypedResults.Ok();
   }
 }
