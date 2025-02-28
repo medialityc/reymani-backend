@@ -30,7 +30,7 @@ public class DeleteShippingCostEndpoint : Endpoint<DeleteShippingCostRequest, Re
     Roles("SystemAdmin");
   }
 
-  public async Task<Results<Ok, NotFound, Conflict, UnauthorizedHttpResult, ForbidHttpResult, ProblemDetails>> ExecuteAsync(DeleteProvinceRequest req, CancellationToken ct)
+  public override async Task<Results<Ok, NotFound, Conflict, UnauthorizedHttpResult, ForbidHttpResult, ProblemDetails>> ExecuteAsync(DeleteShippingCostRequest req, CancellationToken ct)
   {
     // Verifica si el costo de envio existe
     var sc = await _dbContext.ShippingCosts.FindAsync(req.Id, ct);
