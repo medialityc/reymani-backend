@@ -25,8 +25,7 @@ public class DeleteVehicleEndpoint : Endpoint<DeleteVehicleRequest, Results<Ok, 
       s.Summary = "Delete vehicle";
       s.Description = "Deletes a vehicle.";
     });
-    //Roles("SystemAdmin");
-    AllowAnonymous();
+    Roles("SystemAdmin");
   }
 
   public override async Task<Results<Ok, NotFound, Conflict, UnauthorizedHttpResult, ForbidHttpResult, ProblemDetails>> ExecuteAsync(DeleteVehicleRequest req, CancellationToken ct)

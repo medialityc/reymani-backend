@@ -32,8 +32,7 @@ public class SearchCourierEndpoint : Endpoint<SearchVehiclesRequest, Results<Ok<
       s.Summary = "Search vehicles";
       s.Description = "Search for vehicles by name or ID with filtering, sorting, and pagination.";
     });
-    //Roles("Courier");
-    AllowAnonymous();
+    Roles("Courier");
   }
 
   public override async Task<Results<Ok<PaginatedResponse<VehicleResponse>>, ProblemDetails>> ExecuteAsync(SearchVehiclesRequest req, CancellationToken ct)

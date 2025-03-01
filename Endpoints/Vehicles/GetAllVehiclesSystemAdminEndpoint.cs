@@ -29,8 +29,7 @@ public class GetAllVehiclesSystemAdminEndpoint : EndpointWithoutRequest<Results<
       s.Summary = "Get all vehicles";
       s.Description = "Retrieves a list of all vehicles.";
     });
-    //Roles("SystemAdmin");
-    AllowAnonymous();
+    Roles("SystemAdmin");
   }
 
   public override async Task<Results<Ok<IEnumerable<VehicleResponse>>, UnauthorizedHttpResult, ForbidHttpResult, ProblemDetails>> ExecuteAsync(CancellationToken ct)

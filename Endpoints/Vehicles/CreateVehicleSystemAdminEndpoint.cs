@@ -29,9 +29,8 @@ public class CreateVehicleSystemAdminEndpoint : Endpoint<CreateVehicleAdminReque
       s.Summary = "Create a vehicle";
       s.Description = "Creates a new vehicle.";
     });
-    //Roles("SystemAdmin");
+    Roles("SystemAdmin");
     AllowFormData();
-    AllowAnonymous();
   }
 
   public override async Task<Results<Created<VehicleResponse>, Conflict, UnauthorizedHttpResult, ForbidHttpResult, ProblemDetails>> ExecuteAsync(CreateVehicleAdminRequest req, CancellationToken ct)

@@ -30,8 +30,7 @@ public class GetByIdVehicleSystemAdminEndpoint : Endpoint<GetByIdRequest, Result
       s.Summary = "Get vehicle by Id";
       s.Description = "Retrieves details of a vehicle by their ID.";
     });
-    //Roles("SystemAdmin");
-    AllowAnonymous();
+    Roles("SystemAdmin");
   }
 
   public override async Task<Results<Ok<VehicleResponse>, NotFound, UnauthorizedHttpResult, ForbidHttpResult, ProblemDetails>> ExecuteAsync(GetByIdRequest req, CancellationToken ct)

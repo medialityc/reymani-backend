@@ -28,9 +28,8 @@ public class UpdateCourierEndpoint : Endpoint<UpdateCourierRequest, Results<Ok, 
       s.Summary = "Update vehicle";
       s.Description = "Updates details of an existing vehicle.";
     });
-    //Roles("Courier");
+    Roles("Courier");
     AllowFormData();
-    AllowAnonymous();
   }
 
   public override async Task<Results<Ok, NotFound, Conflict, UnauthorizedHttpResult, ForbidHttpResult, ProblemDetails>> ExecuteAsync(UpdateCourierRequest req, CancellationToken ct)

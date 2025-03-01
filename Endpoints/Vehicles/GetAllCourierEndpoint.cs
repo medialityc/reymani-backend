@@ -32,8 +32,7 @@ public class GetAllCourierEndpoint : EndpointWithoutRequest< Results<Ok<IEnumera
       s.Summary = "Get all active vehicles";
       s.Description = "Retrieves a list of all vehicles.";
     });
-    //Roles("Courier");
-    AllowAnonymous();
+    Roles("Courier");
   }
 
   public override async Task<Results<Ok<IEnumerable<VehicleResponse>>, UnauthorizedHttpResult, ForbidHttpResult, ProblemDetails>> ExecuteAsync(CancellationToken ct)

@@ -27,9 +27,8 @@ public class UpdateVehicleSystemAdminEndpoint : Endpoint<UpdateCourierAdminReque
       s.Summary = "Update vehicle";
       s.Description = "Updates details of an existing vehicle.";
     });
-    //Roles("SystemAdmin");
+    Roles("SystemAdmin");
     AllowFormData();
-    AllowAnonymous();
   }
 
   public override async Task<Results<Ok, NotFound, Conflict, UnauthorizedHttpResult, ForbidHttpResult, ProblemDetails>> ExecuteAsync(UpdateCourierAdminRequest req, CancellationToken ct)

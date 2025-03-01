@@ -29,9 +29,8 @@ public class CreateCourierEndpoint : Endpoint<CreateVehicleCourierRequest, Resul
       s.Summary = "Create a vehicle";
       s.Description = "Creates a new vehicle.";
     });
-    //Roles("Courier");
+    Roles("Courier");
     AllowFormData();
-    AllowAnonymous();
   }
 
   public override async Task<Results<Created<VehicleResponse>, Conflict, UnauthorizedHttpResult, ForbidHttpResult, ProblemDetails>> ExecuteAsync(CreateVehicleCourierRequest req, CancellationToken ct)

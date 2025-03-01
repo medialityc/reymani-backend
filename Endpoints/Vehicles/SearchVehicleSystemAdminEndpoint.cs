@@ -32,8 +32,7 @@ public class SearchVehicleSystemAdminEndpoint : Endpoint<SearchVehiclesRequest, 
       s.Summary = "Search vehicles";
       s.Description = "Search for vehicles by name or ID with filtering, sorting, and pagination.";
     });
-    //Roles("SystemAdmin");
-    AllowAnonymous();
+    Roles("SystemAdmin");
   }
 
   public override async Task<Results<Ok<PaginatedResponse<VehicleResponse>>, ProblemDetails>> ExecuteAsync(SearchVehiclesRequest req, CancellationToken ct)

@@ -32,8 +32,7 @@ public class GetByIdCourierEndpoint : Endpoint<GetByIdRequest, Results<Ok<Vehicl
       s.Summary = "Get vehicle by Id";
       s.Description = "Retrieves details of a vehicle by their ID.";
     });
-    //Roles("Courier");
-    AllowAnonymous();
+    Roles("Courier");
   }
 
   public override async Task<Results<Ok<VehicleResponse>, NotFound,UnauthorizedHttpResult,ForbidHttpResult, ProblemDetails>> ExecuteAsync(GetByIdRequest req, CancellationToken ct)
