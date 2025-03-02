@@ -23,7 +23,7 @@ public class GetByIdVehicleTypeCourierEndpoint : Endpoint<GetByIdRequest, Result
 
   public override void Configure()
   {
-    Get("/vehicleType/{id}");
+    Get("/vehiclesTypes/{id}");
     Summary(s =>
     {
       s.Summary = "Get vehicle type by Id";

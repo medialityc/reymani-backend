@@ -23,7 +23,7 @@ public class GetByIdVehicleTypeAdminEndpoint : Endpoint<GetByIdRequest, Results<
 
   public override void Configure()
   {
-    Get("/vehicleType/admin/{id}");
+    Get("/vehiclesTypes/admin/{id}");
     Summary(s =>
     {
       s.Summary = "Get vehicle type by Id";
