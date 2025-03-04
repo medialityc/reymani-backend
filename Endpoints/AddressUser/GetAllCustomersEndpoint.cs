@@ -42,7 +42,6 @@ public class GetAllCustomersEndpoint : EndpointWithoutRequest<Results<Ok<IEnumer
       .AsNoTracking()
       .Include(p => p.Municipality)
       .Include(p => p.Municipality.Province)
-      .AsNoTracking()
       .OrderBy(u => u.Id)
       .ToListAsync(ct);
 
