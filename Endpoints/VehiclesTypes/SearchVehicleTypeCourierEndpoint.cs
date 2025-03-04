@@ -75,27 +75,28 @@ public class SearchVehicleTypeCourierEndpoint : Endpoint<SearchVehicleTypeCourie
       query = query.Where(pc => pc.Name.ToLower().Contains(search));
     }
 
-    // Ejecución de la consulta
-    var categories = (await query.ToListAsync(ct)).AsEnumerable();
-
-    // Ordenamiento
+    // Ejecutar la consulta ANTES de ordenar con reflexión
+    var totalCount = await query.CountAsync(ct);
+    var vehicleTypes = await query.ToListAsync(ct);
+    
+    // Ordenamiento con reflexión (en memoria)
+    IEnumerable<VehicleType> sortedVehicleTypes = vehicleTypes;
     if (!string.IsNullOrEmpty(req.SortBy))
     {
       var propertyInfo = typeof(VehicleType).GetProperty(req.SortBy);
       if (propertyInfo != null)
       {
-        query = req.IsDescending ?? false
-        ? query.OrderByDescending(u => propertyInfo.GetValue(u))
-            : query.OrderBy(u => propertyInfo.GetValue(u));
+        sortedVehicleTypes = req.IsDescending ?? false
+          ? sortedVehicleTypes.OrderByDescending(u => propertyInfo.GetValue(u))
+          : sortedVehicleTypes.OrderBy(u => propertyInfo.GetValue(u));
       }
     }
 
-    // Paginación
-    var totalCount = await query.CountAsync(ct);
-    var data = await query
-           .Skip(((req.Page ?? 1) - 1) * (req.PageSize ?? 10))
-           .Take(req.PageSize ?? 10)
-           .ToListAsync(ct);
+    // Paginación (ahora en memoria)
+    var data = sortedVehicleTypes
+      .Skip(((req.Page ?? 1) - 1) * (req.PageSize ?? 10))
+      .Take(req.PageSize ?? 10)
+      .ToList();
 
     // Mapeo de respuesta
     var mapper = new VehicleTypeMapper();
