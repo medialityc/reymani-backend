@@ -16,7 +16,7 @@ public class UpdateVehicleTypeRequestValidator : Validator<UpdateVehicleTypeRequ
       .GreaterThan(0);
 
     RuleFor(x => x.Logo)
-       .Must(file => (ImageValidations.BeAValidImage(file) && ImageValidations.HaveValidLength(file)))
+       .Must(file => file == null || (ImageValidations.BeAValidImage(file) && ImageValidations.HaveValidLength(file)))
        .WithMessage("La imagen debe ser válida.");
   }
 }

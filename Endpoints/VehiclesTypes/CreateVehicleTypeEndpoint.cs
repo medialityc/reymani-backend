@@ -35,18 +35,26 @@ public class CreateVehicleTypeEndpoint : Endpoint<CreateVehicleTypeRequest, Resu
 
   public override async Task<Results<Created<VehicleTypeResponse>, Conflict, UnauthorizedHttpResult, ForbidHttpResult, ProblemDetails>> ExecuteAsync(CreateVehicleTypeRequest req, CancellationToken ct)
   {
-    if (await BeUniqueName(req.Name,ct))
+    if (!await BeUniqueName(req.Name,ct))
       return TypedResults.Conflict();
 
 
     var mapper = new VehicleTypeMapper();
     var vehicleType = mapper.ToEntity(req);
+    
+    // Ensure ID is not set manually - let the database assign it
+    // If your entity has an explicit Id property that's being set somewhere,
+    // you should make sure it's not being assigned here
+    vehicleType.Id = default; // or 0, or remove this line if using identity columns properly
 
 
-    //Poner la nueva foto
-    var fileCode = Guid.NewGuid().ToString();
-    string imagePath = await _blobService.UploadObject(req.Logo, fileCode, ct);
-    vehicleType.Logo = imagePath;
+    if (req.Logo != null)
+    {
+      //Poner la nueva foto
+      var fileCode = Guid.NewGuid().ToString();
+      string imagePath = await _blobService.UploadObject(req.Logo, fileCode, ct);
+      vehicleType.Logo = imagePath;
+    }
 
 
     // Agrega el nuevo tipo de vehiculo a la base de datos
@@ -59,7 +67,7 @@ public class CreateVehicleTypeEndpoint : Endpoint<CreateVehicleTypeRequest, Resu
   }
   private async Task<bool> BeUniqueName(string name, CancellationToken cancellationToken)
   {
-    // Verifica si ya existe un tipo de vehiculo con el mismo nombre, excluyendo el que se está actualizando
+    // Verifica si ya existe un tipo de vehiculo con el mismo nombre
     return !await _dbContext.VehicleTypes
         .AnyAsync(p => p.Name.ToLower() == name.ToLower(), cancellationToken);
   }

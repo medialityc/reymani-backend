@@ -42,7 +42,7 @@ public class UpdateVehicleTypeEndpoint : Endpoint<UpdateVehicleTypeRequest, Resu
     }
 
     if(req.Name!=null)
-      if (await BeUniqueName(req.Name,ct))
+      if (await NameAlreadyExists(req.Name, req.Id, ct))
         return TypedResults.Conflict();
 
     // Actualiza las propiedades del tipo vehículo // Mantener el valor actual si es null
@@ -50,28 +50,33 @@ public class UpdateVehicleTypeEndpoint : Endpoint<UpdateVehicleTypeRequest, Resu
     vehicleType.TotalCapacity= req.TotalCapacity ?? vehicleType.TotalCapacity;
     vehicleType.IsActive = req.IsActive ?? vehicleType.IsActive;
 
+    // Siempre elimina la foto que había (como en UpdateUserEndpoint)
+    if (!string.IsNullOrEmpty(vehicleType.Logo))
+      await _blobService.DeleteObject(vehicleType.Logo, ct);
 
-    // Agregar nueva imágen solo si se proporciona.
+    // Agregar nueva imágen solo si se proporciona
     if (req.Logo != null)
     {
-      //Elimina la foto que habia
-      if (!string.IsNullOrEmpty(vehicleType.Logo))
-        await _blobService.DeleteObject(vehicleType.Logo, ct);
-
-      //Poner la nueva foto
-      var fileCode = Guid.NewGuid().ToString();
-      string imagePath = await _blobService.UploadObject(req.Logo, fileCode, ct);
-      vehicleType.Logo = imagePath;
+        //Poner la nueva foto
+        var fileCode = Guid.NewGuid().ToString();
+        string imagePath = await _blobService.UploadObject(req.Logo, fileCode, ct);
+        vehicleType.Logo = imagePath;
     }
+    else
+    {
+        // Si no se proporciona imagen, establecer Logo a null (como en UpdateUserEndpoint)
+        vehicleType.Logo = null;
+    }
+    
     await _dbContext.SaveChangesAsync(ct);
 
     return TypedResults.Ok();
   }
 
-  private async Task<bool> BeUniqueName(string name, CancellationToken cancellationToken)
+  private async Task<bool> NameAlreadyExists(string name, int currentTypeId, CancellationToken cancellationToken)
   {
     // Verifica si ya existe un tipo de vehiculo con el mismo nombre, excluyendo el que se está actualizando
-    return !await _dbContext.VehicleTypes
-        .AnyAsync(p => p.Name.ToLower() == name.ToLower(), cancellationToken);
+    return await _dbContext.VehicleTypes
+        .AnyAsync(p => p.Name.ToLower() == name.ToLower() && p.Id != currentTypeId, cancellationToken);
   }
 }
