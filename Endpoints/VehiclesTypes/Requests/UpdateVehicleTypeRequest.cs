@@ -6,5 +6,5 @@ public class UpdateVehicleTypeRequest
   public required string? Name { get; set; }
   public required int? TotalCapacity { get; set; }
   public required bool? IsActive { get; set; }
-  public required IFormFile? Logo { get; set; }
+  public IFormFile? Logo { get; set; }
 }

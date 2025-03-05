@@ -48,6 +48,12 @@ public class DeleteVehicleTypeEndpoint : Endpoint<DeleteVehicleTypeRequest, Resu
       return TypedResults.Conflict(); //Conflicto, el tipo de vehículo está en uso en Vehicles
     }
 
+    // Elimina la foto del tipo de vehículo
+    if (!string.IsNullOrEmpty(vehicleType.Logo))
+    {
+      await _blobService.DeleteObject(vehicleType.Logo, ct);
+    }
+
     // Si no está en uso, procede a eliminar el tipo de vehículo
     _dbContext.VehicleTypes.Remove(vehicleType);
     await _dbContext.SaveChangesAsync(ct);
