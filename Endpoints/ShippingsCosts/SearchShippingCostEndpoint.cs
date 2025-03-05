@@ -62,27 +62,28 @@ public class SearchShippingCostEndpoint : Endpoint<SearchShippingCostRequest, Re
     if (req.CostMax.HasValue)
       query = query.Where(pc => pc.Cost <= req.CostMax.Value);
 
-    // Ejecución de la consulta
-    var categories = (await query.ToListAsync(ct)).AsEnumerable();
-
-    // Ordenamiento
+    // Ejecutar la consulta ANTES de ordenar con reflexión
+    var totalCount = await query.CountAsync(ct);
+    var shippingCosts = await query.ToListAsync(ct);
+    
+    // Ordenamiento con reflexión (en memoria)
+    IEnumerable<ReymaniWebApi.Data.Models.ShippingCost> sortedShippingCosts = shippingCosts;
     if (!string.IsNullOrEmpty(req.SortBy))
     {
       var propertyInfo = typeof(ReymaniWebApi.Data.Models.ShippingCost).GetProperty(req.SortBy);
       if (propertyInfo != null)
       {
-        query = req.IsDescending ?? false
-            ? query.OrderByDescending(u => propertyInfo.GetValue(u))
-            : query.OrderBy(u => propertyInfo.GetValue(u));
+        sortedShippingCosts = req.IsDescending ?? false
+          ? sortedShippingCosts.OrderByDescending(u => propertyInfo.GetValue(u))
+          : sortedShippingCosts.OrderBy(u => propertyInfo.GetValue(u));
       }
     }
 
-    // Paginación
-    var totalCount = await query.CountAsync(ct);
-    var data = await query
-        .Skip(((req.Page ?? 1) - 1) * (req.PageSize ?? 10))
-        .Take(req.PageSize ?? 10)
-        .ToListAsync(ct);
+    // Paginación (ahora en memoria)
+    var data = sortedShippingCosts
+      .Skip(((req.Page ?? 1) - 1) * (req.PageSize ?? 10))
+      .Take(req.PageSize ?? 10)
+      .ToList();
 
     // Mapeo de respuesta
     var mapper = new ShippingCostMapper();

@@ -20,7 +20,6 @@ public class SearchShippingCostRequestValidator : Validator<SearchShippingCostRe
       .GreaterThan(0);
 
     RuleFor(e => e.CostMax)
-      .NotEmpty()
       .GreaterThan(0);
   }
 }
