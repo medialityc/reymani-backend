@@ -16,12 +16,9 @@ namespace reymani_web_api.Endpoints.ShippingsCost;
 public class CreateShippingCostEndpoint : Endpoint<CreateShippingCostRequest, Results<Created<ShippingCostResponse>, Conflict, UnauthorizedHttpResult, ForbidHttpResult, ProblemDetails>>
 {
   private readonly AppDbContext _dbContext;
-  private readonly IBlobService _blobService;
-
-  public CreateShippingCostEndpoint(AppDbContext dbContext, IBlobService blobService)
+  public CreateShippingCostEndpoint(AppDbContext dbContext)
   {
     _dbContext = dbContext;
-    _blobService = blobService;
   }
 
   public override void Configure()
@@ -43,7 +40,6 @@ public class CreateShippingCostEndpoint : Endpoint<CreateShippingCostRequest, Re
       return TypedResults.Conflict();
     }
 
-
     var mapper = new ShippingCostMapper();
     var sc = mapper.ToEntity(req);
 
@@ -51,9 +47,7 @@ public class CreateShippingCostEndpoint : Endpoint<CreateShippingCostRequest, Re
     _dbContext.ShippingCosts.Add(sc);
     await _dbContext.SaveChangesAsync(ct);
 
-
     var response = mapper.FromEntity(sc);
-
 
     return TypedResults.Created($"/shippingcost/{sc.Id}", response);
   }
