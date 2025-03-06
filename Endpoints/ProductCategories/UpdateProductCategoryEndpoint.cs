@@ -51,11 +51,17 @@ namespace reymani_web_api.Endpoints.ProductCategories
       // Actualizar entidad con los datos de la request
       category = mapper.ToEntity(req, category);
 
+      if (!string.IsNullOrEmpty(category.Logo))
+        await _blobService.DeleteObject(category.Logo, ct);
+
       if (req.Logo != null)
       {
         string fileCode = Guid.NewGuid().ToString();
         string objectPath = await _blobService.UploadObject(req.Logo, fileCode, ct);
         category.Logo = objectPath;
+      }else
+      {
+        category.Logo = null;
       }
 
       await _dbContext.SaveChangesAsync(ct);
