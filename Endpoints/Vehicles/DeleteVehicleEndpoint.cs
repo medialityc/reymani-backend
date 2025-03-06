@@ -4,6 +4,8 @@ using reymani_web_api.Data;
 using reymani_web_api.Endpoints.Vehicles.Requests;
 using reymani_web_api.Services.BlobServices;
 
+using ReymaniWebApi.Data.Models;
+
 namespace reymani_web_api.Endpoints.Vehicles;
 
 public class DeleteVehicleEndpoint : Endpoint<DeleteVehicleRequest, Results<Ok, NotFound, Conflict, UnauthorizedHttpResult, ForbidHttpResult, ProblemDetails>>
@@ -35,6 +37,12 @@ public class DeleteVehicleEndpoint : Endpoint<DeleteVehicleRequest, Results<Ok, 
     if (vehicle is null)
     {
       return TypedResults.NotFound();
+    }
+
+    // Elimina la foto del tipo de vehículo
+    if (!string.IsNullOrEmpty(vehicle.Picture))
+    {
+      await _blobService.DeleteObject(vehicle.Picture, ct);
     }
 
     // Elimina el vehiculo

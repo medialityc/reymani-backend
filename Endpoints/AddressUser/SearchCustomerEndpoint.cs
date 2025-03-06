@@ -35,13 +35,13 @@ public class SearchCustomerEndpoint : Endpoint<SearchCustomerRequest, Results<Ok
   public override async Task<Results<Ok<PaginatedResponse<UserAddressResponse>>, ProblemDetails>> ExecuteAsync(SearchCustomerRequest req, CancellationToken ct)
   {
     var query = _dbContext.UserAddresses
-      .Where(p=> p.IsActive==true)
-      .AsNoTracking()
-      .Include(p => p.Municipality)
-      .Include(p => p.Municipality.Province)
-      .AsQueryable();
+        .Where(p => p.IsActive == true)
+        .AsNoTracking()
+        .Include(p => p.Municipality)
+        .Include(p => p.Municipality.Province)
+        .AsQueryable();
 
-    //Filtrado
+    // Filtrado
     if (req.Ids?.Any() ?? false)
       query = query.Where(pc => req.Ids.Contains(pc.Id));
 
@@ -54,9 +54,8 @@ public class SearchCustomerEndpoint : Endpoint<SearchCustomerRequest, Results<Ok
     if (req.Address?.Any() ?? false)
       query = query.Where(pc => req.Address.Contains(pc.Address));
 
-    if(req.IdMunicipalities?.Any() ?? false)
+    if (req.IdMunicipalities?.Any() ?? false)
       query = query.Where(pc => req.IdMunicipalities.Contains(pc.MunicipalityId));
-
 
     if (req.Search is not null)
     {
@@ -64,27 +63,27 @@ public class SearchCustomerEndpoint : Endpoint<SearchCustomerRequest, Results<Ok
       query = query.Where(pc => pc.Name.ToLower().Contains(search) || pc.Address.ToLower().Contains(search) || pc.Notes.ToLower().Contains(search));
     }
 
-    // Ejecución de la consulta
-    var categories = (await query.ToListAsync(ct)).AsEnumerable();
+    // Ejecutar la consulta sin ordenamiento (traer datos a memoria)
+    var userAddresses = await query.ToListAsync(ct);
 
-    // Ordenamiento
+    // Ordenamiento del lado del cliente (en memoria)
     if (!string.IsNullOrEmpty(req.SortBy))
     {
       var propertyInfo = typeof(UserAddress).GetProperty(req.SortBy);
       if (propertyInfo != null)
       {
-        query = req.IsDescending ?? false
-        ? query.OrderByDescending(u => propertyInfo.GetValue(u))
-            : query.OrderBy(u => propertyInfo.GetValue(u));
+        userAddresses = req.IsDescending ?? false
+            ? userAddresses.OrderByDescending(u => propertyInfo.GetValue(u)).ToList() // Orden descendente
+            : userAddresses.OrderBy(u => propertyInfo.GetValue(u)).ToList(); // Orden ascendente
       }
     }
 
-    // Paginación
-    var totalCount = await query.CountAsync(ct);
-    var data = await query
-           .Skip(((req.Page ?? 1) - 1) * (req.PageSize ?? 10))
-           .Take(req.PageSize ?? 10)
-           .ToListAsync(ct);
+    // Paginación en memoria
+    var totalCount = userAddresses.Count;
+    var data = userAddresses
+        .Skip(((req.Page ?? 1) - 1) * (req.PageSize ?? 10))
+        .Take(req.PageSize ?? 10)
+        .ToList();
 
     // Mapeo de respuesta
     var mapper = new UserAddressMapper();

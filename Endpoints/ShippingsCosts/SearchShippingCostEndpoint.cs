@@ -5,8 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using reymani_web_api.Data;
 using reymani_web_api.Endpoints.Commons.Responses;
 using reymani_web_api.Endpoints.Mappers;
-using reymani_web_api.Endpoints.Provinces.Requests;
-using reymani_web_api.Endpoints.Provinces.Responses;
 using reymani_web_api.Endpoints.ShippingCost.Request;
 using reymani_web_api.Endpoints.ShippingsCost.Responses;
 

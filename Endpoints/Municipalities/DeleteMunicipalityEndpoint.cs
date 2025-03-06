@@ -5,20 +5,17 @@ using Microsoft.EntityFrameworkCore;
 
 using reymani_web_api.Data;
 using reymani_web_api.Endpoints.Municipalities.Requests;
-using reymani_web_api.Endpoints.Provinces.Requests;
-using reymani_web_api.Services.BlobServices;
+
 
 namespace reymani_web_api.Endpoints.Municipalities;
 
 public class DeleteMunicipalityEndpoint : Endpoint<DeleteMunicipalityRequest, Results<Ok, NotFound, Conflict, UnauthorizedHttpResult, ForbidHttpResult, ProblemDetails>>
 {
   private readonly AppDbContext _dbContext;
-  private readonly IBlobService _blobService;
 
-  public DeleteMunicipalityEndpoint(AppDbContext dbContext, IBlobService blobService)
+  public DeleteMunicipalityEndpoint(AppDbContext dbContext)
   {
     _dbContext = dbContext;
-    _blobService = blobService;
   }
 
   public override void Configure()
