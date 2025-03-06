@@ -2,21 +2,19 @@
 using Microsoft.AspNetCore.Http.HttpResults;
 
 using reymani_web_api.Data;
-using reymani_web_api.Endpoints.Provinces.Requests;
 using reymani_web_api.Endpoints.ShippingCost.Request;
-using reymani_web_api.Services.BlobServices;
+
 
 namespace reymani_web_api.Endpoints.ShippingsCost;
 
 public class DeleteShippingCostEndpoint : Endpoint<DeleteShippingCostRequest, Results<Ok, NotFound, Conflict, UnauthorizedHttpResult, ForbidHttpResult, ProblemDetails>>
 {
   private readonly AppDbContext _dbContext;
-  private readonly IBlobService _blobService;
 
-  public DeleteShippingCostEndpoint(AppDbContext dbContext, IBlobService blobService)
+
+  public DeleteShippingCostEndpoint(AppDbContext dbContext)
   {
     _dbContext = dbContext;
-    _blobService = blobService;
   }
 
   public override void Configure()

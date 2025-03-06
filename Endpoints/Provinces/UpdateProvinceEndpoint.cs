@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 
 using reymani_web_api.Data;
 using reymani_web_api.Endpoints.Provinces.Requests;
-using reymani_web_api.Services.BlobServices;
 
 
 
@@ -14,12 +13,11 @@ namespace reymani_web_api.Endpoints.Provinces;
 public class UpdateProvinceEndpoint : Endpoint<UpdateProvinceRequest, Results<Ok, NotFound, Conflict, UnauthorizedHttpResult, ForbidHttpResult, ProblemDetails>>
 {
   private readonly AppDbContext _dbContext;
-  private readonly IBlobService _blobService;
 
-  public UpdateProvinceEndpoint(AppDbContext dbContext, IBlobService blobService)
+
+  public UpdateProvinceEndpoint(AppDbContext dbContext)
   {
     _dbContext = dbContext;
-    _blobService = blobService;
   }
 
   public override void Configure()
