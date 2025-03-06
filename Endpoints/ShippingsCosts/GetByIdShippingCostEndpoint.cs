@@ -7,19 +7,17 @@ using reymani_web_api.Data;
 using reymani_web_api.Endpoints.Mappers;
 using reymani_web_api.Endpoints.ShippingsCost.Responses;
 using reymani_web_api.Endpoints.ShippingCost.Request;
-using reymani_web_api.Services.BlobServices;
+
 
 namespace reymani_web_api.Endpoints.ShippingsCost;
 
 public class GetByIdShippingCostEndpoint : Endpoint<GetShippingCostByIdRequest, Results<Ok<ShippingCostResponse>, NotFound, ProblemDetails>>
 {
   private readonly AppDbContext _dbContext;
-  private readonly IBlobService _blobService;
 
-  public GetByIdShippingCostEndpoint(AppDbContext dbContext, IBlobService blobService)
+  public GetByIdShippingCostEndpoint(AppDbContext dbContext)
   {
     _dbContext = dbContext;
-    _blobService = blobService;
   }
 
   public override void Configure()

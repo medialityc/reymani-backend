@@ -7,21 +7,17 @@ using reymani_web_api.Data;
 using reymani_web_api.Endpoints.Mappers;
 using reymani_web_api.Endpoints.Municipalities.Requests;
 using reymani_web_api.Endpoints.Municipalities.Responses;
-using reymani_web_api.Endpoints.Provinces.Requests;
-using reymani_web_api.Endpoints.Provinces.Responses;
-using reymani_web_api.Services.BlobServices;
+
 
 namespace reymani_web_api.Endpoints.Municipalities;
 
 public class GetMunicipalityByIdEndpoint : Endpoint<GetMunicipalityByIdRequest, Results<Ok<MunicipalityWithNameProvinceResponse>, NotFound, ProblemDetails>>
 {
   private readonly AppDbContext _dbContext;
-  private readonly IBlobService _blobService;
 
-  public GetMunicipalityByIdEndpoint(AppDbContext dbContext, IBlobService blobService)
+  public GetMunicipalityByIdEndpoint(AppDbContext dbContext)
   {
     _dbContext = dbContext;
-    _blobService = blobService;
   }
 
   public override void Configure()

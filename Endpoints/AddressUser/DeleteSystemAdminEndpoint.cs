@@ -3,7 +3,6 @@
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using reymani_web_api.Data;
-using reymani_web_api.Services.BlobServices;
 using reymani_web_api.Endpoints.AddressUser.Requests;
 
 namespace reymani_web_api.Endpoints.AddressUser;
@@ -11,12 +10,10 @@ namespace reymani_web_api.Endpoints.AddressUser;
 public class DeleteSystemAdminEndpoint : Endpoint<DeleteUserAddressRequest, Results<Ok, NotFound, Conflict, UnauthorizedHttpResult, ForbidHttpResult, ProblemDetails>>
 {
   private readonly AppDbContext _dbContext;
-  private readonly IBlobService _blobService;
 
-  public DeleteSystemAdminEndpoint(AppDbContext dbContext, IBlobService blobService)
+  public DeleteSystemAdminEndpoint(AppDbContext dbContext)
   {
     _dbContext = dbContext;
-    _blobService = blobService;
   }
 
   public override void Configure()

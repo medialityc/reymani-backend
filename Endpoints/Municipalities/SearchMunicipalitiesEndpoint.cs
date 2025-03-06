@@ -7,10 +7,7 @@ using reymani_web_api.Endpoints.Commons.Responses;
 using reymani_web_api.Endpoints.Mappers;
 using reymani_web_api.Endpoints.Municipalities.Requests;
 using reymani_web_api.Endpoints.Municipalities.Responses;
-using reymani_web_api.Endpoints.Provinces.Requests;
-using reymani_web_api.Endpoints.Provinces.Responses;
 
-using ReymaniWebApi.Data.Models;
 
 namespace reymani_web_api.Endpoints.Municipalities;
 
@@ -37,11 +34,11 @@ public class SearchMunicipalitiesEndpoint : Endpoint<SearchMunicipalityRequest, 
   public override async Task<Results<Ok<PaginatedResponse<MunicipalityWithNameProvinceResponse>>, ProblemDetails>> ExecuteAsync(SearchMunicipalityRequest req, CancellationToken ct)
   {
     var query = _dbContext.Municipalities
-      .AsNoTracking()
-      .Include(p => p.Province)
-      .AsQueryable();
+        .AsNoTracking()
+        .Include(p => p.Province)
+        .AsQueryable();
 
-    //Filtrado
+    // Filtrado
     if (req.Ids?.Any() ?? false)
       query = query.Where(pc => req.Ids.Contains(pc.Id));
 
@@ -54,27 +51,22 @@ public class SearchMunicipalitiesEndpoint : Endpoint<SearchMunicipalityRequest, 
       query = query.Where(pc => pc.Name.ToLower().Contains(search));
     }
 
-    // Ejecución de la consulta
-    var categories = (await query.ToListAsync(ct)).AsEnumerable();
-
-    // Ordenamiento
+    // Ordenamiento en la base de datos
     if (!string.IsNullOrEmpty(req.SortBy))
     {
-      var propertyInfo = typeof(Municipality).GetProperty(req.SortBy);
-      if (propertyInfo != null)
-      {
-        query = req.IsDescending ?? false
-        ? query.OrderByDescending(u => propertyInfo.GetValue(u))
-            : query.OrderBy(u => propertyInfo.GetValue(u));
-      }
+      query = req.IsDescending ?? false
+          ? query.OrderByDescending(pc => EF.Property<object>(pc, req.SortBy)) // Ordenamiento dinámico
+          : query.OrderBy(pc => EF.Property<object>(pc, req.SortBy));
     }
 
-    // Paginación
+    // Conteo total (sin paginación)
     var totalCount = await query.CountAsync(ct);
+
+    // Paginación
     var data = await query
-           .Skip(((req.Page ?? 1) - 1) * (req.PageSize ?? 10))
-           .Take(req.PageSize ?? 10)
-           .ToListAsync(ct);
+        .Skip(((req.Page ?? 1) - 1) * (req.PageSize ?? 10))
+        .Take(req.PageSize ?? 10)
+        .ToListAsync(ct);
 
     // Mapeo de respuesta
     var mapper = new MunicipalitiesMapper();
