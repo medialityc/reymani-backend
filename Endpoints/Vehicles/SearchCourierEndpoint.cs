@@ -38,12 +38,12 @@ public class SearchCourierEndpoint : Endpoint<SearchVehiclesRequest, Results<Ok<
   public override async Task<Results<Ok<PaginatedResponse<VehicleResponse>>, ProblemDetails>> ExecuteAsync(SearchVehiclesRequest req, CancellationToken ct)
   {
     var query = _dbContext.Vehicles
-      .Where(p=> p.IsActive==true)
-      .AsNoTracking()
-      .Include(p => p.VehicleType)
-      .AsQueryable();
+        .Where(p => p.IsActive == true)
+        .AsNoTracking()
+        .Include(p => p.VehicleType)
+        .AsQueryable();
 
-    //Filtrado
+    // Filtrado
     if (req.Ids?.Any() ?? false)
       query = query.Where(p => req.Ids.Contains(p.Id));
 
@@ -51,16 +51,13 @@ public class SearchCourierEndpoint : Endpoint<SearchVehiclesRequest, Results<Ok<
       query = query.Where(p => req.TypesVehicle.Contains(p.VehicleTypeId));
 
     if (req.Names?.Any() ?? false)
-      query = query.Where(p => req.Names.Any(n =>
-          p.Name.ToLower().Contains(n.ToLower().Trim())));
+      query = query.Where(p => req.Names.Any(n => p.Name.ToLower().Contains(n.ToLower().Trim())));
 
     if (req.Descriptions?.Any() ?? false)
-      query = query.Where(p => p.Description != null && req.Descriptions.Any(d =>
-          p.Description.ToLower().Contains(d.ToLower().Trim())));
+      query = query.Where(p => p.Description != null && req.Descriptions.Any(d => p.Description.ToLower().Contains(d.ToLower().Trim())));
 
     if (req.IsAvailable.HasValue)
       query = query.Where(p => p.IsAvailable == req.IsAvailable.Value);
-
 
     if (req.Search is not null)
     {
@@ -68,27 +65,27 @@ public class SearchCourierEndpoint : Endpoint<SearchVehiclesRequest, Results<Ok<
       query = query.Where(pc => pc.Name.ToLower().Contains(search));
     }
 
-    // Ejecución de la consulta
-    var categories = (await query.ToListAsync(ct)).AsEnumerable();
+    // Ejecutar la consulta sin ordenamiento (traer datos a memoria)
+    var vehicles = await query.ToListAsync(ct);
 
-    // Ordenamiento
+    // Ordenamiento del lado del cliente (en memoria)
     if (!string.IsNullOrEmpty(req.SortBy))
     {
       var propertyInfo = typeof(Vehicle).GetProperty(req.SortBy);
       if (propertyInfo != null)
       {
-        query = req.IsDescending ?? false
-        ? query.OrderByDescending(u => propertyInfo.GetValue(u))
-            : query.OrderBy(u => propertyInfo.GetValue(u));
+        vehicles = req.IsDescending ?? false
+            ? vehicles.OrderByDescending(u => propertyInfo.GetValue(u)).ToList() // Orden descendente
+            : vehicles.OrderBy(u => propertyInfo.GetValue(u)).ToList(); // Orden ascendente
       }
     }
 
-    // Paginación
-    var totalCount = await query.CountAsync(ct);
-    var data = await query
-           .Skip(((req.Page ?? 1) - 1) * (req.PageSize ?? 10))
-           .Take(req.PageSize ?? 10)
-           .ToListAsync(ct);
+    // Paginación en memoria
+    var totalCount = vehicles.Count;
+    var data = vehicles
+        .Skip(((req.Page ?? 1) - 1) * (req.PageSize ?? 10))
+        .Take(req.PageSize ?? 10)
+        .ToList();
 
     // Mapeo de respuesta
     var mapper = new VehicleMapper();

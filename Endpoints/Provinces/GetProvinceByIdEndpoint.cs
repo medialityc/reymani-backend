@@ -1,8 +1,7 @@
 ﻿using reymani_web_api.Data;
 using FastEndpoints;
-using reymani_web_api.Endpoints.Users.Requests;
+
 using Microsoft.AspNetCore.Http.HttpResults;
-using reymani_web_api.Services.BlobServices;
 using reymani_web_api.Endpoints.Mappers;
 using reymani_web_api.Endpoints.Provinces.Responses;
 using reymani_web_api.Endpoints.Provinces.Requests;
@@ -13,12 +12,11 @@ namespace reymani_web_api.Endpoints.Provinces;
 public class GetProvinceByIdEndpoint : Endpoint<GetProvinceByIdRequest, Results<Ok<ProvinceResponse>, NotFound, ProblemDetails>>
 {
   private readonly AppDbContext _dbContext;
-  private readonly IBlobService _blobService;
 
-  public GetProvinceByIdEndpoint(AppDbContext dbContext, IBlobService blobService)
+
+  public GetProvinceByIdEndpoint(AppDbContext dbContext)
   {
     _dbContext = dbContext;
-    _blobService = blobService;
   }
 
   public override void Configure()

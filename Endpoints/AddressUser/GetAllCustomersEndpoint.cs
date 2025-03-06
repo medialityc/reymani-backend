@@ -5,21 +5,18 @@ using Microsoft.EntityFrameworkCore;
 using reymani_web_api.Data;
 using reymani_web_api.Endpoints.AddressUser.Responses;
 using reymani_web_api.Endpoints.Mappers;
-using reymani_web_api.Services.BlobServices;
 
-using static FastEndpoints.Ep;
 
 namespace reymani_web_api.Endpoints.AddressUser;
 
 public class GetAllCustomersEndpoint : EndpointWithoutRequest<Results<Ok<IEnumerable<UserAddressResponse>>, ProblemDetails>>
 {
   private readonly AppDbContext _dbContext;
-  private readonly IBlobService _blobService;
 
-  public GetAllCustomersEndpoint(AppDbContext dbContext, IBlobService blobService)
+
+  public GetAllCustomersEndpoint(AppDbContext dbContext)
   {
     _dbContext = dbContext;
-    _blobService = blobService;
   }
 
   public override void Configure()

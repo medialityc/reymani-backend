@@ -4,11 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using reymani_web_api.Data;
 using reymani_web_api.Endpoints.Commons.Responses;
 using reymani_web_api.Endpoints.Mappers;
-using reymani_web_api.Endpoints.Municipalities.Responses;
 using reymani_web_api.Endpoints.Provinces.Requests;
 using reymani_web_api.Endpoints.Provinces.Responses;
-using reymani_web_api.Endpoints.Users.Responses;
-using reymani_web_api.Services.BlobServices;
+
 
 using ReymaniWebApi.Data.Models;
 
@@ -37,11 +35,11 @@ public class SearchProvincesEndpoint : Endpoint<SearchProvincesRequest, Results<
   public override async Task<Results<Ok<PaginatedResponse<ProvinceResponse>>, ProblemDetails>> ExecuteAsync(SearchProvincesRequest req, CancellationToken ct)
   {
     var query = _dbContext.Provinces
-      .AsNoTracking()
-      .Include(p=> p.Municipalities)
-      .AsQueryable();
+        .AsNoTracking()
+        .Include(p => p.Municipalities)
+        .AsQueryable();
 
-    //Filtrado
+    // Filtrado
     if (req.Ids?.Any() ?? false)
       query = query.Where(pc => req.Ids.Contains(pc.Id));
 
@@ -54,27 +52,27 @@ public class SearchProvincesEndpoint : Endpoint<SearchProvincesRequest, Results<
       query = query.Where(pc => pc.Name.ToLower().Contains(search));
     }
 
-    // Ejecución de la consulta
-    var categories = (await query.ToListAsync(ct)).AsEnumerable();
+    // Ejecución de la consulta (sin ordenamiento)
+    var provinces = await query.ToListAsync(ct);
 
-    // Ordenamiento
+    // Ordenamiento en el cliente
     if (!string.IsNullOrEmpty(req.SortBy))
     {
       var propertyInfo = typeof(Province).GetProperty(req.SortBy);
       if (propertyInfo != null)
       {
-        query = req.IsDescending ?? false
-        ? query.OrderByDescending(u => propertyInfo.GetValue(u))
-            : query.OrderBy(u => propertyInfo.GetValue(u));
+        provinces = req.IsDescending ?? false
+            ? provinces.OrderByDescending(p => propertyInfo.GetValue(p)).ToList()
+            : provinces.OrderBy(p => propertyInfo.GetValue(p)).ToList();
       }
     }
 
-    // Paginación
-    var totalCount = await query.CountAsync(ct);
-    var data = await query
-           .Skip(((req.Page ?? 1) - 1) * (req.PageSize ?? 10))
-           .Take(req.PageSize ?? 10)
-           .ToListAsync(ct);
+    // Paginación en el cliente
+    var totalCount = provinces.Count;
+    var data = provinces
+        .Skip(((req.Page ?? 1) - 1) * (req.PageSize ?? 10))
+        .Take(req.PageSize ?? 10)
+        .ToList();
 
     // Mapeo de respuesta
     var mapper = new ProvinceMapper();

@@ -5,8 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using reymani_web_api.Data;
 using reymani_web_api.Endpoints.Mappers;
 using reymani_web_api.Endpoints.Municipalities.Requests;
-using reymani_web_api.Endpoints.Provinces.Requests;
-using reymani_web_api.Services.BlobServices;
+
 
 namespace reymani_web_api.Endpoints.Municipalities;
 
@@ -14,12 +13,11 @@ public class UpdateMunicipalityEndpoint : Endpoint<UpdateMunicipalityRequest, Re
 {
 
   private readonly AppDbContext _dbContext;
-  private readonly IBlobService _blobService;
 
-  public UpdateMunicipalityEndpoint(AppDbContext dbContext, IBlobService blobService)
+
+  public UpdateMunicipalityEndpoint(AppDbContext dbContext)
   {
     _dbContext = dbContext;
-    _blobService = blobService;
   }
 
   public override void Configure()
