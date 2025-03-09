@@ -1,5 +1,4 @@
-﻿using reymani_web_api.Endpoints.Provinces.Requests;
-using reymani_web_api.Endpoints.ShoppingCarts.Requests;
+﻿using reymani_web_api.Endpoints.ShoppingCarts.Requests;
 using reymani_web_api.Endpoints.ShoppingCarts.Responses;
 
 using ReymaniWebApi.Data.Models;
@@ -18,12 +17,12 @@ public class ShoppingCartMapper
     };
   }
 
-  public ShoppingCart ToEntity(CreateShoppingCartRequest req)
+  public ShoppingCart ToEntity(int userId, int userAddressId)
   {
     return new ShoppingCart
     {
-      UserAddressId = req.UserAddressId,
-      UserId = req.UserId
+      UserAddressId = userAddressId,
+      UserId = userId
     };
   }
 }
