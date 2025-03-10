@@ -25,8 +25,8 @@ public class InitShoppingCartEndpoint : EndpointWithoutRequest<Results<Created<S
       s.Summary = "Create shopping cart";
       s.Description = "Creates a new shoping cart.";
     });
-    //Roles("Customer");
-    AllowAnonymous();
+    Roles("Customer");
+
   }
 
   public override async Task<Results<Created<ShoppingCartResponse>, Conflict, UnauthorizedHttpResult, ForbidHttpResult, ProblemDetails>> ExecuteAsync( CancellationToken ct)

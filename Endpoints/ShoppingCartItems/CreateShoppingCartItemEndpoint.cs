@@ -28,7 +28,7 @@ public class CreateShoppingCartItemEndpoint : Endpoint<CreateShoppingCartItemReq
       s.Summary = "Create a shopping cart item";
       s.Description = "Creates a new shopping cart item.";
     });
-    //Roles("SystemAdmin");
+    Roles("Customer");
   }
 
   public override async Task<Results<Created<ShoppingCartItemResponse>, Conflict, NotFound,UnauthorizedHttpResult, ForbidHttpResult, ProblemDetails>> ExecuteAsync(CreateShoppingCartItemRequest req, CancellationToken ct)

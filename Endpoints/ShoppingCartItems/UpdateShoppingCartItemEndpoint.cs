@@ -26,7 +26,7 @@ public class UpdateShoppingCartItemEndpoint : Endpoint<UpdateShoppingCartItemReq
       s.Summary = "Update shopping cart item";
       s.Description = "Updates details of an existing shopping cart item.";
     });
-    //Roles("SystemAdmin");
+    Roles("Customer");
   }
 
   public override async Task<Results<Ok, NotFound, Conflict, UnauthorizedHttpResult, ForbidHttpResult, ProblemDetails>> ExecuteAsync(UpdateShoppingCartItemRequest req, CancellationToken ct)

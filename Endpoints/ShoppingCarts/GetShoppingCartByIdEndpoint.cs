@@ -30,7 +30,7 @@ public class GetShoppingCartByIdEndpoint : EndpointWithoutRequest<Results<Ok<Sho
       s.Summary = "Get shopping cart by Id";
       s.Description = "Retrieves details of a shopping cart item by their ID.";
     });
-    AllowAnonymous();
+    Roles("Customer");
   }
 
   public override async Task<Results<Ok<ShoppingCartResponse>, NotFound, UnauthorizedHttpResult, ProblemDetails>> ExecuteAsync(CancellationToken ct)

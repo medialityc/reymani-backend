@@ -25,7 +25,7 @@ public class DeleteShoppingCartItemEndpoint : Endpoint<DeleteShoppingCartItemReq
       s.Summary = "Delete a shopping cart item";
       s.Description = "Deletes a  shopping cart item.";
     });
-    //Roles("SystemAdmin");
+    Roles("Customer");
   }
 
   public override async Task<Results<Ok, NotFound, Conflict, UnauthorizedHttpResult, ForbidHttpResult, ProblemDetails>> ExecuteAsync(DeleteShoppingCartItemRequest req, CancellationToken ct)

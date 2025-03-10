@@ -30,7 +30,7 @@ public class SearchItemInShoppingCartEndpoint : Endpoint<SearchItemInShoppingCar
       s.Summary = "Search products in shoppingcart";
       s.Description = "Search for products by name or ID with filtering, sorting, and pagination.";
     });
-    AllowAnonymous();
+    Roles("Customer");
   }
 
   public override async Task<Results<Ok<PaginatedResponse<ShoppingCartItemResponse>>, UnauthorizedHttpResult,ProblemDetails>> ExecuteAsync(SearchItemInShoppingCartRequest req, CancellationToken ct)

@@ -25,7 +25,7 @@ public class CleanShoppingCartEndpoint : Endpoint<CleanShoppingCartRequest, Resu
       s.Summary = "Clean a shopping cart";
       s.Description = "Clean a  shopping cart.";
     });
-    //Roles("SystemAdmin");
+    Roles("Customer");
   }
 
   public override async Task<Results<Ok, NotFound, Conflict, UnauthorizedHttpResult, ForbidHttpResult, ProblemDetails>> ExecuteAsync(CleanShoppingCartRequest req, CancellationToken ct)

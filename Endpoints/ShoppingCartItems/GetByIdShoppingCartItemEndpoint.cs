@@ -34,7 +34,7 @@ public class GetByIdShoppingCartItemEndpoint : Endpoint<GetByIdShoppingCartItemR
       s.Summary = "Get shopping cart item by Id and Id shopping cart";
       s.Description = "Retrieves details of a shopping cart item by their ID.";
     });
-    AllowAnonymous();
+    Roles("Customer");
   }
 
   public override async Task<Results<Ok<ShoppingCartItemResponse>, NotFound, ProblemDetails>> ExecuteAsync(GetByIdShoppingCartItemRequest req, CancellationToken ct)

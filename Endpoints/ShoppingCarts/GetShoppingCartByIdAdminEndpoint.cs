@@ -31,7 +31,7 @@ public class GetShoppingCartByIdAdminEndpoint : Endpoint<GetShoppingCartByIdRequ
       s.Summary = "Get shopping cart by Id";
       s.Description = "Retrieves details of a shopping cart item by their ID.";
     });
-    AllowAnonymous();
+    Roles("SystemAdmin");
   }
 
   public override async Task<Results<Ok<ShoppingCartResponse>, NotFound, UnauthorizedHttpResult, ProblemDetails>> ExecuteAsync(GetShoppingCartByIdRequest req, CancellationToken ct)
