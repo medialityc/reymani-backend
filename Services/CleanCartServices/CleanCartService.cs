@@ -1,18 +1,10 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+
 
 using reymani_web_api.Data;
 using reymani_web_api.Services.CleanCartServices;
-
 using ReymaniWebApi.Data.Models;
-
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 
 public class CleanCartService : ICleanCartService
 {

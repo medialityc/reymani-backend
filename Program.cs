@@ -10,6 +10,7 @@ using reymani_web_api.Data;
 using reymani_web_api.Services.BlobServices;
 using reymani_web_api.Services.BlobServices.Minio;
 using reymani_web_api.Services.CleanCartServices;
+using reymani_web_api.Services.CleanForgotPasswordService;
 using reymani_web_api.Services.EmailServices;
 using reymani_web_api.Services.EmailServices.GoogleEmailSender;
 using reymani_web_api.Utils.Options;
@@ -51,6 +52,8 @@ bld.Services.AddScoped<IBlobService, MinioBlobService>();
 bld.Services.AddScoped<IEmailTemplateService, EmailTemplateService>();
 bld.Services.AddScoped<ICleanCartService, CleanCartService>();
 bld.Services.AddHostedService<CleanCartBackgroundService>();
+bld.Services.AddScoped<ICleanForgotPasswordTokensService, CleanForgotPasswordTokensService>();
+bld.Services.AddHostedService<CleanForgotPasswordTokensBackgroundService>();
 
 
 bld.Services.AddControllers().AddJsonOptions(options =>
