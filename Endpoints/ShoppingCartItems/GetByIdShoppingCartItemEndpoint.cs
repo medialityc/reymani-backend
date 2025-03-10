@@ -4,13 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 using reymani_web_api.Data;
 using reymani_web_api.Endpoints.Mappers;
-using reymani_web_api.Endpoints.Provinces.Requests;
-using reymani_web_api.Endpoints.Provinces.Responses;
 using reymani_web_api.Endpoints.ShoppingCartItems.Requests;
 using reymani_web_api.Endpoints.ShoppingCartItems.Responses;
 using reymani_web_api.Services.BlobServices;
-
-using ReymaniWebApi.Data.Models;
 
 namespace reymani_web_api.Endpoints.ShoppingCartItems;
 
@@ -70,7 +66,7 @@ public class GetByIdShoppingCartItemEndpoint : Endpoint<GetByIdShoppingCartItemR
     var mapperProduct = new ProductMapper();
 
     var responseImages = new List<string>();
-    if (product.Images is not null && product.Images.Any())
+    if (product!.Images is not null && product.Images.Any())
     {
       foreach (var img in product.Images)
       {

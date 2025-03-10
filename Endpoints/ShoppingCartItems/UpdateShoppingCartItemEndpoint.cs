@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
 using reymani_web_api.Data;
-using reymani_web_api.Endpoints.Provinces.Requests;
 using reymani_web_api.Endpoints.ShoppingCartItems.Requests;
 
 namespace reymani_web_api.Endpoints.ShoppingCartItems;

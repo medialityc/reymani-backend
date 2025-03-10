@@ -47,7 +47,7 @@ public class CreateShoppingCartItemEndpoint : Endpoint<CreateShoppingCartItemReq
     var mapper = new ShoppingCartItemMapper();
     var item = mapper.ToEntity(req);
 
-    // Agrega la nueva provincia a la base de datos
+    // Agrega el nuevo carro a la base de datos
     _dbContext.ShoppingCartItems.Add(item);
     await _dbContext.SaveChangesAsync(ct);
 
