@@ -14,5 +14,4 @@ public class SearchItemInShoppingCartRequestValidator : Validator<SearchItemInSh
     RuleFor(x => x.PageSize)
         .GreaterThan(0);
   }
-{
 }
