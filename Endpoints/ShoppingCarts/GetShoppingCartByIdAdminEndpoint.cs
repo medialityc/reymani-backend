@@ -83,7 +83,7 @@ public class GetShoppingCartByIdAdminEndpoint : Endpoint<GetShoppingCartByIdRequ
             responseImages.Add(await _blobService.PresignedGetUrl(img, ct));
           }
         }
-        var productResponse = _mapperProduct.ToResponse(product, product.Business!.Name, product.Category!.Name, responseImages, totalRatings, (decimal)averageRating);
+        var productResponse = _mapperProduct.ToResponse(product!, product!.Business!.Name, product.Category!.Name, responseImages, totalRatings, (decimal)averageRating);
         shoppingCartItem.Product = productResponse;
         response?.Items?.Add(shoppingCartItem);
       }
