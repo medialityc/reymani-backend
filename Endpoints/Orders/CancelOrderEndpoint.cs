@@ -5,12 +5,12 @@ using reymani_web_api.Endpoints.Orders.Requests;
 
 namespace reymani_web_api.Endpoints.Orders;
 
-public class CancelOrder : Endpoint<CancelOrderRequest, Results<Ok, NotFound, Conflict, UnauthorizedHttpResult, ForbidHttpResult, ProblemDetails>>
+public class CancelOrderEndpoint : Endpoint<CancelOrderRequest, Results<Ok, NotFound, Conflict, UnauthorizedHttpResult, ForbidHttpResult, ProblemDetails>>
 {
   private readonly AppDbContext _dbContext;
 
 
-  public CancelOrder(AppDbContext dbContext)
+  public CancelOrderEndpoint(AppDbContext dbContext)
   {
     _dbContext = dbContext;
   }

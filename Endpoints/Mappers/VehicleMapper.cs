@@ -18,7 +18,9 @@ public class VehicleMapper
       Picture = e.Picture,
       UserId = e.UserId,
       Name = e.Name,
-      VehicleTypeName = e.VehicleType?.Name ?? ""
+      VehicleTypeName = e.VehicleType?.Name ?? "",
+      Description = e.Description,
+      VehicleTypeId = e.VehicleTypeId
     };
   }
 
