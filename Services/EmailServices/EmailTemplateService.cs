@@ -4,11 +4,27 @@ namespace reymani_web_api.Services.EmailServices;
 
 public class EmailTemplateService : IEmailTemplateService
 {
-  private readonly string _templatePath = Path.Combine(Directory.GetCurrentDirectory(), "Services", "EmailServices", "Templates");
-
+  private readonly IWebHostEnvironment _env;
+  
+  public EmailTemplateService(IWebHostEnvironment env)
+  {
+    _env = env;
+  }
+  
   public async Task<string> GetTemplateAsync(string templateName, object model)
   {
-    string filePath = Path.Combine(_templatePath, $"{templateName}.html");
+    var basePath = _env.ContentRootPath;
+    var binIndex = basePath.IndexOf(@"\bin", StringComparison.Ordinal);
+    if (binIndex > 0)
+    {
+      basePath = basePath.Substring(0, binIndex);
+    }
+    binIndex = basePath.IndexOf("/bin", StringComparison.Ordinal);
+    if (binIndex > 0)
+    {
+      basePath = basePath.Substring(0, binIndex);
+    }
+    string filePath = Path.Combine(basePath, "Services", "EmailServices", "Templates", $"{templateName}.html");
 
     if (!File.Exists(filePath))
       throw new FileNotFoundException($"Template {templateName} not found at {filePath}");
