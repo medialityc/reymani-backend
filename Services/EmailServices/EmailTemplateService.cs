@@ -1,37 +1,24 @@
 using System;
 
+using reymani_web_api.Services.EmailServices.Templates;
+
 namespace reymani_web_api.Services.EmailServices;
 
-public class EmailTemplateService : IEmailTemplateService
+public class EmailTemplateService(IWebHostEnvironment env) : IEmailTemplateService
 {
-  private readonly IWebHostEnvironment _env;
-  
-  public EmailTemplateService(IWebHostEnvironment env)
+  private readonly ConfirmationEmailTemplate _confirmationEmailTemplate = new ConfirmationEmailTemplate();
+  private readonly PasswordResetEmailTemplate _passwordResetEmailTemplate = new PasswordResetEmailTemplate();
+
+  public string GetTemplateAsync(TemplateName templateName, object model)
   {
-    _env = env;
-  }
-  
-  public async Task<string> GetTemplateAsync(string templateName, object model)
-  {
-    var basePath = _env.ContentRootPath;
-    var binIndex = basePath.IndexOf(@"\bin", StringComparison.Ordinal);
-    if (binIndex > 0)
+    switch (templateName)
     {
-      basePath = basePath.Substring(0, binIndex);
+      case TemplateName.Confirmation:
+        return ReplacePlaceholders(_confirmationEmailTemplate.GetEmailTemplate(), model);
+      case TemplateName.ResetPassword:
+        return ReplacePlaceholders(_passwordResetEmailTemplate.GetEmailTemplate(), model);
     }
-    binIndex = basePath.IndexOf("/bin", StringComparison.Ordinal);
-    if (binIndex > 0)
-    {
-      basePath = basePath.Substring(0, binIndex);
-    }
-    string filePath = Path.Combine(basePath, "Services", "EmailServices", "Templates", $"{templateName}.html");
-
-    if (!File.Exists(filePath))
-      throw new FileNotFoundException($"Template {templateName} not found at {filePath}");
-
-    string template = await File.ReadAllTextAsync(filePath);
-
-    return ReplacePlaceholders(template, model);
+    return string.Empty;
   }
 
   private string ReplacePlaceholders(string template, object model)
@@ -39,7 +26,7 @@ public class EmailTemplateService : IEmailTemplateService
     var properties = model.GetType().GetProperties();
     foreach (var prop in properties)
     {
-      string placeholder = $"{{{{{prop.Name}}}}}"; // Ejemplo: {{FirstName}}
+      string placeholder = $"{{{{{prop.Name}}}}}";
       string value = prop.GetValue(model)?.ToString() ?? "";
       template = template.Replace(placeholder, value);
     }
