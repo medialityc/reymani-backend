@@ -10,7 +10,7 @@ using reymani_web_api.Endpoints.OrdersItems.Response;
 
 namespace reymani_web_api.Endpoints.Orders;
 
-public class SearchOrderEndpoint : Endpoint<SearchOrderRequest, Results<Ok<PaginatedResponse<OrderResponse>>, ProblemDetails>>
+public class SearchOrderEndpoint : Endpoint<SearchOrderSystemAdminRequest, Results<Ok<PaginatedResponse<OrderResponse>>, ProblemDetails>>
 {
   private readonly AppDbContext _dbContext;
 
@@ -27,10 +27,10 @@ public class SearchOrderEndpoint : Endpoint<SearchOrderRequest, Results<Ok<Pagin
       s.Summary = "Search orders";
       s.Description = "Search for orders by name or ID with filtering, sorting, and pagination.";
     });
-    AllowAnonymous();
+    Roles("SystemAdmin");
   }
 
-  public override async Task<Results<Ok<PaginatedResponse<OrderResponse>>, ProblemDetails>> ExecuteAsync(SearchOrderRequest req, CancellationToken ct)
+  public override async Task<Results<Ok<PaginatedResponse<OrderResponse>>, ProblemDetails>> ExecuteAsync(SearchOrderSystemAdminRequest req, CancellationToken ct)
   {
     var query = _dbContext.Orders
         .AsNoTracking()
@@ -46,12 +46,12 @@ public class SearchOrderEndpoint : Endpoint<SearchOrderRequest, Results<Ok<Pagin
       query = query.Where(pc => req.Status.Contains(pc.Status));
 
     // Filtrado por CourierId
-    if (req.CourierId?.Any() ?? false)
-      query = query.Where(pc => req.CourierId.Contains(pc.CourierId));
+    if (req.CourierIds?.Any() ?? false)
+      query = query.Where(pc => req.CourierIds.Contains(pc.CourierId));
 
     // Filtrado por CustomerId
-    if (req.CustomerId?.Any() ?? false)
-      query = query.Where(pc => req.CustomerId.Contains(pc.CustomerId));
+    if (req.CustomerIds?.Any() ?? false)
+      query = query.Where(pc => req.CustomerIds.Contains(pc.CustomerId));
 
 
     // Ordenamiento en la base de datos

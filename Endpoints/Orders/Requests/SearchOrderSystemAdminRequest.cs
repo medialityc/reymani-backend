@@ -2,12 +2,12 @@
 
 namespace reymani_web_api.Endpoints.Orders.Requests;
 
-public class SearchOrderRequest
-{
+public class SearchOrderSystemAdminRequest
+{  
   public int[]? Ids { get; set; }
   public OrderStatus[]? Status { get; set; }
-  public int[]? CourierId { get; set; }
-  public int[]? CustomerId { get; set; }
+  public int[]? CourierIds { get; set; }
+  public int[]? CustomerIds { get; set; }
 
   // Ordenamiento y paginación
   public string? SortBy { get; set; } = "Status";

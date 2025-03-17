@@ -11,12 +11,12 @@ using reymani_web_api.Endpoints.OrdersItems.Response;
 
 namespace reymani_web_api.Endpoints.Orders;
 
-public class GetOrdersInElaboratedWhithItemsInElaboratedEndpoint : EndpointWithoutRequest<Results<Ok<IEnumerable<OrderResponse>>, UnauthorizedHttpResult, ProblemDetails>>
+public class GetOrdersInElaboratedBusinessAdminEndpoint : EndpointWithoutRequest<Results<Ok<IEnumerable<OrderResponse>>, UnauthorizedHttpResult, ProblemDetails>>
 {
   private readonly AppDbContext _dbContext;
 
 
-  public GetOrdersInElaboratedWhithItemsInElaboratedEndpoint(AppDbContext dbContext)
+  public GetOrdersInElaboratedBusinessAdminEndpoint(AppDbContext dbContext)
   {
     _dbContext = dbContext;
   }
