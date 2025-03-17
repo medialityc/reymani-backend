@@ -8,6 +8,7 @@ using reymani_web_api.Data.Models;
 using reymani_web_api.Endpoints.Auth.Requests;
 using reymani_web_api.Services.BlobServices;
 using reymani_web_api.Services.EmailServices;
+using reymani_web_api.Services.EmailServices.Templates;
 using reymani_web_api.Utils.Validations;
 
 using ReymaniWebApi.Data.Models;
@@ -84,11 +85,11 @@ namespace reymani_web_api.Endpoints.Auth
       _dbContext.Set<ConfirmationNumber>().Add(confirmation);
       await _dbContext.SaveChangesAsync();
 
-      var emailBody = await _emailTemplateService.GetTemplateAsync("ConfirmationEmail", new
+      var emailBody = _emailTemplateService.GetTemplateAsync(TemplateName.Confirmation, new
       {
         confirmationCode
       });
-      await _emailSender.SendEmailAsync(user.Email, "Confirm your account", emailBody);
+      await _emailSender.SendEmailAsync(user.Email, "Confirma tu Cuenta", emailBody);
 
       return TypedResults.Ok("User registered successfully. Please check your email to confirm your account.");
     }

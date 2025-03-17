@@ -1,8 +1,10 @@
 using System;
 
+using reymani_web_api.Services.EmailServices.Templates;
+
 namespace reymani_web_api.Services.EmailServices;
 
 public interface IEmailTemplateService
 {
-  Task<string> GetTemplateAsync(string templateName, object model);
+  string GetTemplateAsync(TemplateName templateName, object model);
 }

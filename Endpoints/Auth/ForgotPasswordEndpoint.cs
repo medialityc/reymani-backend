@@ -7,6 +7,7 @@ using reymani_web_api.Data;
 using reymani_web_api.Data.Models;
 using reymani_web_api.Endpoints.Auth.Requests;
 using reymani_web_api.Services.EmailServices;
+using reymani_web_api.Services.EmailServices.Templates;
 
 namespace reymani_web_api.Endpoints.Auth
 {
@@ -53,13 +54,13 @@ namespace reymani_web_api.Endpoints.Auth
       _dbContext.Set<ForgotPasswordNumber>().Add(passwordReset);
       await _dbContext.SaveChangesAsync(ct);
 
-      var emailBody = await _emailTemplateService.GetTemplateAsync("PasswordResetEmail", new
+      var emailBody = _emailTemplateService.GetTemplateAsync(TemplateName.ResetPassword, new
       {
         UserName = user.FirstName,
         ResetCode = resetCode
       });
 
-      await _emailSender.SendEmailAsync(user.Email, "Reset your password", emailBody);
+      await _emailSender.SendEmailAsync(user.Email, "Restablece tu contraseña", emailBody);
 
       return TypedResults.Ok("A reset code has been sent to your email.");
     }
