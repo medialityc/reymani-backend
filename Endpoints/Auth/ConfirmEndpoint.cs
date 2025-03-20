@@ -30,7 +30,7 @@ namespace reymani_web_api.Endpoints.Auth
 
     public override async Task<Results<Ok<string>, UnauthorizedHttpResult, NotFound>> ExecuteAsync(ConfirmEndpointRequest request, CancellationToken ct)
     {
-      var user = await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Email == request.Email, ct);
+      var user = await _dbContext.Users.AsQueryable().FirstOrDefaultAsync(u => u.Email == request.Email, ct);
       if (user == null)
         return TypedResults.NotFound();
 
