@@ -3,7 +3,7 @@ using reymani_web_api.Endpoints.Products.Responses;
 
 using ReymaniWebApi.Data.Models;
 
-namespace reymani_web_api.Endpoints.OrdersItems.Response;
+namespace reymani_web_api.Endpoints.Orders.OrdersItems.Response;
 
 public class OrderItemResponse
 {

@@ -1,6 +1,6 @@
 ﻿using reymani_web_api.Data.Models;
 using reymani_web_api.Endpoints.AddressUser.Responses;
-using reymani_web_api.Endpoints.OrdersItems.Response;
+using reymani_web_api.Endpoints.Orders.OrdersItems.Response;
 using reymani_web_api.Endpoints.Users.Responses;
 
 

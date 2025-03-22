@@ -2,11 +2,11 @@
 using Microsoft.AspNetCore.Http.HttpResults;
 using reymani_web_api.Data.Models;
 using reymani_web_api.Data;
-using reymani_web_api.Endpoints.OrdersItems.Requests;
 using ReymaniWebApi.Data.Models;
 using Microsoft.EntityFrameworkCore;
+using reymani_web_api.Endpoints.Orders.OrdersItems.Requests;
 
-namespace reymani_web_api.Endpoints.OrdersItems
+namespace reymani_web_api.Endpoints.Orders.OrdersItems
 {
   public class ConfirmPickUpOrderItemEndpoint : Endpoint<ConfirmPickUpOrderItemRequest, Results<Ok, NotFound, Conflict, UnauthorizedHttpResult, ForbidHttpResult, ProblemDetails>>
   {
@@ -20,7 +20,7 @@ namespace reymani_web_api.Endpoints.OrdersItems
 
     public override void Configure()
     {
-      Put("/orderitems/pickup/{id}");
+      Put("/orders/orderitems/pickup/{id}");
       Summary(s =>
       {
         s.Summary = "Confirm pick up item in order";
@@ -42,18 +42,18 @@ namespace reymani_web_api.Endpoints.OrdersItems
       if (item is null)
         return TypedResults.NotFound();
 
-      if (item.Status != Data.Models.OrderStatus.InPickup)
+      if (item.Status != OrderStatus.InPickup)
         return TypedResults.Conflict();
 
       //Revisa que el pedido se pueda cambiar a recogido
       if (order.Status != OrderStatus.InPickup)
         return TypedResults.Conflict();
 
-      item.Status = Data.Models.OrderStatus.OnTheWay;
+      item.Status = OrderStatus.OnTheWay;
       // Actualiza el pedido
       if (checkOrder(order.Items!.ToList()))
       {
-        order.Status = Data.Models.OrderStatus.OnTheWay;
+        order.Status = OrderStatus.OnTheWay;
       }
 
 
@@ -66,7 +66,7 @@ namespace reymani_web_api.Endpoints.OrdersItems
     {
       foreach (var i in item)
       {
-        if (i.Status != Data.Models.OrderStatus.InPickup)
+        if (i.Status != OrderStatus.InPickup)
           return false;
       }
       return true;

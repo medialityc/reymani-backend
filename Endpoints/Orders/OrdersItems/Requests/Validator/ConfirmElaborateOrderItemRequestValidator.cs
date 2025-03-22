@@ -2,7 +2,9 @@
 
 using FluentValidation;
 
-namespace reymani_web_api.Endpoints.OrdersItems.Requests.Validator;
+using reymani_web_api.Endpoints.Orders.OrdersItems.Requests;
+
+namespace reymani_web_api.Endpoints.Orders.OrdersItems.Requests.Validator;
 
 public class ConfirmElaborateOrderItemRequestValidator : Validator<ConfirmElaborateOrderItemRequest>
 {

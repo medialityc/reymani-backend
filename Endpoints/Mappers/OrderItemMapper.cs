@@ -1,4 +1,4 @@
-﻿using reymani_web_api.Endpoints.OrdersItems.Response;
+﻿using reymani_web_api.Endpoints.Orders.OrdersItems.Response;
 
 using ReymaniWebApi.Data.Models;
 

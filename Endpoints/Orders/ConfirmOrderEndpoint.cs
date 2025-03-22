@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 using reymani_web_api.Data;
 using reymani_web_api.Endpoints.Orders.Requests;
+using reymani_web_api.Services.EmailServices;
+using reymani_web_api.Services.EmailServices.Templates;
 
 using ReymaniWebApi.Data.Models;
 
@@ -12,11 +14,14 @@ namespace reymani_web_api.Endpoints.Orders;
 public class ConfirmOrderEndpoint : Endpoint<ConfirmOrderRequest, Results<Ok, NotFound, Conflict, UnauthorizedHttpResult, ForbidHttpResult, ProblemDetails>>
 {
   private readonly AppDbContext _dbContext;
+  private readonly IEmailSender _emailSender;
+  private readonly IEmailTemplateService _emailTemplateService;
 
-
-  public ConfirmOrderEndpoint(AppDbContext dbContext)
+  public ConfirmOrderEndpoint(AppDbContext dbContext, IEmailTemplateService emailTemplateService, IEmailSender emailSender)
   {
     _dbContext = dbContext;
+    _emailTemplateService = emailTemplateService;
+    _emailSender = emailSender;
   }
 
   public override void Configure()
@@ -53,6 +58,16 @@ public class ConfirmOrderEndpoint : Endpoint<ConfirmOrderRequest, Results<Ok, No
     order.ShippingCost = await calculateShippingCost(userAddress!,vehicle!);
     order.Status = Data.Models.OrderStatus.InPreparation;
     await _dbContext.SaveChangesAsync(ct);
+
+
+    var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Id == userAddress.UserId);
+
+    var emailBody = _emailTemplateService.GetTemplateAsync(TemplateName.OrderStatus, new
+    {
+      orderStatus = " en preparacion"
+    });
+
+    await _emailSender.SendEmailAsync(user!.Email, "Tu pedido esta en la cocina!", emailBody);
 
     return TypedResults.Ok();
   }

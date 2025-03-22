@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore;
 using reymani_web_api.Data;
 using reymani_web_api.Data.Models;
 using reymani_web_api.Endpoints.Mappers;
+using reymani_web_api.Endpoints.Orders.OrdersItems.Response;
 using reymani_web_api.Endpoints.Orders.Requests;
 using reymani_web_api.Endpoints.Orders.Responses;
-using reymani_web_api.Endpoints.OrdersItems.Response;
 
 namespace reymani_web_api.Endpoints.Orders;
 public class GetOrderByIdInElaboratedEndpoint : Endpoint<GetOrderByIdInElaboratedRequest, Results<Ok<OrderResponse>, UnauthorizedHttpResult, NotFound, ProblemDetails>>

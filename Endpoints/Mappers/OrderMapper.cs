@@ -1,7 +1,7 @@
 ﻿using reymani_web_api.Endpoints.Municipalities.Responses;
 using reymani_web_api.Endpoints.Orders.Requests;
 using reymani_web_api.Endpoints.Orders.Responses;
-using reymani_web_api.Endpoints.OrdersItems.Response;
+using reymani_web_api.Endpoints.Orders.OrdersItems.Response;
 
 using ReymaniWebApi.Data.Models;
 

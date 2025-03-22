@@ -7,7 +7,7 @@ using reymani_web_api.Endpoints.Orders.Responses;
 using Microsoft.EntityFrameworkCore;
 using reymani_web_api.Endpoints.Commons.Responses;
 using reymani_web_api.Endpoints.Orders.Requests;
-using reymani_web_api.Endpoints.OrdersItems.Response;
+using reymani_web_api.Endpoints.Orders.OrdersItems.Response;
 
 
 

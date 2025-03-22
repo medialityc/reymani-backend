@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using reymani_web_api.Data;
 using reymani_web_api.Endpoints.Mappers;
 using reymani_web_api.Endpoints.Orders.Responses;
-using reymani_web_api.Endpoints.OrdersItems.Response;
 using Microsoft.EntityFrameworkCore;
+using reymani_web_api.Endpoints.Orders.OrdersItems.Response;
 
 namespace reymani_web_api.Endpoints.Orders;
 

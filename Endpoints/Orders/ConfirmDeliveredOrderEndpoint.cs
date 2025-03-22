@@ -1,19 +1,27 @@
 ﻿using FastEndpoints;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
 
 using reymani_web_api.Data;
 using reymani_web_api.Endpoints.Orders.Requests;
+using reymani_web_api.Services.EmailServices;
+using reymani_web_api.Services.EmailServices.Templates;
+
+using ReymaniWebApi.Data.Models;
 
 namespace reymani_web_api.Endpoints.Orders
 {
   public class ConfirmDeliveredOrderEndpoint : Endpoint<ConfirmDeliveredOrderRequest, Results<Ok, NotFound, Conflict, UnauthorizedHttpResult, ForbidHttpResult, ProblemDetails>>
   {
     private readonly AppDbContext _dbContext;
+    private readonly IEmailSender _emailSender;
+    private readonly IEmailTemplateService _emailTemplateService;
 
-
-    public ConfirmDeliveredOrderEndpoint(AppDbContext dbContext)
+    public ConfirmDeliveredOrderEndpoint(AppDbContext dbContext,IEmailTemplateService emailTemplateService, IEmailSender emailSender)
     {
       _dbContext = dbContext;
+      _emailTemplateService = emailTemplateService;
+      _emailSender = emailSender;
     }
 
     public override void Configure()
@@ -39,6 +47,15 @@ namespace reymani_web_api.Endpoints.Orders
 
       order.Status = Data.Models.OrderStatus.Delivered;
       await _dbContext.SaveChangesAsync(ct);
+
+      var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Id == order.CustomerId);
+
+      var emailBody = _emailTemplateService.GetTemplateAsync(TemplateName.OrderStatus, new
+      {
+        orderStatus = " en camino"
+      });
+
+      await _emailSender.SendEmailAsync(user!.Email, "Tu pedido esta en camino!", emailBody);
 
       return TypedResults.Ok();
     }

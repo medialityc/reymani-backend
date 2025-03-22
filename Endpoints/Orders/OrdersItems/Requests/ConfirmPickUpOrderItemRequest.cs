@@ -1,4 +1,4 @@
-﻿namespace reymani_web_api.Endpoints.OrdersItems.Requests;
+﻿namespace reymani_web_api.Endpoints.Orders.OrdersItems.Requests;
 
 public class ConfirmPickUpOrderItemRequest
 {

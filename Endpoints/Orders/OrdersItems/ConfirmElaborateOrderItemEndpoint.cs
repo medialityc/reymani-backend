@@ -1,14 +1,15 @@
 ﻿using FastEndpoints;
+
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
 using reymani_web_api.Data;
 using reymani_web_api.Data.Models;
-using reymani_web_api.Endpoints.OrdersItems.Requests;
+using reymani_web_api.Endpoints.Orders.OrdersItems.Requests;
 
 using ReymaniWebApi.Data.Models;
 
-namespace reymani_web_api.Endpoints.OrdersItems;
+namespace reymani_web_api.Endpoints.Orders.OrdersItems;
 
 public class ConfirmElaborateOrderItemEndpoint : Endpoint<ConfirmElaborateOrderItemRequest, Results<Ok, NotFound, Conflict, UnauthorizedHttpResult, ForbidHttpResult, ProblemDetails>>
 {
@@ -22,7 +23,7 @@ public class ConfirmElaborateOrderItemEndpoint : Endpoint<ConfirmElaborateOrderI
 
   public override void Configure()
   {
-    Put("/orderitems/{id}");
+    Put("/orders/orderitems/{id}");
     Summary(s =>
     {
       s.Summary = "Confirm elaborate item in order";
@@ -44,18 +45,18 @@ public class ConfirmElaborateOrderItemEndpoint : Endpoint<ConfirmElaborateOrderI
     if (item is null)
       return TypedResults.NotFound();
 
-    if (item.Status != Data.Models.OrderStatus.InPreparation)
+    if (item.Status != OrderStatus.InPreparation)
       return TypedResults.Conflict();
 
     //Revisa que el pedido se pueda cambiar a completado
     if (order.Status != OrderStatus.InPreparation)
       return TypedResults.Conflict();
-    item.Status = Data.Models.OrderStatus.InPickup;
+    item.Status = OrderStatus.InPickup;
 
     // Actualiza el pedido
     if (checkOrder(order.Items!.ToList()))
     {
-      order.Status = Data.Models.OrderStatus.InPickup;
+      order.Status = OrderStatus.InPickup;
     }
     
 
@@ -68,7 +69,7 @@ public class ConfirmElaborateOrderItemEndpoint : Endpoint<ConfirmElaborateOrderI
   {
     foreach (var i in item)
     {
-      if (i.Status != Data.Models.OrderStatus.InPickup)
+      if (i.Status != OrderStatus.InPickup)
         return false;
     }
     return true;
