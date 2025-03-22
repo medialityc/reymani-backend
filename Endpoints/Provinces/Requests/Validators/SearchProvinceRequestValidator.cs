@@ -2,7 +2,6 @@
 
 using FluentValidation;
 
-using reymani_web_api.Endpoints.Users.Requests;
 
 namespace reymani_web_api.Endpoints.Provinces.Requests.Validators;
 

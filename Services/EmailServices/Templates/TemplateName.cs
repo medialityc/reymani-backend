@@ -2,5 +2,5 @@
 
 public enum TemplateName
 {
-  Confirmation, ResetPassword
+  Confirmation, ResetPassword , OrderStatus
 }
