@@ -10,5 +10,6 @@ namespace ReymaniWebApi.Data.Models
     public int ProductId { get; set; }
     public Product? Product { get; set; }
     public required int Quantity { get; set; }
+    public OrderStatus Status { get; set; }
   }
 }
