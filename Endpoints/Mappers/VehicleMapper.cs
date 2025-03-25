@@ -44,7 +44,7 @@ public class VehicleMapper
   {
     return new Vehicle
     {
-      UserId = req.Id,
+      UserId = req.UserId,
       VehicleTypeId = req.VehicleTypeId,
       Description = req.Description ?? "",
       IsActive = req.IsActive,
