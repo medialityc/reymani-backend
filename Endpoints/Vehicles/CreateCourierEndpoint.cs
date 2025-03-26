@@ -42,7 +42,7 @@ public class CreateCourierEndpoint : Endpoint<CreateVehicleCourierRequest, Resul
       return TypedResults.Unauthorized();
     
 
-    var existingName = await _dbContext.Vehicles.FirstOrDefaultAsync(x => x.Name.ToLower().Equals(req.Name.ToLower()), ct);
+    var existingName = await _dbContext.Vehicles.FirstOrDefaultAsync(x => x.Name.ToLower().Equals(req.Name.ToLower()) && x.UserId==userId, ct);
     
     if (existingName != null)
       return TypedResults.Conflict();
