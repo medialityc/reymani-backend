@@ -43,9 +43,13 @@ public class CreateVehicleSystemAdminEndpoint : Endpoint<CreateVehicleAdminReque
     var mapper = new VehicleMapper();
     var vehicle = mapper.ToEntityAdmin(req);
 
-    
 
-    // Agrega la nueva direccion a la base de datos
+    //Poner la nueva foto
+    var fileCode = Guid.NewGuid().ToString();
+    string imagePath = await _blobService.UploadObject(req.Picture, fileCode, ct);
+    vehicle.Picture = imagePath;
+
+    // Agrega el nuevo vehiculo a la base de datos
     _dbContext.Vehicles.Add(vehicle);
     await _dbContext.SaveChangesAsync(ct);
 
