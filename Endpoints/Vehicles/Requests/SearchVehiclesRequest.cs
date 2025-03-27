@@ -5,6 +5,7 @@ public class SearchVehiclesRequest
   public required string[]? Names { get; set; }
   public required string[]? Descriptions { get; set; }
   public int[]? Ids { get; set; }
+  public int[]? UserIds { get; set; }
   public required bool? IsAvailable { get; set; }
   public required int[]? TypesVehicle { get; set; }
   public required string? Search { get; set; }

@@ -17,7 +17,7 @@ public class CreateVehicleAdminRequestValidator : Validator<CreateVehicleAdminRe
     RuleFor(e => e.Name)
       .NotEmpty();
 
-    RuleFor(e => e.Id)
+    RuleFor(e => e.UserId)
       .NotEmpty()
       .GreaterThan(0);
 
