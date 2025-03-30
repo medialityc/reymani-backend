@@ -37,6 +37,16 @@ public class SearchOrderEndpoint : Endpoint<SearchOrderSystemAdminRequest, Resul
     var query = _dbContext.Orders
         .AsNoTracking()
         .Include(p => p.Items)
+            .ThenInclude(i => i.Product)
+                .ThenInclude(p => p.Category)
+        .Include(p => p.Items)
+            .ThenInclude(i => i.Product)
+                .ThenInclude(p => p.Business)
+        .Include(p => p.Customer)
+        .Include(p => p.Courier)
+        .Include(p => p.CustomerAddress)
+            .ThenInclude(ca => ca.Municipality)
+                .ThenInclude(m => m.Province)
         .AsQueryable();
 
     // Filtrado por IDs
@@ -73,22 +83,9 @@ public class SearchOrderEndpoint : Endpoint<SearchOrderSystemAdminRequest, Resul
         .Take(req.PageSize ?? 10)
         .ToListAsync(ct);
 
-    // Mapeo de respuesta
+    // Mapeo de respuesta usando el OrderMapper actualizado
     var mapper = new OrderMapper();
-    var mapperItem = new OrderItemMapper();
     var responseData = data.Select(u => mapper.FromEntity(u)).ToList();
-
-    foreach (var r in responseData)
-    {
-      ICollection<OrderItemResponse> itemsResponse = new List<OrderItemResponse>();
-      foreach (var ir in r.Items!)
-      {
-        itemsResponse.Add(mapperItem.FromEntity(ir));
-      }
-
-      r.Items.Clear();
-      r.Items.Concat(itemsResponse);
-    }
 
     return TypedResults.Ok(new PaginatedResponse<OrderResponse>
     {

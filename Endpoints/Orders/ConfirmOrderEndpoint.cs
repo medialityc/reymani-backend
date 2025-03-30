@@ -45,22 +45,21 @@ public class ConfirmOrderEndpoint : Endpoint<ConfirmOrderRequest, Results<Ok, No
       return TypedResults.NotFound();
     }
 
-    var userAddress = await _dbContext.UserAddresses.FirstOrDefaultAsync(x=> x.UserId ==order.CustomerAddressId);
-    var vehicle = await _dbContext.Vehicles.FirstOrDefaultAsync(x=> x.UserId == req.CourierId);
+    var userAddress = await _dbContext.UserAddresses.FirstOrDefaultAsync(x => x.Id == order.CustomerAddressId);
+    var vehicle = await _dbContext.Vehicles.FirstOrDefaultAsync(x=> x.UserId == req.CourierId && x.IsAvailable == true && x.IsActive == true);
+    var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Id == req.CourierId);
 
-    if (vehicle is null || userAddress is null)
+    if (vehicle is null || userAddress is null || user is null)
     {
       return TypedResults.NotFound();
     }
 
     // Actualiza la orden
     order.CourierId = req.CourierId;
+    order.Courier = user;
     order.ShippingCost = await calculateShippingCost(userAddress!,vehicle!);
     order.Status = Data.Models.OrderStatus.InPreparation;
     await _dbContext.SaveChangesAsync(ct);
-
-
-    var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Id == userAddress.UserId);
 
     var emailBody = _emailTemplateService.GetTemplateAsync(TemplateName.OrderStatus, new
     {
