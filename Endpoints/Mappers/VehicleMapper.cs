@@ -20,7 +20,8 @@ public class VehicleMapper
       Name = e.Name,
       VehicleTypeName = e.VehicleType?.Name ?? "",
       Description = e.Description,
-      VehicleTypeId = e.VehicleTypeId
+      VehicleTypeId = e.VehicleTypeId,
+      
     };
   }
 

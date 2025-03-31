@@ -11,6 +11,6 @@ public class VehicleResponse
   public required string? Description { get; set; }
   public required int VehicleTypeId { get; set; }
   public required string VehicleTypeName { get; set; }
-  public required bool IsAvailable { get; set; }
-  public required bool IsActive { get; set; }
+  public  bool IsAvailable { get; set; }
+  public  bool IsActive { get; set; }
 }
