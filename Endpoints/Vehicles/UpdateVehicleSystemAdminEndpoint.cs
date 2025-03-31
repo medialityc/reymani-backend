@@ -33,20 +33,22 @@ public class UpdateVehicleSystemAdminEndpoint : Endpoint<UpdateCourierAdminReque
 
   public override async Task<Results<Ok, NotFound, Conflict, UnauthorizedHttpResult, ForbidHttpResult, ProblemDetails>> ExecuteAsync(UpdateCourierAdminRequest req, CancellationToken ct)
   {
-    // Validar que el nombre no este en uso
-    if (req.Name != null)
-    {
-      var nameInUse = await BeUniqueName(req.Name, ct);
-      if (!nameInUse)
-        return TypedResults.Conflict();
-    }
-
+   
+    
     // Verifica si el vehiculo existe
     var vehicle = await _dbContext.Vehicles.FirstOrDefaultAsync(p => p.Id == req.Id, ct);
 
     if (vehicle is null)
     {
       return TypedResults.NotFound();
+    }
+
+    // Validar que el nombre no este en uso
+    if (req.Name != null)
+    {
+      var nameInUse = await BeUniqueName(req.Name,vehicle.UserId, ct);
+      if (!nameInUse)
+        return TypedResults.Conflict();
     }
 
     // Actualiza las propiedades del vehículo // Mantener el valor actual si es null
@@ -74,10 +76,10 @@ public class UpdateVehicleSystemAdminEndpoint : Endpoint<UpdateCourierAdminReque
     return TypedResults.Ok();
   }
 
-  private async Task<bool> BeUniqueName(string name, CancellationToken cancellationToken)
+  private async Task<bool> BeUniqueName(string name,int idCourier ,CancellationToken cancellationToken)
   {
     // Verifica si ya existe un courier con el mismo nombre, excluyendo el que se está actualizando
     return !await _dbContext.Vehicles
-        .AnyAsync(p => p.Name.ToLower() == name.ToLower(), cancellationToken);
+        .AnyAsync(p => p.Name.ToLower() == name.ToLower() && p.UserId==idCourier, cancellationToken);
   }
 }
