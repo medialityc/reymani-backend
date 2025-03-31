@@ -46,6 +46,9 @@ public class SearchVehicleSystemAdminEndpoint : Endpoint<SearchVehiclesRequest, 
     if (req.Ids?.Any() ?? false)
       query = query.Where(p => req.Ids.Contains(p.Id));
 
+    if (req.UserIds?.Any() ?? false)
+      query = query.Where(p => req.UserIds.Contains(p.UserId));
+
     if (req.TypesVehicle?.Any() ?? false)
       query = query.Where(p => req.TypesVehicle.Contains(p.VehicleTypeId));
 
