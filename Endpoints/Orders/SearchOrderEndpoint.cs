@@ -36,10 +36,10 @@ public class SearchOrderEndpoint : Endpoint<SearchOrderSystemAdminRequest, Resul
   {
     var query = _dbContext.Orders
         .AsNoTracking()
-        .Include(p => p.Items)
+        .Include(p => p.Items!)
             .ThenInclude(i => i.Product)
                 .ThenInclude(p => p.Category)
-        .Include(p => p.Items)
+        .Include(p => p.Items!)
             .ThenInclude(i => i.Product)
                 .ThenInclude(p => p.Business)
         .Include(p => p.Customer)

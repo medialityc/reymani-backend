@@ -56,13 +56,23 @@ public class SearchOrdersInElaborationEndpoint : Endpoint<SearchOrdersInElaborat
 
     // Base query para obtener los pedidos en estado "En Elaboración"
     var query = _dbContext.Orders
-        .Include(o => o.Items!)
-        .ThenInclude(i => i.Product)
+        .AsNoTracking()
+        .Include(p => p.Items!)
+            .ThenInclude(i => i.Product)
+                .ThenInclude(p => p.Category)
+        .Include(p => p.Items!)
+            .ThenInclude(i => i.Product)
+                .ThenInclude(p => p.Business)
+        .Include(p => p.Customer)
+        .Include(p => p.Courier)
+        .Include(p => p.CustomerAddress)
+            .ThenInclude(ca => ca.Municipality)
+                .ThenInclude(m => m.Province)
         .Where(o => o.Status == OrderStatus.InPreparation && // Pedidos en estado "En Elaboración"
                      o.Items!
                          .Any(i => productIds.Contains(i.ProductId) && // Ítems del negocio del administrador
                                i.Status != OrderStatus.InPickup)) // Ítems que no están listos para recoger
-        .AsNoTracking();
+        .AsQueryable();
 
     // Ordenamiento dinámico
     if (!string.IsNullOrEmpty(req.SortBy))

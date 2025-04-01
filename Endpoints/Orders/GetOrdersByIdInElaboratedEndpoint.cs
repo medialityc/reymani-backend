@@ -55,8 +55,18 @@ public class GetOrderByIdInElaboratedEndpoint : Endpoint<GetOrderByIdInElaborate
 
     // Obtener la orden por ID que tenga ítems en estado "InPreparation" y que esos ítems pertenezcan a los productos de los negocios del usuario
     var order = await _dbContext.Orders
+        .AsNoTracking()
         .Include(o => o.Items!)
-        .ThenInclude(i => i.Product)
+            .ThenInclude(i => i.Product)
+                .ThenInclude(p => p.Category)
+        .Include(o => o.Items!)
+            .ThenInclude(i => i.Product)
+                .ThenInclude(p => p.Business)
+        .Include(o => o.Customer)
+        .Include(o => o.Courier)
+        .Include(o => o.CustomerAddress)
+            .ThenInclude(ca => ca.Municipality)
+                .ThenInclude(m => m.Province)
         .FirstOrDefaultAsync(o => o.Id == req.Id && o.Items!
             .Any(i => i.Status == OrderStatus.InPreparation && productIds.Contains(i.ProductId)), ct);
 
