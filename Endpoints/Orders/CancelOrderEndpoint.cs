@@ -37,9 +37,6 @@ public class CancelOrderEndpoint : Endpoint<CancelOrderRequest, Results<Ok, NotF
       return TypedResults.Conflict();
 
     order!.Status = Data.Models.OrderStatus.Cancelled;
-    _dbContext.Orders.Remove(order);
-    await _dbContext.SaveChangesAsync(ct);
-
     return TypedResults.Ok();
   }
 }

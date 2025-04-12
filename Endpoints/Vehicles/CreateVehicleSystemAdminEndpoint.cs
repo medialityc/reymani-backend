@@ -35,7 +35,7 @@ public class CreateVehicleSystemAdminEndpoint : Endpoint<CreateVehicleAdminReque
 
   public override async Task<Results<Created<VehicleResponse>, Conflict, UnauthorizedHttpResult, ForbidHttpResult, ProblemDetails>> ExecuteAsync(CreateVehicleAdminRequest req, CancellationToken ct)
   {
-    var existingName = await _dbContext.Vehicles.FirstOrDefaultAsync(x => x.Name.ToLower().Equals(req.Name.ToLower()), ct);
+    var existingName = await _dbContext.Vehicles.FirstOrDefaultAsync(x => x.Name.ToLower().Equals(req.Name.ToLower()) && x.UserId==req.IdCourier, ct);
     
     if (existingName != null)
       return TypedResults.Conflict();

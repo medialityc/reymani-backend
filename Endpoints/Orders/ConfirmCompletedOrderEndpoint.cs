@@ -17,7 +17,7 @@ public class ConfirmCompletedOrderEndpoint : Endpoint<ConfirmCompletedOrderReque
 
   public override void Configure()
   {
-    Put("/orders/completed/{id}");
+    Put("/orders/completed/");
     Summary(s =>
     {
       s.Summary = "Confirm completed order";
