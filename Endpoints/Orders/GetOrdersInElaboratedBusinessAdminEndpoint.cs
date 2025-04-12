@@ -59,7 +59,7 @@ public class GetOrdersInElaboratedBusinessAdminEndpoint : EndpointWithoutRequest
         .Include(o => o.Items!)
         .ThenInclude(i => i.Product)
         .Where(o => o.Items!
-            .Any(i => i.Status == OrderStatus.InPreparation && productIds.Contains(i.ProductId)))
+            .Any(i => i.Status == OrderItemStatus.InPreparation && productIds.Contains(i.ProductId)))
         .AsNoTracking()
         .OrderBy(o => o.Id)
         .ToListAsync(ct);

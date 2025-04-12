@@ -48,8 +48,8 @@ public class SearchOrdersAssignedToCourierEndpoint : Endpoint<SearchOrdersAssign
         .ThenInclude(i => i.Product)
         .Where(o => o.CourierId == courierId && o.Items!
             .Any(i => 
-                       i.Status == OrderStatus.InPickup && // Listos para recoger
-                       i.Status == OrderStatus.InPickup && // Aún no recogidos
+                       i.Status == OrderItemStatus.InPickup && // Listos para recoger
+                       i.Status == OrderItemStatus.InPickup && // Aún no recogidos
                        o.Status != OrderStatus.Delivered && // No entregados
                        o.Status != OrderStatus.Completed && // No finalizados
                        o.Status != OrderStatus.Cancelled)) // No cancelados

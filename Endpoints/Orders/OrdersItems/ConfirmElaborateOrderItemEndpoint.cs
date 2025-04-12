@@ -45,13 +45,13 @@ public class ConfirmElaborateOrderItemEndpoint : Endpoint<ConfirmElaborateOrderI
     if (item is null)
       return TypedResults.NotFound();
 
-    if (item.Status != OrderStatus.InPreparation)
+    if (item.Status != OrderItemStatus.InPreparation)
       return TypedResults.Conflict();
 
     //Revisa que el pedido se pueda cambiar a completado
     if (order.Status != OrderStatus.InPreparation)
       return TypedResults.Conflict();
-    item.Status = OrderStatus.InPickup;
+    item.Status = OrderItemStatus.InPickup;
 
     // Actualiza el pedido
     if (checkOrder(order.Items!.ToList()))
@@ -69,7 +69,7 @@ public class ConfirmElaborateOrderItemEndpoint : Endpoint<ConfirmElaborateOrderI
   {
     foreach (var i in item)
     {
-      if (i.Status != OrderStatus.InPickup)
+      if (i.Status != OrderItemStatus.InPickup)
         return false;
     }
     return true;

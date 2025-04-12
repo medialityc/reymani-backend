@@ -42,14 +42,14 @@ namespace reymani_web_api.Endpoints.Orders.OrdersItems
       if (item is null)
         return TypedResults.NotFound();
 
-      if (item.Status != OrderStatus.InPickup)
+      if (item.Status != OrderItemStatus.InPickup)
         return TypedResults.Conflict();
 
       //Revisa que el pedido se pueda cambiar a recogido
       if (order.Status != OrderStatus.InPickup)
         return TypedResults.Conflict();
 
-      item.Status = OrderStatus.OnTheWay;
+      item.Status = OrderItemStatus.OnTheWay;
       // Actualiza el pedido
       if (checkOrder(order.Items!.ToList()))
       {
@@ -66,7 +66,7 @@ namespace reymani_web_api.Endpoints.Orders.OrdersItems
     {
       foreach (var i in item)
       {
-        if (i.Status != OrderStatus.InPickup)
+        if (i.Status != OrderItemStatus.InPickup)
           return false;
       }
       return true;

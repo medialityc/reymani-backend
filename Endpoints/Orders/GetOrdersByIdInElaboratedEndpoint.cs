@@ -68,7 +68,7 @@ public class GetOrderByIdInElaboratedEndpoint : Endpoint<GetOrderByIdInElaborate
             .ThenInclude(ca => ca.Municipality)
                 .ThenInclude(m => m.Province)
         .FirstOrDefaultAsync(o => o.Id == req.Id && o.Items!
-            .Any(i => i.Status == OrderStatus.InPreparation && productIds.Contains(i.ProductId)), ct);
+            .Any(i => i.Status == OrderItemStatus.InPreparation && productIds.Contains(i.ProductId)), ct);
 
     // Si no se encuentra la orden, devolver 404 Not Found
     if (order == null)

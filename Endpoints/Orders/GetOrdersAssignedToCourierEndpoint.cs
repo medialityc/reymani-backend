@@ -45,7 +45,7 @@ public class GetOrdersAssignedToCourierEndpoint : EndpointWithoutRequest<Results
         .Include(o => o.Items!)
         .ThenInclude(i => i.Product)
         .Where(o => o.CourierId==courierId && o.Items! 
-            .Any(i => i.Status == OrderStatus.InPickup && // Listos para recoger
+            .Any(i => i.Status == OrderItemStatus.InPickup && // Listos para recoger
                        o.Status != OrderStatus.Delivered && // No entregados
                        o.Status != OrderStatus.Completed && // No finalizados
                        o.Status != OrderStatus.Cancelled)) // No cancelados

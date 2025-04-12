@@ -1,4 +1,5 @@
-﻿using reymani_web_api.Endpoints.Orders.OrdersItems.Response;
+﻿using reymani_web_api.Data.Models;
+using reymani_web_api.Endpoints.Orders.OrdersItems.Response;
 
 using ReymaniWebApi.Data.Models;
 
@@ -14,6 +15,7 @@ public class OrderItemMapper
       OrderId = o.Id,
       Quantity = e.Quantity,
       ProductId = e.ProductId,
+      Status = OrderItemStatus.InPreparation
     };
   }
 

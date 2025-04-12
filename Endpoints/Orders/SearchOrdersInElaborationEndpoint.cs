@@ -71,7 +71,7 @@ public class SearchOrdersInElaborationEndpoint : Endpoint<SearchOrdersInElaborat
         .Where(o => o.Status == OrderStatus.InPreparation && // Pedidos en estado "En Elaboración"
                      o.Items!
                          .Any(i => productIds.Contains(i.ProductId) && // Ítems del negocio del administrador
-                               i.Status != OrderStatus.InPickup)) // Ítems que no están listos para recoger
+                               i.Status != OrderItemStatus.InPickup)) // Ítems que no están listos para recoger
         .AsQueryable();
 
     // Ordenamiento dinámico
