@@ -47,9 +47,8 @@ public class SearchOrdersAssignedToCourierEndpoint : Endpoint<SearchOrdersAssign
         .Include(o => o.Items!)
         .ThenInclude(i => i.Product)
         .Where(o => o.CourierId == courierId && o.Items!
-            .Any(i => 
+            .Any(i =>
                        i.Status == OrderItemStatus.InPickup && // Listos para recoger
-                       i.Status == OrderItemStatus.InPickup && // Aún no recogidos
                        o.Status != OrderStatus.Delivered && // No entregados
                        o.Status != OrderStatus.Completed && // No finalizados
                        o.Status != OrderStatus.Cancelled)) // No cancelados
@@ -81,19 +80,15 @@ public class SearchOrdersAssignedToCourierEndpoint : Endpoint<SearchOrdersAssign
     if (data == null || !data.Any())
       return TypedResults.NotFound();
 
-    // Mapear las entidades Order a OrderResponse
-    var responseData = data.Select(u => mapper.FromEntity(u)).ToList();
-
-    foreach (var r in responseData)
+    // Mapear las entidades Order a OrderResponse con los items directamente desde las entidades
+    var responseData = new List<OrderResponse>();
+    foreach (var order in data)
     {
-      ICollection<OrderItemResponse> itemsResponse = new List<OrderItemResponse>();
-      foreach (var ir in r.Items!)
-      {
-        itemsResponse.Add(mapperItem.FromEntity(ir));
-      }
-
-      r.Items.Clear();
-      r.Items.Concat(itemsResponse);
+      var orderResponse = mapper.FromEntity(order);
+      // Mapear los ítems de la orden directamente desde la entidad order
+      var itemsResponse = order.Items!.Select(item => mapperItem.FromEntity(item)).ToList();
+      orderResponse.Items = itemsResponse;
+      responseData.Add(orderResponse);
     }
 
     // Respuesta paginada

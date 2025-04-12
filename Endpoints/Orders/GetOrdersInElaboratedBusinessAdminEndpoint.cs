@@ -33,7 +33,7 @@ public class GetOrdersInElaboratedBusinessAdminEndpoint : EndpointWithoutRequest
     Roles("BusinessAdmin");
   }
 
-  public override async Task<Results<Ok<IEnumerable<OrderResponse>>,UnauthorizedHttpResult, ProblemDetails>> ExecuteAsync(CancellationToken ct)
+  public override async Task<Results<Ok<IEnumerable<OrderResponse>>, UnauthorizedHttpResult, ProblemDetails>> ExecuteAsync(CancellationToken ct)
   {
     var mapper = new OrderMapper();
     var mapperItem = new OrderItemMapper();
@@ -64,19 +64,17 @@ public class GetOrdersInElaboratedBusinessAdminEndpoint : EndpointWithoutRequest
         .OrderBy(o => o.Id)
         .ToListAsync(ct);
 
-    var response = orders.Select(u => mapper.FromEntity(u)).ToList();
-
-    foreach(var r in response)
+    // Mapear las entidades Order a OrderResponse con los items directamente desde las entidades
+    var response = new List<OrderResponse>();
+    foreach (var order in orders)
     {
-      ICollection<OrderItemResponse> itemsResponse = new List<OrderItemResponse>();
-      foreach (var ir in r.Items!)
-      {
-        itemsResponse.Add(mapperItem.FromEntity(ir));
-      }
-
-      r.Items.Clear();
-      r.Items.Concat(itemsResponse);
+      var orderResponse = mapper.FromEntity(order);
+      // Mapear los ítems de la orden directamente desde la entidad order
+      var itemsResponse = order.Items!.Select(item => mapperItem.FromEntity(item)).ToList();
+      orderResponse.Items = itemsResponse;
+      response.Add(orderResponse);
     }
+
     return TypedResults.Ok(response.AsEnumerable());
   }
 }

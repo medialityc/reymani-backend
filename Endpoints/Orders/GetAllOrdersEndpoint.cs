@@ -33,7 +33,7 @@ public class GetAllOrdersEndpoint : EndpointWithoutRequest<Results<Ok<IEnumerabl
   {
     var mapper = new OrderMapper();
     var mapperItem = new OrderItemMapper();
-   
+
     // Obtener las órdenes
     var orders = await _dbContext.Orders
         .Include(o => o.Items!)
@@ -41,19 +41,17 @@ public class GetAllOrdersEndpoint : EndpointWithoutRequest<Results<Ok<IEnumerabl
         .AsNoTracking()
         .ToListAsync(ct);
 
-    var response = orders.Select(u => mapper.FromEntity(u)).ToList();
-
-    foreach (var r in response)
+    // Mapear las entidades Order a OrderResponse con los items directamente desde las entidades
+    var response = new List<OrderResponse>();
+    foreach (var order in orders)
     {
-      ICollection<OrderItemResponse> itemsResponse = new List<OrderItemResponse>();
-      foreach (var ir in r.Items!)
-      {
-        itemsResponse.Add(mapperItem.FromEntity(ir));
-      }
-
-      r.Items.Clear();
-      r.Items.Concat(itemsResponse);
+      var orderResponse = mapper.FromEntity(order);
+      // Mapear los ítems de la orden directamente desde la entidad order
+      var itemsResponse = order.Items!.Select(item => mapperItem.FromEntity(item)).ToList();
+      orderResponse.Items = itemsResponse;
+      response.Add(orderResponse);
     }
+
     return TypedResults.Ok(response.AsEnumerable());
   }
 }

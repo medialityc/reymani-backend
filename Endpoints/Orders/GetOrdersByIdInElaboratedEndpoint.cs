@@ -77,17 +77,10 @@ public class GetOrderByIdInElaboratedEndpoint : Endpoint<GetOrderByIdInElaborate
     // Mapear la entidad Order a OrderResponse
     var response = mapper.FromEntity(order);
 
-    // Mapear los ítems de la orden
-    ICollection<OrderItemResponse> itemsResponse = new List<OrderItemResponse>();
-    foreach (var ir in response.Items!)
-    {
-      itemsResponse.Add(mapperItem.FromEntity(ir));
-    }
-
-    response.Items.Clear();
-    response.Items.Concat(itemsResponse);
-
-    response.Items = itemsResponse.ToList();
+    // Mapear los ítems de la orden directamente desde la entidad order
+    // en lugar de usar los items ya mapeados en response
+    var itemsResponse = order.Items!.Select(item => mapperItem.FromEntity(item)).ToList();
+    response.Items = itemsResponse;
 
     return TypedResults.Ok(response);
   }
