@@ -43,7 +43,7 @@ namespace reymani_web_api.Endpoints.Business
       }
 
       // Verificar si ya existe otro negocio con el mismo nombre
-      var existingBusiness = await _dbContext.Businesses.FirstOrDefaultAsync(x => x.Name == req.Name, ct);
+      var existingBusiness = await _dbContext.Businesses.FirstOrDefaultAsync(x => x.Name.ToLower() == req.Name.ToLower(), ct);
 
       // Buscar el negocio asociado al usuario logueado y activo
       var business = await _dbContext.Businesses.FirstOrDefaultAsync(b => b.UserId == userId && b.IsActive, ct);

@@ -36,7 +36,7 @@ namespace reymani_web_api.Endpoints.Business
     public override async Task<Results<Ok, NotFound, Conflict, UnauthorizedHttpResult, ForbidHttpResult, ProblemDetails>> ExecuteAsync(UpdateBusinessRequest req, CancellationToken ct)
     {
       // Verificar si ya existe otro negocio con el mismo nombre
-      var existingBusiness = await _dbContext.Businesses.FirstOrDefaultAsync(x => x.Name == req.Name, ct);
+      var existingBusiness = await _dbContext.Businesses.FirstOrDefaultAsync(x => x.Name.ToLower() == req.Name.ToLower(), ct);
       if (existingBusiness != null && existingBusiness.Id != req.Id)
       {
         return TypedResults.Conflict();

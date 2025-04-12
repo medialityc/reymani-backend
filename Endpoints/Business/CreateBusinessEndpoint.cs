@@ -36,7 +36,7 @@ namespace reymani_web_api.Endpoints.Business
 
     public override async Task<Results<Created<BusinessSystemAdminResponse>, Conflict, ProblemDetails>> ExecuteAsync(CreateBusinessRequest req, CancellationToken ct)
     {
-      var existingBusiness = await _dbContext.Businesses.AsNoTracking().FirstOrDefaultAsync(x => x.Name == req.Name, ct);
+      var existingBusiness = await _dbContext.Businesses.AsNoTracking().FirstOrDefaultAsync(x => x.Name.ToLower() == req.Name.ToLower(), ct);
       if (existingBusiness != null)
       {
         return TypedResults.Conflict();

@@ -1,4 +1,5 @@
 ﻿using FastEndpoints;
+
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
@@ -35,27 +36,27 @@ public class CreateVehicleSystemAdminEndpoint : Endpoint<CreateVehicleAdminReque
 
   public override async Task<Results<Created<VehicleResponse>, Conflict, UnauthorizedHttpResult, ForbidHttpResult, ProblemDetails>> ExecuteAsync(CreateVehicleAdminRequest req, CancellationToken ct)
   {
-    var existingName = await _dbContext.Vehicles.FirstOrDefaultAsync(x => x.Name.ToLower().Equals(req.Name.ToLower()) && x.UserId==req.IdCourier, ct);
-    
+    var existingName = await _dbContext.Vehicles.FirstOrDefaultAsync(x => x.Name.ToLower().Equals(req.Name.ToLower()) && x.UserId == req.IdCourier, ct);
+
     if (existingName != null)
       return TypedResults.Conflict();
-    
+
     var mapper = new VehicleMapper();
     var vehicle = mapper.ToEntityAdmin(req);
 
-
     //Poner la nueva foto
-    var fileCode = Guid.NewGuid().ToString();
-    string imagePath = await _blobService.UploadObject(req.Picture, fileCode, ct);
-    vehicle.Picture = imagePath;
+    if (req.Picture != null)
+    {
+      var fileCode = Guid.NewGuid().ToString();
+      string imagePath = await _blobService.UploadObject(req.Picture, fileCode, ct);
+      vehicle.Picture = imagePath;
+    }
 
     // Agrega el nuevo vehiculo a la base de datos
     _dbContext.Vehicles.Add(vehicle);
     await _dbContext.SaveChangesAsync(ct);
 
-
     var response = mapper.FromEntity(vehicle);
-
 
     return TypedResults.Created($"/vehicles/{vehicle.Id}", response);
   }

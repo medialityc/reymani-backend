@@ -44,7 +44,7 @@ namespace reymani_web_api.Endpoints.Products
 
       // Validar que no exista otro producto en el mismo negocio con el mismo nombre.
       var existingProduct = await _dbContext.Products.FirstOrDefaultAsync(
-        x => x.Name == req.Name && x.BusinessId == product.BusinessId && x.Id != req.Id,
+        x => x.Name.ToLower() == req.Name.ToLower() && x.BusinessId == product.BusinessId && x.Id != req.Id,
         ct);
       if (existingProduct != null)
       {

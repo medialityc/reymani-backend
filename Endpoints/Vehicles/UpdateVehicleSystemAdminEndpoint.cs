@@ -1,4 +1,5 @@
 ﻿using FastEndpoints;
+
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
@@ -33,8 +34,6 @@ public class UpdateVehicleSystemAdminEndpoint : Endpoint<UpdateCourierAdminReque
 
   public override async Task<Results<Ok, NotFound, Conflict, UnauthorizedHttpResult, ForbidHttpResult, ProblemDetails>> ExecuteAsync(UpdateCourierAdminRequest req, CancellationToken ct)
   {
-   
-    
     // Verifica si el vehiculo existe
     var vehicle = await _dbContext.Vehicles.FirstOrDefaultAsync(p => p.Id == req.Id, ct);
 
@@ -46,7 +45,7 @@ public class UpdateVehicleSystemAdminEndpoint : Endpoint<UpdateCourierAdminReque
     // Validar que el nombre no este en uso
     if (req.Name != null)
     {
-      var nameInUse = await BeUniqueName(req.Name,vehicle.UserId, ct);
+      var nameInUse = await BeUniqueName(req.Id, req.Name, vehicle.UserId, ct);
       if (!nameInUse)
         return TypedResults.Conflict();
     }
@@ -58,28 +57,33 @@ public class UpdateVehicleSystemAdminEndpoint : Endpoint<UpdateCourierAdminReque
     vehicle.VehicleTypeId = req.VehicleTypeId ?? vehicle.VehicleTypeId;
     vehicle.IsActive = req.IsActive ?? vehicle.IsActive;
 
+    //Elimina la foto que habia
+    if (!string.IsNullOrEmpty(vehicle.Picture))
+      await _blobService.DeleteObject(vehicle.Picture, ct);
 
     // Agregar nueva imágen solo si se proporciona.
     if (req.Picture != null)
     {
-      //Elimina la foto que habia
-      if (!string.IsNullOrEmpty(vehicle.Picture))
-        await _blobService.DeleteObject(vehicle.Picture, ct);
-
       //Poner la nueva foto
       var fileCode = Guid.NewGuid().ToString();
       string imagePath = await _blobService.UploadObject(req.Picture, fileCode, ct);
       vehicle.Picture = imagePath;
     }
+    else
+    {
+      // Si no se proporciona imagen, establecer Logo a null (como en UpdateUserEndpoint)
+      vehicle.Picture = null;
+    }
+
     await _dbContext.SaveChangesAsync(ct);
 
     return TypedResults.Ok();
   }
 
-  private async Task<bool> BeUniqueName(string name,int idCourier ,CancellationToken cancellationToken)
+  private async Task<bool> BeUniqueName(int currentVehicleId, string name, int idCourier, CancellationToken cancellationToken)
   {
-    // Verifica si ya existe un courier con el mismo nombre, excluyendo el que se está actualizando
+    // Verifica si ya existe un vehículo con el mismo nombre, excluyendo el que se está actualizando
     return !await _dbContext.Vehicles
-        .AnyAsync(p => p.Name.ToLower() == name.ToLower() && p.UserId==idCourier, cancellationToken);
+        .AnyAsync(p => p.Id != currentVehicleId && p.Name.ToLower() == name.ToLower() && p.UserId == idCourier, cancellationToken);
   }
 }

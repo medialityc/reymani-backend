@@ -7,6 +7,6 @@ public class CreateVehicleAdminRequest
   public required string? Description { get; set; }
   public required bool IsAvailable { get; set; }
   public required bool IsActive { get; set; }
-  public required IFormFile Picture { get; set; }
+  public IFormFile? Picture { get; set; }
   public required int VehicleTypeId { get; set; }
 }

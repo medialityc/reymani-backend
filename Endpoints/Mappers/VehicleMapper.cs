@@ -21,7 +21,8 @@ public class VehicleMapper
       VehicleTypeName = e.VehicleType?.Name ?? "",
       Description = e.Description,
       VehicleTypeId = e.VehicleTypeId,
-      
+      IsAvailable = e.IsAvailable,
+      IsActive = e.IsActive,
     };
   }
 
@@ -32,7 +33,7 @@ public class VehicleMapper
     {
       UserId = 0,
       VehicleTypeId = req.VehicleTypeId,
-      Description = req.Description?? "",
+      Description = req.Description ?? "",
       IsActive = req.IsActive,
       IsAvailable = req.IsAvailable,
       Picture = "",
