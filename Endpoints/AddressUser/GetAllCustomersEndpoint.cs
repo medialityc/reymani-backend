@@ -34,8 +34,11 @@ public class GetAllCustomersEndpoint : EndpointWithoutRequest<Results<Ok<IEnumer
   {
     var mapper = new UserAddressMapper();
 
+    var userIdClaim = User.Claims.First(c => c.Type == "Id");
+    int userId = int.Parse(userIdClaim.Value);
+    
     var users = await _dbContext.UserAddresses
-      .Where(p => p.IsActive == true)
+      .Where(p => p.IsActive == true && p.UserId == userId)
       .AsNoTracking()
       .Include(p => p.Municipality)
       .Include(p => p.Municipality.Province)
