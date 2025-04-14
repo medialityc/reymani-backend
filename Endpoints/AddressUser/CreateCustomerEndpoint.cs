@@ -25,7 +25,7 @@ public class CreateCustomerEndpoint : Endpoint<CreateCustomerRequest, Results<Cr
     Summary(s =>
     {
       s.Summary = "Create userAddress";
-      s.Description = "Creates a new userAddress.";
+      s.Description = "Creates a new user address.";
     });
     Roles("Customer");
   }
@@ -37,10 +37,12 @@ public class CreateCustomerEndpoint : Endpoint<CreateCustomerRequest, Results<Cr
     {
       return TypedResults.Conflict();
     }
-
+    
+    var userIdClaim = User.Claims.First(c => c.Type == "Id");
+    int userId = int.Parse(userIdClaim.Value);
 
     var mapper = new UserAddressMapper();
-    var userAddress = mapper.ToEntity(req);
+    var userAddress = mapper.ToEntity(req, userId);
 
     // Agrega la nueva direccion a la base de datos
     _dbContext.UserAddresses.Add(userAddress);

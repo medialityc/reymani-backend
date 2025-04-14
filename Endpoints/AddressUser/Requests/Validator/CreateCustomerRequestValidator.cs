@@ -10,10 +10,5 @@ public class CreateCustomerRequestValidator : Validator<CreateCustomerRequest>
   {
     RuleFor(x => x.Name).NotEmpty();
     RuleFor(x => x.Address).NotEmpty();
-    RuleFor(x => x.IsActive).NotEmpty();
-
-    RuleFor(e => e.UserId)
-    .NotEmpty()
-    .GreaterThan(0);
   }
 }

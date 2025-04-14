@@ -20,19 +20,19 @@ public class UserAddressMapper
       ProvinceId = e.Municipality?.Province?.Id ?? 0,
       ProvinceName = e.Municipality?.Province?.Name ?? "",
       MunicipalityId = e.MunicipalityId,
-      MunicipalityName = e.Municipality?.Name ?? ""
+      MunicipalityName = e.Municipality?.Name ?? "",
     };
   }
 
 
   //Crear la entidad apartir de la request de crear
-  public UserAddress ToEntity(CreateCustomerRequest r) => new()
+  public UserAddress ToEntity(CreateCustomerRequest r, int userId) => new()
   {
-    Address = string.Empty,
+    Address = r.Address,
     MunicipalityId = r.MunicipalityId,
     Name = r.Name,
     Notes = r.Notes,
-    UserId = r.UserId,
-    IsActive = r.IsActive
+    UserId = userId,
+    IsActive = true,
   };
 }
