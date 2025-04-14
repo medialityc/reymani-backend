@@ -9,8 +9,6 @@ using reymani_web_api.Endpoints.Commons.Responses;
 using reymani_web_api.Endpoints.Orders.Requests;
 using reymani_web_api.Endpoints.Orders.OrdersItems.Response;
 
-
-
 namespace reymani_web_api.Endpoints.Orders;
 public class SearchOrdersInElaborationEndpoint : Endpoint<SearchOrdersInElaborationRequest, Results<Ok<PaginatedResponse<OrderResponse>>, UnauthorizedHttpResult, NotFound, ProblemDetails>>
 {
@@ -101,18 +99,14 @@ public class SearchOrdersInElaborationEndpoint : Endpoint<SearchOrdersInElaborat
       return TypedResults.NotFound();
 
     // Mapear las entidades Order a OrderResponse
-    var responseData = data.Select(u => mapper.FromEntity(u)).ToList();
-
-    foreach (var r in responseData)
+    var responseData = new List<OrderResponse>();
+    foreach (var order in data)
     {
-      ICollection<OrderItemResponse> itemsResponse = new List<OrderItemResponse>();
-      foreach (var ir in r.Items!)
-      {
-        itemsResponse.Add(mapperItem.FromEntity(ir));
-      }
-
-      r.Items.Clear();
-      r.Items.Concat(itemsResponse);
+      var orderResponse = mapper.FromEntity(order);
+      // Mapear los ítems de la orden directamente desde la entidad order
+      var itemsResponse = order.Items!.Select(item => mapperItem.FromEntity(item)).ToList();
+      orderResponse.Items = itemsResponse;
+      responseData.Add(orderResponse);
     }
 
     // Respuesta paginada

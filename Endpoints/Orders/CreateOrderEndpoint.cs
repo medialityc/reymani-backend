@@ -1,5 +1,4 @@
-﻿
-using FastEndpoints;
+﻿using FastEndpoints;
 
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
@@ -30,16 +29,16 @@ public class CreateOrderEndpoint : Endpoint<CreateOrderRequest, Results<Created<
       s.Summary = "Create order";
       s.Description = "Creates a new order.";
     });
-    //Roles("Customer");
+    Roles("Customer");
   }
 
-  public override async Task<Results<Created<OrderResponse>, Conflict, NotFound,UnauthorizedHttpResult, ForbidHttpResult, ProblemDetails>> ExecuteAsync(CreateOrderRequest req, CancellationToken ct)
+  public override async Task<Results<Created<OrderResponse>, Conflict, NotFound, UnauthorizedHttpResult, ForbidHttpResult, ProblemDetails>> ExecuteAsync(CreateOrderRequest req, CancellationToken ct)
   {
     var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == "Id");
 
     if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out int userId))
       return TypedResults.Unauthorized();
-      
+
 
     var shoppingCart = await _dbContext.ShoppingCarts.FirstOrDefaultAsync(x => x.Id == req.ShoppingCartId && x.UserId == userId, ct);
 
@@ -62,7 +61,7 @@ public class CreateOrderEndpoint : Endpoint<CreateOrderRequest, Results<Created<
       order.Items?.Add(item);
       decimal discount = 0;
       if (i.Product!.DiscountPrice.HasValue)
-         discount = i.Product.Price * i.Product.DiscountPrice.Value;
+        discount = i.Product.Price * i.Product.DiscountPrice.Value;
 
       productCostTotal += i.Quantity * (i.Product.Price - discount);
     }
@@ -71,18 +70,21 @@ public class CreateOrderEndpoint : Endpoint<CreateOrderRequest, Results<Created<
 
     shoppingCart.Items.Clear();
     await _dbContext.SaveChangesAsync(ct);
-    var response = mapper.FromEntity(order);
 
-    ICollection<OrderItemResponse> itemsResponse = new List<OrderItemResponse>();
-    foreach (var ir in response.Items!)
-    {
-      itemsResponse.Add(mapperItem.FromEntity(ir));
-    }
+    // Obtener la orden actualizada con todas sus relaciones
+    var orderWithRelations = await _dbContext.Orders
+        .Include(o => o.Items!)
+            .ThenInclude(i => i.Product)
+        .Include(o => o.Customer)
+        .Include(o => o.CustomerAddress)
+        .FirstOrDefaultAsync(o => o.Id == order.Id, ct);
 
-    response.Items.Clear();
-    response.Items.Concat(itemsResponse);
+    var response = mapper.FromEntity(orderWithRelations!);
 
-    
+    // Mapear los ítems de la orden directamente desde la entidad order
+    var itemsResponse = orderWithRelations!.Items!.Select(item => mapperItem.FromEntity(item)).ToList();
+    response.Items = itemsResponse;
+
     return TypedResults.Created($"/orders/{order.Id}", response);
   }
 }
