@@ -18,31 +18,44 @@ namespace reymani_web_api.Services.BlobServices.Minio
       _minioClient = new MinioClient()
           .WithEndpoint(options.Value.Endpoint, options.Value.Port)
           .WithCredentials(options.Value.AccessKey, options.Value.SecretKey)
-          .WithSSL(false)
+          .WithSSL(true)
           .Build();
     }
 
     public async Task<string> UploadObject(IFormFile file, string codeObj, CancellationToken ct)
     {
-      // Obtener la extensión real del archivo
+      if (file == null || file.Length == 0)
+        throw new ArgumentException("Archivo inválido o vacío.");
+
       var ext = Path.GetExtension(file.FileName).ToLower();
       if (string.IsNullOrEmpty(ext))
         throw new InvalidOperationException("No se pudo determinar la extensión del archivo.");
 
-      // Ruta donde se almacenará en Minio
       var objectPath = $"images/{codeObj}{ext}";
 
-      await using var fileStream = file.OpenReadStream();
-      var uploadArgs = new PutObjectArgs()
-          .WithBucket(_bucketName)
-          .WithObject(objectPath)
-          .WithStreamData(fileStream)
-          .WithObjectSize(fileStream.Length)
-          .WithContentType(file.ContentType);
+      try
+      {
+        await using var ms = new MemoryStream();
+        await file.CopyToAsync(ms, ct);
+        ms.Position = 0;
 
-      await _minioClient.PutObjectAsync(uploadArgs, ct);
+        var uploadArgs = new PutObjectArgs()
+            .WithBucket(_bucketName)
+            .WithObject(objectPath)
+            .WithStreamData(ms)
+            .WithObjectSize(ms.Length)
+            .WithContentType(file.ContentType);
+
+        await _minioClient.PutObjectAsync(uploadArgs, ct);
+      }
+      catch
+      {
+        throw new ApplicationException("No se pudo subir el archivo al almacenamiento.");
+      }
+
       return objectPath;
     }
+
 
     public async Task<string> PresignedGetUrl(string objPath, CancellationToken ct)
     {
