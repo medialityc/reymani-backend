@@ -16,7 +16,7 @@ namespace reymani_web_api.Services.BlobServices.Minio
     {
       _bucketName = options.Value.Bucket;
       _minioClient = new MinioClient()
-          .WithEndpoint(options.Value.Endpoint, options.Value.Port)
+          .WithEndpoint(options.Value.Endpoint)
           .WithCredentials(options.Value.AccessKey, options.Value.SecretKey)
           .WithSSL(true)
           .Build();
