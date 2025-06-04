@@ -3,11 +3,16 @@
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
+using Npgsql.EntityFrameworkCore.PostgreSQL.Infrastructure.Internal;
+
 using reymani_web_api.Data;
 using reymani_web_api.Endpoints.Mappers;
 using reymani_web_api.Endpoints.Orders.OrdersItems.Response;
 using reymani_web_api.Endpoints.Orders.Requests;
 using reymani_web_api.Endpoints.Orders.Responses;
+using reymani_web_api.Endpoints.Users.Responses;
+
+using ReymaniWebApi.Data.Models;
 
 
 namespace reymani_web_api.Endpoints.Orders;
@@ -38,6 +43,24 @@ public class CreateOrderEndpoint : Endpoint<CreateOrderRequest, Results<Created<
 
     if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out int userId))
       return TypedResults.Unauthorized();
+
+    
+    if ((req.RequiresCourierService && !req.CourierId.HasValue) || (!req.RequiresCourierService && req.CourierId.HasValue))
+    {
+      return TypedResults.Conflict();
+
+    }
+
+    if (req.RequiresCourierService) // Mover la verificación del courier dentro de esta condición
+    {
+        var courier = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == req.CourierId, cancellationToken: ct);
+        if (courier == null)
+        {
+            return TypedResults.Conflict();
+        }
+    }
+
+
 
     var customer = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == req.CustomerId, ct); ;
 
@@ -84,13 +107,18 @@ public class CreateOrderEndpoint : Endpoint<CreateOrderRequest, Results<Created<
     await _dbContext.SaveChangesAsync(ct);
 
     // Obtener la orden actualizada con todas sus relaciones
-    var orderWithRelations = await _dbContext.Orders
+    var query = _dbContext.Orders
         .Include(o => o.Items!)
             .ThenInclude(i => i.Product)
         .Include(o => o.Customer)
-        .Include(o => o.CustomerAddress)
-        .Include(o => o.Courier)
-        .FirstOrDefaultAsync(o => o.Id == order.Id, ct);
+        .Include(o => o.CustomerAddress);
+
+    if (req.RequiresCourierService)
+    {
+      query.Include(o => o.Courier);
+    }
+
+    var orderWithRelations = await query.FirstOrDefaultAsync(o => o.Id == order.Id, ct);
 
     var response = mapper.FromEntity(orderWithRelations!);
 

@@ -8,5 +8,6 @@ public class CreateOrderRequest
   public required int CustomerId { get; set; }
   public required int CustomerAddressId { get; set; }
   public required PaymentMethod PaymentMethod { get; set; }
-  public required int CourierId { get; set; }
+  public required bool RequiresCourierService { get; set; }
+    public int? CourierId { get; set; }
 }

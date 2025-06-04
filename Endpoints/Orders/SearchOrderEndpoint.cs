@@ -59,7 +59,7 @@ public class SearchOrderEndpoint : Endpoint<SearchOrderSystemAdminRequest, Resul
 
     // Filtrado por CourierId
     if (req.CourierIds?.Any() ?? false)
-      query = query.Where(pc => req.CourierIds.Contains(pc.CourierId));
+      query = query.Where(pc => req.CourierIds.Cast<int?>().Contains(pc.CourierId));
 
     // Filtrado por CustomerId
     if (req.CustomerIds?.Any() ?? false)
