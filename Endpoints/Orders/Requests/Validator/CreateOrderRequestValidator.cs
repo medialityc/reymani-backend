@@ -20,7 +20,5 @@ public class CreateOrderRequestValidator : Validator<CreateOrderRequest>
         .GreaterThan(0)
         .NotEmpty();
 
-    // RuleFor(x => x.PaymentMethod)
-    //     .NotEmpty();
   }
 }
