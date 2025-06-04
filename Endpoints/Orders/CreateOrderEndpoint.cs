@@ -46,12 +46,12 @@ public class CreateOrderEndpoint : Endpoint<CreateOrderRequest, Results<Created<
       return TypedResults.NotFound();
     }
 
-
-    // var shoppingCart = await _dbContext.ShoppingCarts.FirstOrDefaultAsync(x => x.Id == req.ShoppingCartId && x.UserId == userId, ct);
-      var shoppingCart = await _dbContext.ShoppingCarts
-                                    .Include(sc => sc.Items!)
-                                      .ThenInclude(item => item.Product)
-                                    .FirstOrDefaultAsync(x => x.Id == req.ShoppingCartId && x.UserId == customer.Id, ct);
+    
+  
+    var shoppingCart = await _dbContext.ShoppingCarts
+                                  .Include(sc => sc.Items!)
+                                    .ThenInclude(item => item.Product)
+                                  .FirstOrDefaultAsync(x => x.Id == req.ShoppingCartId && x.UserId == customer.Id, ct);
 
 
     if (shoppingCart == null)
