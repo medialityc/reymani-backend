@@ -29,7 +29,7 @@ public class CreateOrderEndpoint : Endpoint<CreateOrderRequest, Results<Created<
       s.Summary = "Create order";
       s.Description = "Creates a new order.";
     });
-    Roles("Customer");
+    Roles("Customer", "BusinessAdmin", "SystemAdmin");
   }
 
   public override async Task<Results<Created<OrderResponse>, Conflict, NotFound, UnauthorizedHttpResult, ForbidHttpResult, ProblemDetails>> ExecuteAsync(CreateOrderRequest req, CancellationToken ct)
@@ -39,8 +39,20 @@ public class CreateOrderEndpoint : Endpoint<CreateOrderRequest, Results<Created<
     if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out int userId))
       return TypedResults.Unauthorized();
 
+    var customer = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == req.CustomerId, ct); ;
 
-    var shoppingCart = await _dbContext.ShoppingCarts.FirstOrDefaultAsync(x => x.Id == req.ShoppingCartId && x.UserId == userId, ct);
+    if (customer == null)
+    {
+      return TypedResults.NotFound();
+    }
+
+
+    // var shoppingCart = await _dbContext.ShoppingCarts.FirstOrDefaultAsync(x => x.Id == req.ShoppingCartId && x.UserId == userId, ct);
+      var shoppingCart = await _dbContext.ShoppingCarts
+                                    .Include(sc => sc.Items!)
+                                      .ThenInclude(item => item.Product)
+                                    .FirstOrDefaultAsync(x => x.Id == req.ShoppingCartId && x.UserId == customer.Id, ct);
+
 
     if (shoppingCart == null)
     {

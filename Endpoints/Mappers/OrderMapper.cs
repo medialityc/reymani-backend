@@ -15,8 +15,8 @@ public class OrderMapper
   {
     return new Order
     {
-      CourierId = 0,//No tiene mensajero asignado
-      ShippingCost =0,//No tiene mensajero no tiene vehiculo no se calcula cuando se crea
+      CourierId = req.CourierId,
+      ShippingCost = 0,//No tiene mensajero no tiene vehiculo no se calcula cuando se crea
       PaymentMethod = req.PaymentMethod,
       CustomerAddressId = req.CustomerAddressId,
       CustomerId = req.CustomerId,
