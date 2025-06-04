@@ -15,6 +15,7 @@ public class OrderMapper
   {
     return new Order
     {
+      RequiresCourierService = req.RequiresCourierService,
       CourierId = req.CourierId,
       ShippingCost = 0,//No tiene mensajero no tiene vehiculo no se calcula cuando se crea
       PaymentMethod = req.PaymentMethod,
@@ -34,6 +35,7 @@ public class OrderMapper
     return new OrderResponse
     {
       Id = o.Id,
+      RequiresCourierService = o.RequiresCourierService,
       CourierId = o.CourierId,
       CustomerAddressId = o.CustomerAddressId,
       CustomerId = o.CustomerId,

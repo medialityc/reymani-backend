@@ -12,7 +12,8 @@ public class OrderResponse
   public required PaymentMethod PaymentMethod { get; set; }
   public required int CustomerId { get; set; }
   public UserResponse? Customer { get; set; }
-  public required int CourierId { get; set; }
+  public required bool RequiresCourierService { get; set; }
+  public int? CourierId { get; set; }
   public UserResponse? Courier { get; set; }
   public ICollection<OrderItemResponse>? Items { get; set; }
   public required OrderStatus Status { get; set; }
