@@ -89,6 +89,7 @@ public class CreateOrderEndpoint : Endpoint<CreateOrderRequest, Results<Created<
             .ThenInclude(i => i.Product)
         .Include(o => o.Customer)
         .Include(o => o.CustomerAddress)
+        .Include(o => o.Courier)
         .FirstOrDefaultAsync(o => o.Id == order.Id, ct);
 
     var response = mapper.FromEntity(orderWithRelations!);
