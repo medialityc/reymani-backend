@@ -48,7 +48,6 @@ public class CreateOrderEndpoint : Endpoint<CreateOrderRequest, Results<Created<
 
     if ((req.RequiresCourierService && !req.CourierId.HasValue) || (!req.RequiresCourierService && req.CourierId.HasValue))
     {
-      //return TypedResults.Conflict();
       AddError("Si requiere mensajeria se requiere de un mensajero. Si no se requiere, no se debe proporcinar uno");
     }
 
@@ -58,7 +57,6 @@ public class CreateOrderEndpoint : Endpoint<CreateOrderRequest, Results<Created<
       var courier = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == req.CourierId && u.Role == UserRole.Courier, cancellationToken: ct);
       if (courier == null)
       {
-        //return TypedResults.Conflict();
         AddError($"No existe mensajero con id: {req.CourierId}");
       }
     }
@@ -68,7 +66,6 @@ public class CreateOrderEndpoint : Endpoint<CreateOrderRequest, Results<Created<
 
     if (customer == null)
     {
-      // return TypedResults.NotFound();
       AddError($"No existe cliente con id: {req.CustomerId}");
     }
     ThrowIfAnyErrors();
