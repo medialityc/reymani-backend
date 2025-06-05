@@ -115,7 +115,7 @@ public class CreateOrderEndpoint : Endpoint<CreateOrderRequest, Results<Created<
 
     if (req.RequiresCourierService)
     {
-      query.Include(o => o.Courier);
+      query = query.Include(o => o.Courier);
     }
 
     var orderWithRelations = await query.FirstOrDefaultAsync(o => o.Id == order.Id, ct);
