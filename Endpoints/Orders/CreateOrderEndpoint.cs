@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Infrastructure.Internal;
 
 using reymani_web_api.Data;
+using reymani_web_api.Data.Models;
 using reymani_web_api.Endpoints.Mappers;
 using reymani_web_api.Endpoints.Orders.OrdersItems.Response;
 using reymani_web_api.Endpoints.Orders.Requests;
@@ -44,31 +45,33 @@ public class CreateOrderEndpoint : Endpoint<CreateOrderRequest, Results<Created<
     if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out int userId))
       return TypedResults.Unauthorized();
 
-    
+
     if ((req.RequiresCourierService && !req.CourierId.HasValue) || (!req.RequiresCourierService && req.CourierId.HasValue))
     {
-      return TypedResults.Conflict();
-
+      //return TypedResults.Conflict();
+      AddError("Si requiere mensajeria se requiere de un mensajero. Si no se requiere, no se debe proporcinar uno");
     }
 
-    if (req.RequiresCourierService) // Mover la verificación del courier dentro de esta condición
+
+    if (req.RequiresCourierService)
     {
-        var courier = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == req.CourierId, cancellationToken: ct);
-        if (courier == null)
-        {
-            return TypedResults.Conflict();
-        }
+      var courier = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == req.CourierId && u.Role == UserRole.Courier, cancellationToken: ct);
+      if (courier == null)
+      {
+        //return TypedResults.Conflict();
+        AddError($"No existe mensajero con id: {req.CourierId}");
+      }
     }
 
 
-
-    var customer = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == req.CustomerId, ct); ;
+    var customer = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == req.CustomerId && u.Role == UserRole.Customer, ct); ;
 
     if (customer == null)
     {
-      return TypedResults.NotFound();
+      // return TypedResults.NotFound();
+      AddError($"No existe cliente con id: {req.CustomerId}");
     }
-
+    ThrowIfAnyErrors();
     
   
     var shoppingCart = await _dbContext.ShoppingCarts
@@ -115,7 +118,7 @@ public class CreateOrderEndpoint : Endpoint<CreateOrderRequest, Results<Created<
 
     if (req.RequiresCourierService)
     {
-      query = query.Include(o => o.Courier);
+      query.Include(o => o.Courier);
     }
 
     var orderWithRelations = await query.FirstOrDefaultAsync(o => o.Id == order.Id, ct);
